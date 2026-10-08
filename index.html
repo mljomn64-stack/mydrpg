@@ -1351,21 +1351,37 @@ function updateCurrentWeight() {
 function saveGame() {
       try {
         localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
-        console.log("게임 저장 완료!");
       } catch (e) {
         console.error("저장 실패:", e);
       }
     }
 
-    // 2. 게임 데이터 불러오기
+    // 2. 게임 데이터 불러오기 및 화면 자동 전환
     function loadGame() {
       try {
         const savedData = localStorage.getItem('dietRpgSaveData');
         if (savedData) {
           const loadedPlayer = JSON.parse(savedData);
-          if (loadedPlayer && Object.keys(loadedPlayer).length > 0) {
+          
+          // 저장된 데이터에 이름이나 캐릭터 정보가 있다면 정상 데이터로 인정
+          if (loadedPlayer && loadedPlayer.name) {
             player = loadedPlayer;
-            console.log("저장된 게임 데이터를 불러왔습니다!");
+            isPlaying = true; // 게임 플레이 중 상태로 변경
+            
+            console.log("저장된 게임 데이터를 불러왔습니다!", player);
+
+            // 💡 [핵심] 저장된 데이터가 있으므로 초기 입력 화면을 숨기고 메인 화면을 보여줍니다!
+            // (만약 초기 화면 HTML 태그의 아이디가 다르다면 아래 'setup-screen' 부분을 실제 아이디로 맞춰주세요)
+            const setupScreen = document.getElementById('setup-screen') || document.querySelector('.setup-container');
+            if (setupScreen) setupScreen.classList.add('hidden');
+
+            const mainGameArea = document.getElementById('main-game-area') || document.querySelector('.game-container');
+            if (mainGameArea) mainGameArea.classList.remove('hidden');
+
+            // 화면 UI 갱신 함수 실행
+            if (typeof updateStatus === 'function') {
+              updateStatus();
+            }
             return true;
           }
         }
@@ -1375,21 +1391,9 @@ function saveGame() {
       return false;
     }
 
-    // 3. 🚨 가장 중요: 게임을 시작할 때 최초로 실행되는 함수(예: startGame 이나 init 등) 안 맨 처음에 loadGame();을 넣어주세요!
-    // 만약 그런 함수가 따로 있다면 그 안에 넣어주시고, 없다면 아래 코드가 알아서 실행됩니다.
+    // 3. 페이지가 열리자마자 데이터 불러오기 실행
     window.onload = function() {
-      console.log("페이지 로딩 완료, 데이터 불러오기 시도...");
-      let hasData = loadGame();
-      
-      // 저장된 데이터가 있다면 화면 갱신 함수 실행 (updateStatus 등)
-      if (hasData) {
-        if (typeof updateStatus === 'function') {
-          updateStatus();
-        }
-        // 만약 몸무게 입력 화면을 숨기고 메인 화면을 보여주는 코드가 있다면 여기에 추가해 주세요!
-        // 예: document.getElementById('input-screen').style.display = 'none';
-        //     document.getElementById('main-screen').style.display = 'block';
-      }
+      loadGame();
     };
 
     // 4. 어떤 버튼을 누르든 자동 저장
