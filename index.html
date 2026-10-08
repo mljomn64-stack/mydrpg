@@ -1346,37 +1346,52 @@ function updateCurrentWeight() {
       }
     }
 
-// 1. 게임 데이터 저장하기 함수
+// 1. 게임 데이터 저장하기
 function saveGame() {
-      // 현재 player 객체와 필요한 게임 상태를 JSON 문자열로 변환하여 브라우저에 저장
-      localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
-    }
-
-    // 2. 게임 데이터 불러오기 함수
-    function loadGame() {
-      const savedData = localStorage.getItem('dietRpgSaveData');
-      if (savedData) {
-        try {
-          const loadedPlayer = JSON.parse(savedData);
-          // 기존 player 데이터에 불러온 값 덮어쓰기
-          Object.assign(player, loadedPlayer);
-        } catch (e) {
-          console.error("데이터 불러오기 실패:", e);
-        }
+      try {
+        localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
+        console.log("게임이 안전하게 저장되었습니다!");
+      } catch (e) {
+        console.error("저장 실패:", e);
       }
     }
 
-    // 3. 페이지가 켜지자마자 데이터 자동 불러오기 실행
+    // 2. 게임 데이터 불러오기 (없으면 기본값 유지)
+    function loadGame() {
+      try {
+        const savedData = localStorage.getItem('dietRpgSaveData');
+        if (savedData) {
+          const loadedPlayer = JSON.parse(savedData);
+          // 데이터가 존재하고 비어있지 않다면 player에 값 대입
+          if (loadedPlayer && Object.keys(loadedPlayer).length > 0) {
+            player = loadedPlayer;
+            console.log("저장된 게임 데이터를 불러왔습니다!");
+            return true;
+          }
+        }
+      } catch (e) {
+        console.error("불러오기 실패:", e);
+      }
+      return false;
+    }
+
+    // 3. 게임 시작할 때(페이지 로드 직후) 데이터 불러오기 실행
     window.addEventListener('DOMContentLoaded', () => {
-      loadGame();
-      updateStatus(); // 화면 UI 갱신
+      let hasData = loadGame();
+      
+      // 만약 저장된 데이터가 있다면 몸무게 입력창을 건너뛰고 메인 화면을 보여줌
+      if (hasData && typeof updateStatus === 'function') {
+        updateStatus();
+        // 만약 몸무게 입력창 화면을 숨기는 함수가 있다면 여기서 실행해 주세요!
+        // 예: document.getElementById('init-screen').classList.add('hidden');
+        //     document.getElementById('main-game-screen').classList.remove('hidden');
+      }
     });
 
-    // 4. 어떤 행동(버튼 클릭)을 하든 자동으로 저장되도록 후킹(Hooking) 걸기
+    // 4. 주요 행동 버튼을 누를 때마다 확실하게 저장 실행
     document.addEventListener('click', (event) => {
-      // 게임 내의 버튼(.btn 등)을 클릭했을 때만 자동 저장 실행
       if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
-        saveGame();
+        saveGame(); // 버튼 누를 때마다 즉시 저장
       }
     });
 
