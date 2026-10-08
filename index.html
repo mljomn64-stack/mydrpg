@@ -1347,34 +1347,35 @@ function updateCurrentWeight() {
       }
     }
 
-// 1. 게임 데이터 자동 저장
-function saveGame() {
-      try {
-        localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
-      } catch (e) {
-        console.error("데이터 저장 실패:", e);
-      }
-    }
-
-    // 2. 게임 데이터 불러오기 및 시작 화면 숨기기
-    function loadGame() {
+// 2. 게임 데이터 불러오기 및 화면 완벽 전환
+function loadGame() {
       try {
         const savedData = localStorage.getItem('dietRpgSaveData');
         if (savedData) {
           const loadedPlayer = JSON.parse(savedData);
           
-          // 데이터가 존재하고, 캐릭터 이름이 정상적으로 들어있는지 확인
           if (loadedPlayer && loadedPlayer.name) {
             player = loadedPlayer;
             console.log("저장된 모험가 데이터를 불러왔습니다!", player.name);
 
-            // 💡 HTML에 이미 있는 'start-screen'을 콕 집어서 숨깁니다!
+            // 💡 1. 시작 화면은 숨기고!
             const startScreen = document.getElementById('start-screen');
-            if (startScreen) {
-              startScreen.style.display = 'none';
+            if (startScreen) startScreen.style.display = 'none';
+
+            // 💡 2. 숨겨져 있던 메인 게임 UI 화면을 짠! 하고 보여줍니다.
+            const uiLayer = document.getElementById('ui-layer');
+            if (uiLayer) uiLayer.classList.remove('hidden');
+
+            // 💡 3. 내 캐릭터(쿼카/코알라) 이미지를 중앙에 다시 그려줍니다.
+            const mainSprite = document.getElementById('main-sprite');
+            if (mainSprite) mainSprite.src = player.image;
+
+            // 💡 4. 퀘스트 목록 버튼들도 다시 생성해 줍니다.
+            if (typeof renderQuests === 'function') {
+              renderQuests();
             }
 
-            // 화면 UI 갱신 (기존에 작성하신 함수)
+            // 화면 UI 전체 갱신
             if (typeof updateStatus === 'function') {
               updateStatus();
             }
@@ -1386,18 +1387,6 @@ function saveGame() {
       }
       return false;
     }
-
-    // 3. 웹페이지가 켜지자마자 데이터 불러오기 실행
-    window.addEventListener('DOMContentLoaded', () => {
-      loadGame();
-    });
-
-    // 4. 어떤 버튼이든 누를 때마다(사냥, 상점 등) 알아서 자동 저장
-    document.addEventListener('click', (event) => {
-      if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
-        saveGame();
-      }
-    });
 
   </script>
 </body>
