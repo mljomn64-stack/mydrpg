@@ -308,7 +308,9 @@
       });
       const targetTab = document.getElementById('tab-' + tabName);
       if(targetTab) targetTab.classList.remove('hidden');
-      if(tabName === 'status') updateStatus();
+      
+      // 💡 핵심: 탭을 바꿀 때마다 펫과 인벤토리 상태를 항상 최신으로 갱신!
+      updateStatus();
     }
     function toggleBGM() {
       const audio = document.getElementById('game-audio'); const btn = document.getElementById('bgm-player');
@@ -593,14 +595,20 @@
       document.getElementById('st-royal').innerText = player.records.royalQuests; document.getElementById('st-boss-kill').innerText = player.records.bossKills; document.getElementById('st-total-gold').innerText = player.records.totalGold;
       
       const invDiv = document.getElementById('st-items');
-      if (Object.keys(player.inventory).length === 0) { invDiv.innerHTML = "아직 뽑은 아이템이 없습니다."; } 
+      const invItemsList = document.getElementById('inv-items-list'); // 💡 소지품 탭용 아이템 도감 변수 추가
+      
+      if (Object.keys(player.inventory).length === 0) {
+        if(invDiv) invDiv.innerHTML = "아직 뽑은 아이템이 없습니다.";
+        if(invItemsList) invItemsList.innerHTML = "아직 뽑은 아이템이 없습니다.";
+      } 
       else {
         let invHTML = ""; const statKor = { atk: "공격력", ratk: "원거리", def: "방어력", spd: "스피드", int: "지력" };
         for (let key in player.inventory) {
           let invItem = player.inventory[key]; let statText = (invItem.statName && invItem.totalStat > 0) ? `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">(+${statKor[invItem.statName]} ${invItem.totalStat})</span>` : "";
           invHTML += `<div style="margin: 4px 0; padding: 6px; background: rgba(255,255,255,0.8); border-radius: 5px; border: 1px dashed #ccc; font-size: 13px;">${invItem.icon} <span class="${invItem.cssClass}">[${invItem.tierName}] ${invItem.name}</span> <strong style="margin-left: 5px;">x${invItem.count}</strong> ${statText}</div>`;
         }
-        invDiv.innerHTML = invHTML;
+        if(invDiv) invDiv.innerHTML = invHTML;
+        if(invItemsList) invItemsList.innerHTML = invHTML; // 💡 소지품 탭에도 아이템 목록 갱신!
       }
 
       const themeSelect = document.getElementById('theme-select');
@@ -666,6 +674,14 @@
         const loadedPlayer = JSON.parse(savedData);
         if (loadedPlayer && loadedPlayer.name) {
           player = loadedPlayer;
+          
+          // 💡 핵심 안전장치: 예전 세이브 파일에 누락된 새로운 속성들을 자동으로 채워줌!
+          if (!player.unlockedThemes) player.unlockedThemes = { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } };
+          if (!player.unlockedBgms) player.unlockedBgms = { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } };
+          if (!player.pets) player.pets = {};
+          if (player.leafTokens === undefined) player.leafTokens = 0;
+          if (!player.inventory) player.inventory = {};
+
           const startScreen = document.getElementById('start-screen'); if (startScreen) { startScreen.classList.add('hidden'); startScreen.style.display = 'none'; }
           const uiLayer = document.getElementById('ui-layer'); if (uiLayer) { uiLayer.classList.remove('hidden'); uiLayer.style.display = 'flex'; }
           const mainSprite = document.getElementById('main-sprite'); if (mainSprite && player.image) mainSprite.src = player.image;
@@ -759,9 +775,12 @@
       ]
     };
 
-    // 🐾 펫 랜덤 뽑기 함수
-    function rollPetGacha() {
-      if (player.tickets < 1) { alert("가챠 티켓이 부족합니다!"); return; }
+// 🐾 펫 랜덤 뽑기 함수 (수정본)
+function rollPetGacha() {
+      if (player.tickets < 1) { 
+        alert("가챠 티켓이 부족합니다! (현재 티켓: " + player.tickets + "장)"); 
+        return; 
+      }
       player.tickets -= 1;
 
       const rand = Math.random() * 100;
@@ -775,14 +794,18 @@
       const pet = pool[Math.floor(Math.random() * pool.length)];
       let msg = "";
 
+      // 펫 데이터 객체가 없으면 안전하게 생성
+      if (!player.pets) player.pets = {};
+
       if (player.pets[pet.name]) {
-        player.leafTokens += pet.token;
+        player.leafTokens = (player.leafTokens || 0) + pet.token;
         msg = `이미 보유한 펫이라 자동으로 분해되어<br><strong style="color:#27ae60;">🌿 나뭇잎 토큰 +${pet.token}개</strong>로 교환되었습니다!`;
       } else {
         player.pets[pet.name] = { ...pet, count: 1 };
         msg = `🎉 새로운 펫을 영입했습니다!`;
       }
 
+      // 상점에 있는 펫 뽑기 결과 박스에 출력
       const resultBox = document.getElementById('pet-gacha-result-box');
       if(resultBox) {
         resultBox.innerHTML = `<div class="gacha-result">
@@ -793,7 +816,7 @@
         </div>`;
       }
       
-      if(typeof updateStatus === 'function') updateStatus();
+      updateStatus();
     }
 
     // 🐾 펫 장착 및 해제 함수
