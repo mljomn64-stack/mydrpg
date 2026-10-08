@@ -3,161 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>다이어트 RPG v9.0</title>
-
-  <!-- 카카오톡/SNS 링크 공유 미리보기 설정 -->
-  <meta property="og:title" content="⚔️ 다이어트 RPG ⚔️">
-  <meta property="og:description" content="다이어트 모험을 떠나요!">
-  <meta property="og:image" content="https://img.icons8.com/color/200/pixel-star.png">
   
+  <title>⚔️ 다이어트RPG ⚔️</title>
+  <meta property="og:title" content="⚔️ 다이어트 RPG ⚔️">
+  <meta property="og:description" content="나만의 다이어트 모험을 떠나요!">
+  <meta property="og:image" content="https://img.icons8.com/color/200/pixel-star.png">
+
   <style>
     @import url('https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css');
     
-    :root {
-      --bg-color: #fdf5d3; 
-      --line-color: #6a4c9c; 
-      --accent-green: #67c28c; 
-      --accent-pink: #f094c3; 
-      --bgm-color: #4a90e2;
-    }
-
-    body {
-      background-color: #e0d8b0;
-      color: var(--line-color);
-      font-family: 'Galmuri9', sans-serif;
-      text-align: center; margin: 0; padding: 0;
-      display: flex; justify-content: center;
-    }
-
-    #game-container {
-      width: 100%; max-width: 400px;
-      background-color: var(--bg-color);
-      min-height: 100vh; height: 100vh;
-      border-left: 4px solid var(--line-color); border-right: 4px solid var(--line-color);
-      display: flex; flex-direction: column; position: relative;
-      overflow: hidden;
-      transition: background-color 0.5s ease;
-    }
-
+    :root { --bg-color: #fdf5d3; --line-color: #6a4c9c; --accent-green: #67c28c; --accent-pink: #f094c3; --bgm-color: #4a90e2; }
+    body { background-color: #e0d8b0; color: var(--line-color); font-family: 'Galmuri9', sans-serif; text-align: center; margin: 0; padding: 0; display: flex; justify-content: center; }
+    #game-container { width: 100%; max-width: 400px; background-color: var(--bg-color); min-height: 100vh; height: 100vh; border-left: 4px solid var(--line-color); border-right: 4px solid var(--line-color); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background-color 0.5s ease; }
     .hidden { display: none !important; }
-
-    .content-area {
-      flex-grow: 1; overflow-y: auto; padding-bottom: 20px;
-    }
-
-    .top-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px; border-bottom: 4px dashed var(--line-color);
-      font-weight: bold; font-size: 14px; background: transparent;
-      z-index: 10;
-    }
-
-    .btn {
-      background-color: #fff; color: var(--line-color);
-      border: 3px solid var(--line-color); padding: 10px; margin: 5px 20px;
-      cursor: pointer; font-family: 'Galmuri9', sans-serif;
-      font-size: 13px; font-weight: bold; border-radius: 8px;
-      box-shadow: 3px 3px 0px var(--accent-pink); transition: all 0.1s;
-    }
+    .content-area { flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 4px dashed var(--line-color); font-weight: bold; font-size: 14px; background: transparent; z-index: 10; }
+    .btn { background-color: #fff; color: var(--line-color); border: 3px solid var(--line-color); padding: 10px; margin: 5px 20px; cursor: pointer; font-family: 'Galmuri9', sans-serif; font-size: 13px; font-weight: bold; border-radius: 8px; box-shadow: 3px 3px 0px var(--accent-pink); transition: all 0.1s; }
     .btn:active { transform: translate(3px, 3px); box-shadow: none; }
     .btn-task { background-color: var(--accent-green); color: #fff; box-shadow: 3px 3px 0px #3e8e5d;}
     .btn-dungeon { background-color: #e74c3c; color: #fff; box-shadow: 3px 3px 0px #c0392b;}
     .btn-field { background-color: #e67e22; color: #fff; box-shadow: 3px 3px 0px #d35400;}
-    
-    .btn-theme { 
-      width: 80%; margin: 5px auto; display: block; 
-      box-shadow: 3px 3px 0px rgba(0,0,0,0.2); border: 2px solid #fff;
-    }
-
-    .sprite-area {
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      padding: 20px 0; min-height: 180px;
-    }
-    
-    .character-img {
-      width: 120px; height: 120px; object-fit: contain;
-      animation: float 2s infinite ease-in-out;
-    }
-
-    .boss-img {
-      width: 150px; height: 150px;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
+    .btn-theme { width: 80%; margin: 5px auto; display: block; box-shadow: 3px 3px 0px rgba(0,0,0,0.2); border: 2px solid #fff; }
+    .sprite-area { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px 0; min-height: 180px; }
+    .character-img { width: 120px; height: 120px; object-fit: contain; animation: float 2s infinite ease-in-out; }
+    .boss-img { width: 150px; height: 150px; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .shake { animation: shake 0.2s; }
-    @keyframes shake {
-      0% { transform: translateX(0) scale(1.1); filter: brightness(2); }
-      25% { transform: translateX(10px) scale(1.1); }
-      50% { transform: translateX(-10px) scale(1.1); }
-      75% { transform: translateX(10px) scale(1.1); }
-      100% { transform: translateX(0) scale(1); filter: brightness(1); }
-    }
-
-    .bottom-nav {
-      display: flex; border-top: 4px dashed var(--line-color);
-      background-color: rgba(255, 255, 255, 0.5); padding: 10px 0; z-index: 10;
-    }
-    .nav-item {
-      flex: 1; text-align: center; font-size: 12px; font-weight: bold; cursor: pointer;
-    }
-
-    .gacha-result {
-      font-size: 20px; margin: 20px; padding: 20px; border: 4px dashed var(--line-color);
-      background: #fff; animation: pop 0.5s;
-    }
+    @keyframes shake { 0% { transform: translateX(0) scale(1.1); filter: brightness(2); } 25% { transform: translateX(10px) scale(1.1); } 50% { transform: translateX(-10px) scale(1.1); } 75% { transform: translateX(10px) scale(1.1); } 100% { transform: translateX(0) scale(1); filter: brightness(1); } }
+    .bottom-nav { display: flex; border-top: 4px dashed var(--line-color); background-color: rgba(255, 255, 255, 0.5); padding: 10px 0; z-index: 10; }
+    .nav-item { flex: 1; text-align: center; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .gacha-result { font-size: 20px; margin: 20px; padding: 20px; border: 4px dashed var(--line-color); background: #fff; animation: pop 0.5s; }
     @keyframes pop { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }
-    
-    .mythic { color: #d63031; text-shadow: 1px 1px 0px gold; }
-    .epic { color: #9b59b6; }
-    .rare { color: #3498db; }
-    .normal { color: #7f8c8d; }
-
-    #bgm-player {
-      position: absolute; bottom: 70px; right: 10px;
-      background: var(--bgm-color); color: #fff; border: 2px solid #fff;
-      padding: 5px 10px; border-radius: 20px; font-size: 10px; cursor: pointer;
-      box-shadow: 2px 2px 0px #000; z-index: 100;
-    }
-
-    .status-box {
-      text-align: left; padding: 10px 20px; font-size: 14px; line-height: 1.8;
-      background: rgba(255,255,255,0.7); margin: 10px; border-radius: 10px;
-    }
-    
+    .mythic { color: #d63031; text-shadow: 1px 1px 0px gold; } .epic { color: #9b59b6; } .rare { color: #3498db; } .normal { color: #7f8c8d; }
+    #bgm-player { position: absolute; bottom: 70px; right: 10px; background: var(--bgm-color); color: #fff; border: 2px solid #fff; padding: 5px 10px; border-radius: 20px; font-size: 10px; cursor: pointer; box-shadow: 2px 2px 0px #000; z-index: 100; }
+    .status-box { text-align: left; padding: 10px 20px; font-size: 14px; line-height: 1.8; background: rgba(255,255,255,0.7); margin: 10px; border-radius: 10px; }
     hr { border: 1px dashed var(--line-color); margin: 15px 0; }
-
-    .rpg-start-box {
-      background: rgba(255, 255, 255, 0.85);
-      border: 4px double var(--line-color);
-      border-radius: 12px;
-      padding: 25px 20px;
-      width: 80%;
-      max-width: 320px;
-      box-shadow: 0 8px 0 rgba(106, 76, 156, 0.3);
-      margin: auto;
-    }
-
-    .rpg-title-banner {
-      font-size: 18px;
-      font-weight: bold;
-      color: var(--line-color);
-      text-shadow: 2px 2px 0px var(--accent-pink);
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-    }
-
+    .rpg-start-box { background: rgba(255, 255, 255, 0.85); border: 4px double var(--line-color); border-radius: 12px; padding: 25px 20px; width: 80%; max-width: 320px; box-shadow: 0 8px 0 rgba(106, 76, 156, 0.3); margin: auto; }
+    .rpg-title-banner { font-size: 18px; font-weight: bold; color: var(--line-color); text-shadow: 2px 2px 0px var(--accent-pink); margin-bottom: 20px; letter-spacing: 1px; }
   </style>
 </head>
 <body>
 
   <div id="game-container">
-    <audio id="game-audio" loop>
-      <source id="audio-source" src="main.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="game-audio" loop><source id="audio-source" src="main.mp3" type="audio/mpeg"></audio>
     <div id="bgm-player" onclick="toggleBGM()">🎵 BGM: OFF (클릭)</div>
 
     <!-- 시작 화면 -->
@@ -165,16 +53,13 @@
       <div class="rpg-start-box">
         <div class="rpg-title-banner">⚔️ DIET RPG ⚔️</div>
         <p style="font-size: 11px; margin-bottom: 10px; color: #555; font-weight: bold;">모험할 영웅과 현재 몸무게를 입력하세요!</p>
-        
         <div style="margin-bottom: 15px;">
           <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">현재 몸무게 (kg):</label>
           <input type="number" id="input-start-weight" placeholder="예: 70" style="font-family:'Galmuri9'; padding: 6px; width: 60%; text-align: center; border: 2px solid var(--line-color); border-radius: 5px;">
         </div>
-
         <button class="btn" style="width: 100%; margin: 5px 0;" onclick="tryStartGame('쿼카', '드루이드', 'quakka.png')">🌿 쿼카 (드루이드)로 시작</button>
         <button class="btn" style="width: 100%; margin: 5px 0;" onclick="tryStartGame('코알라', '사령술사', 'koala.png')">💀 코알라 (사령술사)로 시작</button>
-        
-        <div style="margin-top: 15px; font-size: 9px; color: #888;">- 다이어트 RPG V9.0 -</div>
+        <div style="margin-top: 15px; font-size: 9px; color: #888;">- 다이어트 다마고치 RPG V9.0 -</div>
       </div>
     </div>
 
@@ -184,10 +69,7 @@
       <div class="top-bar">
         <div>Lv. <span id="ui-level">1</span> <br><small style="font-size:10px;">EXP: <span id="ui-exp">0</span>/<span id="ui-max-exp">100</span></small></div>
         <div id="theme-title" style="font-size: 16px;">🌲 평화로운 숲</div>
-        <div style="text-align: right;">
-          💰 <span id="ui-gold">0</span> G<br>
-          🎟️ 티켓: <span id="ui-tickets">0</span>
-        </div>
+        <div style="text-align: right;">💰 <span id="ui-gold">0</span> G<br>🎟️ 티켓: <span id="ui-tickets">0</span></div>
       </div>
 
       <div id="tab-main" class="content-area">
@@ -197,34 +79,21 @@
         </div>
 
         <div id="battle-scene-area" class="hidden" style="display: flex; justify-content: space-around; align-items: center; padding: 20px 0; min-height: 180px;">
-          <div style="text-align: center;">
-            <div style="font-size:12px; font-weight:bold; color:#2ecc71; margin-bottom:5px;">나</div>
-            <img id="battle-player-img" class="character-img" style="width: 100px; height: 100px; object-fit: contain;" src="" alt="플레이어">
-          </div>
-          
+          <div style="text-align: center;"><div style="font-size:12px; font-weight:bold; color:#2ecc71; margin-bottom:5px;">나</div><img id="battle-player-img" class="character-img" style="width: 100px; height: 100px; object-fit: contain;" src="" alt="플레이어"></div>
           <div style="font-size: 20px; font-weight: bold; color: #e74c3c; animation: pop 1s infinite;">VS</div>
-          
-          <div style="text-align: center;">
-            <div id="battle-enemy-name-label" style="font-size:12px; font-weight:bold; color:#e74c3c; margin-bottom:5px;">적</div>
-            <img id="battle-enemy-img" style="object-fit: contain; transform: scaleX(-1);" src="" alt="적">
-          </div>
+          <div style="text-align: center;"><div id="battle-enemy-name-label" style="font-size:12px; font-weight:bold; color:#e74c3c; margin-bottom:5px;">적</div><img id="battle-enemy-img" style="object-fit: contain; transform: scaleX(-1);" src="" alt="적"></div>
         </div>
         
         <div id="battle-ui-area" class="hidden" style="margin-bottom: 20px;">
           <p style="margin: 0; font-size: 12px; font-weight: bold;">🔥 <span id="current-enemy-name">상대</span> HP</p>
-          <div style="width: 80%; margin: 3px auto 10px auto; background: #000; border: 3px solid #fff; height: 16px; border-radius: 8px; overflow: hidden;">
-            <div id="enemy-hp-bar" style="background: #e74c3c; width: 100%; height: 100%; transition: width 0.2s;"></div>
-          </div>
+          <div style="width: 80%; margin: 3px auto 10px auto; background: #000; border: 3px solid #fff; height: 16px; border-radius: 8px; overflow: hidden;"><div id="enemy-hp-bar" style="background: #e74c3c; width: 100%; height: 100%; transition: width 0.2s;"></div></div>
           <p style="margin: 0; font-size: 11px;"><span id="enemy-hp-text">100</span> / <span id="enemy-max-hp">100</span></p>
           
           <p style="margin: 10px 0 0 0; font-size: 12px; font-weight: bold;">💖 내 체력</p>
-          <div style="width: 80%; margin: 3px auto 10px auto; background: #000; border: 3px solid #fff; height: 16px; border-radius: 8px; overflow: hidden;">
-            <div id="player-hp-bar" style="background: #2ecc71; width: 100%; height: 100%; transition: width 0.2s;"></div>
-          </div>
+          <div style="width: 80%; margin: 3px auto 10px auto; background: #000; border: 3px solid #fff; height: 16px; border-radius: 8px; overflow: hidden;"><div id="player-hp-bar" style="background: #2ecc71; width: 100%; height: 100%; transition: width 0.2s;"></div></div>
           <p style="margin: 0; font-size: 11px;"><span id="player-hp-text">100</span> / <span id="player-max-hp">100</span></p>
 
           <div id="battle-log" style="font-size: 11px; margin: 10px 20px; color: #333; height: 35px; font-weight: bold; background:rgba(255,255,255,0.7); padding:5px; border-radius:5px;">전투가 시작되었다!</div>
-
           <div id="minigame-area" class="hidden" style="margin: 10px auto; width: 80%; border: 2px dashed #333; padding: 15px; border-radius: 10px; background: #fff;"></div>
 
           <button id="btn-attack" class="btn btn-dungeon" style="width: 80%; padding: 12px; font-size: 14px;" onclick="executeAttack()">⚔️ 공격하기</button>
@@ -232,25 +101,14 @@
         </div>
 
         <div id="normal-action-area">
-          <button id="btn-enter-dungeon" class="btn btn-dungeon hidden" style="width: 80%; margin: 0 auto 10px auto; display: block;" onclick="openBossSelect()">
-            ⚔️ 보스 던전 입장 (티켓 1장)
-          </button>
-          <button id="btn-enter-field" class="btn btn-field" style="width: 80%; margin: 0 auto 20px auto; display: block;" onclick="openFieldSelect()">
-            🗡️ 일반 몬스터 사냥 (선택)
-          </button>
+          <button id="btn-enter-dungeon" class="btn btn-dungeon hidden" style="width: 80%; margin: 0 auto 10px auto; display: block;" onclick="openBossSelect()">⚔️ 보스 던전 입장 (티켓 1장)</button>
+          <button id="btn-enter-field" class="btn btn-field" style="width: 80%; margin: 0 auto 20px auto; display: block;" onclick="openFieldSelect()">🗡️ 일반 몬스터 사냥 (선택)</button>
 
           <div id="boss-select-box" class="hidden" style="background: rgba(255,255,255,0.9); padding: 10px; margin: 10px 20px; border-radius: 10px; border: 2px dashed #e74c3c;">
             <h4 style="margin: 5px; color: #e74c3c;">🎯 토벌할 보스 선택 (8종)</h4>
             <div id="boss-list-container" style="max-height: 250px; overflow-y: auto;"></div>
             <button class="btn" style="padding: 5px 15px; margin-top: 10px;" onclick="closeSelectBoxes()">취소</button>
           </div>
-
-          <div id="field-select-box" class="hidden" style="background: rgba(255,255,255,0.9); padding: 10px; margin: 10px 20px; border-radius: 10px; border: 2px dashed #e67e22;">
-            <h4 style="margin: 5px; color: #e67e22;">🗡️ 사냥할 일반 몬스터 선택</h4>
-            <div id="field-list-container"></div>
-            <button class="btn" style="padding: 5px 15px; margin-top: 10px;" onclick="closeSelectBoxes()">취소</button>
-          </div>
-
           <hr>
           <h4 style="margin: 5px;">📜 일반 퀘스트 (EXP 획득)</h4>
           <div id="action-list" style="display: flex; flex-direction: column;"></div>
@@ -263,8 +121,7 @@
       <div id="tab-gacha" class="content-area hidden">
         <h2 style="color: var(--line-color);">🔮 왕실 가챠 🔮</h2>
         <p>1회 뽑기: 🎟️ 티켓 1장</p>
-        <img src="https://img.icons8.com/color/150/treasure-chest.png" class="character-img" style="margin-bottom:20px;">
-        <br>
+        <img src="https://img.icons8.com/color/150/treasure-chest.png" class="character-img" style="margin-bottom:20px;"><br>
         <button class="btn btn-dungeon" style="background-color:var(--accent-pink); color:white;" onclick="rollGacha()">🎟️ 가챠 돌리기!</button>
         <div id="gacha-result-box"></div>
       </div>
@@ -308,16 +165,10 @@
           볼륨 조절: <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)" style="vertical-align: middle;">
           <hr>
           <strong>[스탯]</strong><br>
-          ⚔️ 공격력: <span id="st-atk">10</span> <br>
-          🏹 원거리: <span id="st-ratk">10</span> <br>
-          🛡️ 방어력: <span id="st-def">10</span> <br>
-          💨 스피드: <span id="st-spd">10</span> <br>
-          🧠 지력: <span id="st-int">10</span> <br>
+          ⚔️ 공격력: <span id="st-atk">10</span> <br>🏹 원거리: <span id="st-ratk">10</span> <br>🛡️ 방어력: <span id="st-def">10</span> <br>💨 스피드: <span id="st-spd">10</span> <br>🧠 지력: <span id="st-int">10</span> <br>
           <hr>
           <strong>[기록]</strong><br>
-          👑 완료한 왕궁 퀘스트: <span id="st-royal">0</span>회<br>
-          💀 처치한 몬스터/마왕: <span id="st-boss-kill">0</span>회<br>
-          💰 누적 획득 골드: <span id="st-total-gold">0</span> G<br>
+          👑 완료한 왕궁 퀘스트: <span id="st-royal">0</span>회<br>💀 처치한 몬스터/마왕: <span id="st-boss-kill">0</span>회<br>💰 누적 획득 골드: <span id="st-total-gold">0</span> G<br>
           <hr>
           <strong>[획득한 가챠 아이템]</strong>
           <div id="st-items" style="font-size: 12px; margin-top:5px;">없음</div>
@@ -335,23 +186,8 @@
   </div>
 
   <script>
-    let player = {
-      name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold: 500, tickets: 3,
-      maxHp: 100, currentHp: 100,
-      stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 },
-      records: { royalQuests: 0, totalGold: 0, bossKills: 0 },
-      inventory: {}, // 배열이 아닌 객체로 완벽 초기화
-      unlockedThemes: { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } },
-      unlockedBgms: { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } },
-      currentTheme: 'default',
-      currentBgm: 'default',
-      startWeight: 0,
-      currentWeight: 0
-    };
-
-    let isPlaying = false;
-    let inBattle = false;
-    let currentEnemy = null;
+    let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold: 500, tickets: 3, maxHp: 100, currentHp: 100, stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 }, records: { royalQuests: 0, totalGold: 0, bossKills: 0 }, inventory: {}, unlockedThemes: { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } }, unlockedBgms: { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } }, currentTheme: 'default', currentBgm: 'default', startWeight: 0, currentWeight: 0 };
+    let isPlaying = false; let inBattle = false; let currentEnemy = null;
 
     const fieldMonsters = [
       { name: "웃고있는 식혜", hp: 150, atk: 5, reward: 150, penalty: 30, image: "monster_hye.png" },
@@ -373,178 +209,75 @@
       { name: "🌯 타락한 천사와 악마의 부리또", hp: 9999, atk: 120, reward: 50000, penalty: 5000, image: "boss_burito.png" }
     ];
 
-    const normalQuests = [
-      { name: "💧 물 한잔 마시기", exp: 20, gold: 50 },
-      { name: "🔥 배달음식 픽업해오기", exp: 30, gold: 100 },
-      { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 },
-      { name: "🥗 8시 이후 금식", exp: 50, gold: 80 },
-      { name: "🍳 집밥 먹기", exp: 25, gold: 50 }
-    ];
-    
-    const royalQuests = [
-      { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", ticket: 1 },
-      { name: "👑 [왕궁] 용사의 스쿼트 30회 3세트", ticket: 1 },
-      { name: "👑 [왕궁] 숲 속의 달리기 훈련", ticket: 2 },
-      { name: "👑 [왕궁] 마법사의 식단 먹기", ticket: 1 }
-    ];
+    const normalQuests = [ { name: "💧 물 한잔 마시기", exp: 20, gold: 50 }, { name: "🔥 배달음식 픽업해오기", exp: 30, gold: 100 }, { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 }, { name: "🥗 8시 이후 금식", exp: 50, gold: 80 }, { name: "🍳 집밥 먹기", exp: 25, gold: 50 } ];
+    const royalQuests = [ { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", ticket: 1 }, { name: "👑 [왕궁] 용사의 스쿼트 30회 3세트", ticket: 1 }, { name: "👑 [왕궁] 숲 속의 달리기 훈련", ticket: 2 }, { name: "👑 [왕궁] 마법사의 식단 먹기", ticket: 1 } ];
 
     const gachaPool = {
-      mythic: [
-        { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 대폭 상승 (+20)", stat: "spd", add: 20 }, 
-        { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 대폭 상승 (+20)", stat: "ratk", add: 20 },
-        { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 대폭 상승 (+20)", stat: "def", add: 20 },
-        { name: "디지바이스", icon: "📱", effect: "지력 대폭 상승 (+20)", stat: "int", add: 20 },
-        { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 대폭 상승 (+20)", stat: "atk", add: 20 },
-        { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" },
-        { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" }
-      ],
-      epic: [
-        { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, 
-        { name: "콘서타", icon: "💊", effect: "공격력 상승 (+10)", stat: "atk", add: 10 },
-        { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+10)", stat: "int", add: 10 },
-        { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+10)", stat: "spd", add: 10 },
-        { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+10)", stat: "def", add: 10 },
-        { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+10)", stat: "int", add: 10 },
-        { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" }
-      ],
-      rare: [
-        { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +5", stat: "int", add: 5 }, 
-        { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 },
-        { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +5", stat: "int", add: 5 },
-        { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +5", stat: "def", add: 5 },
-        { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 },
-        { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" }
-      ],
-      normal: [
-        { name: "알콜스왑", icon: "🩹", effect: "스피드 +1", stat: "spd", add: 1 }, 
-        { name: "대나무 화장지", icon: "🧻", effect: "방어력 +1", stat: "def", add: 1 },
-        { name: "돌돌이", icon: "🧹", effect: "공격력 +1", stat: "atk", add: 1 },
-        { name: "먼지 낀 서큘레이터", icon: "🌀", effect: "지력 +1", stat: "int", add: 1 },
-        { name: "가챠 1회권(다시)", icon: "🎫", effect: "티켓 +1", type: "ticket", amount: 1 }
-      ]
+      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 대폭 상승 (+20)", stat: "spd", add: 20 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 대폭 상승 (+20)", stat: "ratk", add: 20 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 대폭 상승 (+20)", stat: "def", add: 20 }, { name: "디지바이스", icon: "📱", effect: "지력 대폭 상승 (+20)", stat: "int", add: 20 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 대폭 상승 (+20)", stat: "atk", add: 20 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" } ],
+      epic: [ { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "콘서타", icon: "💊", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" } ],
+      rare: [ { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +5", stat: "int", add: 5 }, { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 }, { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +5", stat: "int", add: 5 }, { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +5", stat: "def", add: 5 }, { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 }, { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" } ],
+      normal: [ { name: "알콜스왑", icon: "🩹", effect: "스피드 +1", stat: "spd", add: 1 }, { name: "대나무 화장지", icon: "🧻", effect: "방어력 +1", stat: "def", add: 1 }, { name: "돌돌이", icon: "🧹", effect: "공격력 +1", stat: "atk", add: 1 }, { name: "먼지 낀 서큘레이터", icon: "🌀", effect: "지력 +1", stat: "int", add: 1 }, { name: "가챠 1회권(다시)", icon: "🎫", effect: "티켓 +1", type: "ticket", amount: 1 } ]
     };
 
     function tryStartGame(charName, jobName, imgUrl) {
       const weightInput = document.getElementById('input-start-weight').value;
-      if (!weightInput || weightInput <= 0) {
-        alert("현재 몸무게를 숫자로 올바르게 입력해주세요! (다이어트의 시작입니다 💪)");
-        return;
-      }
-      player.startWeight = parseFloat(weightInput);
-      player.currentWeight = parseFloat(weightInput);
-      
+      if (!weightInput || weightInput <= 0) { alert("현재 몸무게를 올바르게 입력해주세요!"); return; }
+      player.startWeight = parseFloat(weightInput); player.currentWeight = parseFloat(weightInput);
       startGame(charName, jobName, imgUrl);
     }
 
     function startGame(charName, jobName, imgUrl) {
-      player.name = charName;
-      player.job = jobName;
-      player.image = imgUrl;
-      
-      // 시작 화면 숨기고 메인 UI 활성화
+      player.name = charName; player.job = jobName; player.image = imgUrl;
       const startScreen = document.getElementById('start-screen');
-      if (startScreen) {
-        startScreen.classList.add('hidden');
-        startScreen.style.display = 'none';
-      }
-      
+      if (startScreen) { startScreen.classList.add('hidden'); startScreen.style.display = 'none'; }
       const uiLayer = document.getElementById('ui-layer');
-      if (uiLayer) {
-        uiLayer.classList.remove('hidden');
-        uiLayer.style.display = 'flex';
-      }
-      
+      if (uiLayer) { uiLayer.classList.remove('hidden'); uiLayer.style.display = 'flex'; }
       const mainSprite = document.getElementById('main-sprite');
       if (mainSprite) mainSprite.src = player.image;
-      
-      renderQuests();
-      updateStatus();
-      
-      // 게임 시작 시 확실하게 데이터 저장!
-      saveGame();
+      renderQuests(); updateStatus(); saveGame();
     }
 
     function switchTab(tabName) {
-      if (inBattle && tabName !== 'main') {
-        alert("전투 중에는 다른 탭으로 이동할 수 없습니다!");
-        return;
-      }
-      ['main', 'gacha', 'shop', 'status'].forEach(t => {
-        document.getElementById('tab-' + t).classList.add('hidden');
-      });
-      document.getElementById('tab-' + tabName).classList.remove('hidden');
+      if (inBattle && tabName !== 'main') { alert("전투 중에는 다른 탭으로 이동할 수 없습니다!"); return; }
+      ['main', 'gacha', 'shop', 'status'].forEach(t => { const tab = document.getElementById('tab-' + t); if(tab) tab.classList.add('hidden'); });
+      const targetTab = document.getElementById('tab-' + tabName);
+      if(targetTab) targetTab.classList.remove('hidden');
       if(tabName === 'status') updateStatus();
     }
 
     function toggleBGM() {
-      const audio = document.getElementById('game-audio');
-      const btn = document.getElementById('bgm-player');
-      if (isPlaying) {
-        audio.pause();
-        btn.innerText = "🎵 BGM: OFF";
-      } else {
-        audio.play().catch(e => alert('오디오 재생 권한이 필요합니다.'));
-        btn.innerText = "🎵 BGM: ON";
-      }
+      const audio = document.getElementById('game-audio'); const btn = document.getElementById('bgm-player');
+      if (isPlaying) { audio.pause(); btn.innerText = "🎵 BGM: OFF"; } else { audio.play().catch(e => alert('오디오 권한 필요')); btn.innerText = "🎵 BGM: ON"; }
       isPlaying = !isPlaying;
     }
     
-    function changeVolume(val) { document.getElementById('game-audio').volume = val; }
+    function changeVolume(val) { const audio = document.getElementById('game-audio'); if(audio) audio.volume = val; }
 
     function gainExp(amount) {
       player.exp += amount;
       if (player.exp >= player.maxExp) {
-        player.level++;
-        player.exp -= player.maxExp;
-        player.maxExp = Math.floor(player.maxExp * 1.5);
-        
-        player.stats.atk += 2; player.stats.def += 2; player.maxHp += 20;
-        player.currentHp = player.maxHp;
-        
-        alert(`🎉 레벨 업! 현재 레벨: ${player.level}\n체력이 회복되고 스탯이 올랐습니다!`);
+        player.level++; player.exp -= player.maxExp; player.maxExp = Math.floor(player.maxExp * 1.5);
+        player.stats.atk += 2; player.stats.def += 2; player.maxHp += 20; player.currentHp = player.maxHp;
+        alert(`🎉 레벨 업! 현재 레벨: ${player.level}\n체력 회복 및 스탯 증가!`);
       }
     }
 
     function renderQuests() {
-      const nList = document.getElementById('action-list');
-      const rList = document.getElementById('royal-list');
-      if(nList) nList.innerHTML = ""; 
-      if(rList) rList.innerHTML = "";
-
+      const nList = document.getElementById('action-list'); const rList = document.getElementById('royal-list');
+      if(nList) nList.innerHTML = ""; if(rList) rList.innerHTML = "";
       normalQuests.forEach(q => {
-        const btn = document.createElement('button');
-        btn.className = 'btn';
+        const btn = document.createElement('button'); btn.className = 'btn';
         let effectiveInt = Math.max(0, player.stats.int - 10);
-        let bonusG = Math.floor(q.gold * (effectiveInt * 0.01)); 
-        let bonusE = Math.floor(q.exp * (effectiveInt * 0.01));
-        
-        if (effectiveInt > 0) {
-          btn.innerHTML = `${q.name} <br><small>(+${q.gold + bonusG}G, +${q.exp + bonusE}EXP) <span style="color:#3498db;">[지력버프]</span></small>`;
-        } else {
-          btn.innerHTML = `${q.name} <br><small>(+${q.gold}G, +${q.exp}EXP)</small>`;
-        }
-        btn.onclick = () => {
-          let currEffectiveInt = Math.max(0, player.stats.int - 10);
-          let finalGold = q.gold + Math.floor(q.gold * (currEffectiveInt * 0.01));
-          let finalExp = q.exp + Math.floor(q.exp * (currEffectiveInt * 0.01));
-          player.gold += finalGold;
-          player.records.totalGold += finalGold;
-          gainExp(finalExp);
-          updateStatus();
-        };
+        let bonusG = Math.floor(q.gold * (effectiveInt * 0.01)); let bonusE = Math.floor(q.exp * (effectiveInt * 0.01));
+        if (effectiveInt > 0) { btn.innerHTML = `${q.name} <br><small>(+${q.gold + bonusG}G, +${q.exp + bonusE}EXP) <span style="color:#3498db;">[지력버프]</span></small>`; } 
+        else { btn.innerHTML = `${q.name} <br><small>(+${q.gold}G, +${q.exp}EXP)</small>`; }
+        btn.onclick = () => { player.gold += (q.gold + bonusG); player.records.totalGold += (q.gold + bonusG); gainExp(q.exp + bonusE); updateStatus(); };
         if(nList) nList.appendChild(btn);
       });
-
       royalQuests.forEach(q => {
-        const btn = document.createElement('button');
-        btn.className = 'btn btn-task';
+        const btn = document.createElement('button'); btn.className = 'btn btn-task';
         btn.innerHTML = `${q.name} <br><small>(🎟️ 티켓 +${q.ticket})</small>`;
-        btn.onclick = () => {
-          player.tickets += q.ticket;
-          player.records.royalQuests++;
-          alert(`왕궁의 임무를 완수했습니다!\n보상: 가챠 티켓 ${q.ticket}장`);
-          updateStatus();
-        };
+        btn.onclick = () => { player.tickets += q.ticket; player.records.royalQuests++; alert(`임무 완수! 티켓 ${q.ticket}장 획득`); updateStatus(); };
         if(rList) rList.appendChild(btn);
       });
     }
@@ -552,592 +285,298 @@
     function openBossSelect() {
       if (player.tickets < 1) { alert("가챠 티켓이 부족합니다! 왕궁 퀘스트를 깨고 오세요."); return; }
       closeSelectBoxes();
-      const container = document.getElementById('boss-list-container');
-      container.innerHTML = "";
-
+      const container = document.getElementById('boss-list-container'); if(container) container.innerHTML = "";
       bossList.forEach(b => {
-        const bBtn = document.createElement('button');
-        bBtn.className = 'btn btn-theme';
-        bBtn.style.background = '#e74c3c';
-        bBtn.style.color = '#fff';
+        const bBtn = document.createElement('button'); bBtn.className = 'btn btn-theme'; bBtn.style.background = '#e74c3c'; bBtn.style.color = '#fff';
         bBtn.innerHTML = `🔥 ${b.name}<br><small>체력:${b.hp} | 보상:${b.reward}G | 패널티:-${b.penalty}G</small>`;
         bBtn.onclick = () => startBattle(b, true);
-        container.appendChild(bBtn);
+        if(container) container.appendChild(bBtn);
       });
-      document.getElementById('boss-select-box').classList.remove('hidden');
+      const box = document.getElementById('boss-select-box'); if(box) box.classList.remove('hidden');
     }
 
     function openFieldSelect() {
       inBattle = false;
-      const actionArea = document.getElementById('normal-action-area');
-      if (actionArea) actionArea.classList.add('hidden');
-
-      let existingBox = document.getElementById('dynamic-field-box');
-      if (existingBox) existingBox.remove();
-
-      const selectBox = document.createElement('div');
-      selectBox.id = 'dynamic-field-box';
+      const actionArea = document.getElementById('normal-action-area'); if (actionArea) actionArea.classList.add('hidden');
+      let existingBox = document.getElementById('dynamic-field-box'); if (existingBox) existingBox.remove();
+      const selectBox = document.createElement('div'); selectBox.id = 'dynamic-field-box';
       selectBox.style.cssText = "margin-top: 10px; padding: 15px; background: #fff9db; border: 2px solid var(--line-color); border-radius: 8px; text-align: center; font-family: 'Galmuri9';";
-      selectBox.innerHTML = `
-        <h4 style="margin: 0 0 10px 0; font-size: 13px;">🎯 사냥할 몬스터를 선택하세요</h4>
-        <div id="dynamic-monster-buttons" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;"></div>
-        <button class="btn" style="background: #e74c3c; color: white; padding: 5px 12px; font-size: 11px; width: 100%;" onclick="closeFieldSelect()">돌아가기</button>
-      `;
-
+      selectBox.innerHTML = `<h4 style="margin: 0 0 10px 0; font-size: 13px;">🎯 사냥할 몬스터를 선택하세요</h4><div id="dynamic-monster-buttons" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;"></div><button class="btn" style="background: #e74c3c; color: white; padding: 8px 30px; font-size: 12px; margin: 10px auto; display: inline-block;" onclick="closeFieldSelect()">돌아가기</button>`;
       if (actionArea && actionArea.parentNode) actionArea.parentNode.insertBefore(selectBox, actionArea);
-
       const btnContainer = document.getElementById('dynamic-monster-buttons');
       fieldMonsters.forEach((monster) => {
-        const monsterBtn = document.createElement('button');
-        monsterBtn.className = 'btn';
+        const monsterBtn = document.createElement('button'); monsterBtn.className = 'btn';
         monsterBtn.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 11px; background: #fff; border: 1px solid var(--line-color); cursor: pointer;";
-        monsterBtn.innerHTML = `<span>⚔️ ${monster.name}</span><span style="color: #e74c3c; font-size: 10px;">HP: ${monster.hp} / 공격력: ${monster.atk}</span>`;
+        monsterBtn.innerHTML = `<span>⚔️ ${monster.name}</span><span style="color: #e74c3c; font-size: 10px;">HP: ${monster.hp} / 공격: ${monster.atk}</span>`;
         monsterBtn.onclick = () => { closeFieldSelect(); startBattle(monster, false); };
-        btnContainer.appendChild(monsterBtn);
+        if(btnContainer) btnContainer.appendChild(monsterBtn);
       });
     }
 
     function closeFieldSelect() {
-      let existingBox = document.getElementById('dynamic-field-box');
-      if (existingBox) existingBox.remove();
-      const actionArea = document.getElementById('normal-action-area');
-      if (actionArea) actionArea.classList.remove('hidden');
+      let existingBox = document.getElementById('dynamic-field-box'); if (existingBox) existingBox.remove();
+      const actionArea = document.getElementById('normal-action-area'); if (actionArea) actionArea.classList.remove('hidden');
     }
 
     function closeSelectBoxes() {
-      const bossBox = document.getElementById('boss-select-box');
-      const fieldBox = document.getElementById('field-select-box');
-      if (bossBox) bossBox.classList.add('hidden');
-      if (fieldBox) fieldBox.classList.add('hidden');
+      const bossBox = document.getElementById('boss-select-box'); const fieldBox = document.getElementById('field-select-box');
+      if (bossBox) bossBox.classList.add('hidden'); if (fieldBox) fieldBox.classList.add('hidden');
     }
 
     function startBattle(enemyData, isBoss) {
       if (isBoss) { player.tickets -= 1; }
       inBattle = true;
+      let weightBuff = getWeightBuffMultiplier(); let firstStrikeDmg = Math.floor(player.stats.ratk * 3 * weightBuff);
+      let startHp = enemyData.hp - firstStrikeDmg; if (startHp < 0) startHp = 0;
+      currentEnemy = { name: enemyData.name, maxHp: enemyData.hp, currentHp: startHp, atk: enemyData.atk, reward: enemyData.reward, penalty: enemyData.penalty, image: enemyData.image, isBoss: isBoss, missionTriggered: false };
+      player.currentHp = player.maxHp; closeSelectBoxes();
       
-      let weightBuff = getWeightBuffMultiplier();
-      let firstStrikeDmg = Math.floor(player.stats.ratk * 3 * weightBuff);
-      let startHp = enemyData.hp - firstStrikeDmg;
-      if (startHp < 0) startHp = 0;
-
-      currentEnemy = {
-        name: enemyData.name, maxHp: enemyData.hp, currentHp: startHp,
-        atk: enemyData.atk, reward: enemyData.reward, penalty: enemyData.penalty,
-        image: enemyData.image, isBoss: isBoss, missionTriggered: false
-      };
-
-      player.currentHp = player.maxHp;
-      closeSelectBoxes();
+      document.getElementById('current-enemy-name').innerText = currentEnemy.name; document.getElementById('battle-enemy-name-label').innerText = currentEnemy.name;
+      const playerImg = document.getElementById('battle-player-img'); const enemyImg = document.getElementById('battle-enemy-img');
+      if (playerImg) playerImg.src = player.image; if (enemyImg) enemyImg.src = currentEnemy.image;
+      if (enemyImg) { if (isBoss) { enemyImg.style.width = "130px"; enemyImg.style.height = "130px"; } else { enemyImg.style.width = "100px"; enemyImg.style.height = "100px"; } }
       
-      document.getElementById('current-enemy-name').innerText = currentEnemy.name;
-      document.getElementById('battle-enemy-name-label').innerText = currentEnemy.name;
-      
-      const playerImg = document.getElementById('battle-player-img');
-      const enemyImg = document.getElementById('battle-enemy-img');
-      if (playerImg) playerImg.src = player.image;
-      if (enemyImg) enemyImg.src = currentEnemy.image;
-
-      if (enemyImg) {
-        if (isBoss) { enemyImg.style.width = "130px"; enemyImg.style.height = "130px"; } 
-        else { enemyImg.style.width = "100px"; enemyImg.style.height = "100px"; }
-      }
-
-      const normalArea = document.getElementById('normal-sprite-area');
-      const battleArea = document.getElementById('battle-scene-area');
-      if (normalArea) normalArea.classList.add('hidden');
-      if (battleArea) battleArea.classList.remove('hidden');
-
-      document.getElementById('normal-action-area').classList.add('hidden');
-      document.getElementById('battle-ui-area').classList.remove('hidden');
-      document.getElementById('minigame-area').classList.add('hidden');
-      document.getElementById('btn-attack').classList.remove('hidden');
-      document.getElementById('btn-run').classList.remove('hidden');
+      const normalArea = document.getElementById('normal-sprite-area'); const battleArea = document.getElementById('battle-scene-area');
+      if (normalArea) normalArea.classList.add('hidden'); if (battleArea) battleArea.classList.remove('hidden');
+      document.getElementById('normal-action-area').classList.add('hidden'); document.getElementById('battle-ui-area').classList.remove('hidden');
+      document.getElementById('minigame-area').classList.add('hidden'); document.getElementById('btn-attack').classList.remove('hidden'); document.getElementById('btn-run').classList.remove('hidden');
 
       let logMsg = isBoss ? "보스와 마주쳤습니다!" : "일반 몬스터와 조우했습니다!";
       if (firstStrikeDmg > 0) logMsg += `<br><span style="color:#3498db;">🏹 원거리 선제 공격! 적 체력 -${firstStrikeDmg}!</span>`;
       document.getElementById('battle-log').innerHTML = logMsg;
-      
-      updateBattleUI();
-      updateStatus();
-      
+      updateBattleUI(); updateStatus();
       if (currentEnemy.currentHp === 0) setTimeout(() => { finishAttack("선제 공격으로 적 처치!", 0); }, 500);
     }
 
-    function executeAttack() {
-      if (currentEnemy.isBoss) attackBoss();
-      else startRandomMinigame();
-    }
+    function executeAttack() { if (currentEnemy.isBoss) attackBoss(); else startRandomMinigame(); }
 
     function attackBoss() {
-      let weightBuff = getWeightBuffMultiplier();
-      let baseDamage = player.stats.atk * 5;
-      let totalDamage = Math.floor((baseDamage + Math.floor(Math.random() * 20)) * weightBuff);
-      
+      let weightBuff = getWeightBuffMultiplier(); let baseDamage = player.stats.atk * 5; let totalDamage = Math.floor((baseDamage + Math.floor(Math.random() * 20)) * weightBuff);
       if (currentEnemy.currentHp <= currentEnemy.maxHp * 0.5 && !currentEnemy.missionTriggered) {
         currentEnemy.missionTriggered = true;
         let success = confirm(`🔥 [보스 발악 패턴!] 현실 운동 미션 발생!\n\n지금 당장 현실에서 [스쿼트 10회]를 하고 오세요!\n성공적으로 마쳤다면 '확인'을 누르세요.`);
         if (success) {
-          let dmg = player.stats.atk * 30; 
-          currentEnemy.currentHp -= dmg;
-          if(currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
-          let log = `💪 [미션 성공!] 스쿼트의 힘으로 ${dmg} 데미지!!<br>😵 보스가 기절했습니다!`;
-          finishAttack(log, 0); 
-          return;
+          let dmg = player.stats.atk * 30; currentEnemy.currentHp -= dmg; if(currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
+          let log = `💪 [미션 성공!] 스쿼트의 힘으로 ${dmg} 데미지!!<br>😵 보스가 기절했습니다!`; finishAttack(log, 0); return;
         } else {
           alert("운동을 포기했습니다... 보스의 맹공격이 쏟아집니다!");
-          let dmg = player.stats.atk * 3;
-          let log = `😥 [미션 실패] 적에게 ${dmg} 데미지...`;
-          currentEnemy.currentHp -= dmg;
-          let enemyDmg = Math.max(10, (currentEnemy.atk * 2) - Math.floor(player.stats.def * 0.5));
-          log += `<br>💥 보스의 분노어린 반격! 내게 ${enemyDmg} 데미지!`;
-          
-          player.currentHp -= enemyDmg;
-          if (player.currentHp < 0) player.currentHp = 0;
+          let dmg = player.stats.atk * 3; let log = `😥 [미션 실패] 적에게 ${dmg} 데미지...`;
+          currentEnemy.currentHp -= dmg; let enemyDmg = Math.max(10, (currentEnemy.atk * 2) - Math.floor(player.stats.def * 0.5)); log += `<br>💥 보스의 반격! 내게 ${enemyDmg} 데미지!`;
+          player.currentHp -= enemyDmg; if (player.currentHp < 0) player.currentHp = 0;
           if (player.currentHp === 0) {
-            const lostGold = currentEnemy.penalty;
-            player.gold = Math.max(0, player.gold - lostGold);
-            alert(`💀 전투 패배...\n정신을 잃고 골드 [${lostGold} G]를 잃었습니다!`);
-            exitBattle(); 
-            return;
+            const lostGold = currentEnemy.penalty; player.gold = Math.max(0, player.gold - lostGold); alert(`💀 전투 패배...\n정신을 잃고 골드 [${lostGold} G]를 잃었습니다!`); exitBattle(); return;
           }
-          finishAttack(log, enemyDmg);
-          return;
+          finishAttack(log, enemyDmg); return;
         }
       }
-      
-      let dmg = totalDamage;
-      currentEnemy.currentHp -= dmg;
-      if (currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
-      let log = `⚔️ 내 공격! 적에게 ${dmg} 데미지!`;
-      let enemyDmg = Math.max(3, currentEnemy.atk - Math.floor(player.stats.def * 0.5));
+      let dmg = totalDamage; currentEnemy.currentHp -= dmg; if (currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
+      let log = `⚔️ 내 공격! 적에게 ${dmg} 데미지!`; let enemyDmg = Math.max(3, currentEnemy.atk - Math.floor(player.stats.def * 0.5));
       finishAttack(log, enemyDmg);
     }
 
     function startRandomMinigame() {
-      document.getElementById('btn-attack').classList.add('hidden');
-      document.getElementById('btn-run').classList.add('hidden');
-      document.getElementById('minigame-area').classList.remove('hidden');
-      
-      let r = Math.floor(Math.random() * 3);
-      if(r === 0) initClickerGame();
-      else if(r === 1) initRPSGame();
-      else initTimingGame();
+      document.getElementById('btn-attack').classList.add('hidden'); document.getElementById('btn-run').classList.add('hidden'); document.getElementById('minigame-area').classList.remove('hidden');
+      let r = Math.floor(Math.random() * 3); if(r === 0) initClickerGame(); else if(r === 1) initRPSGame(); else initTimingGame();
     }
 
     function endMinigame(isSuccess, dmgMultiplier) {
       document.getElementById('minigame-area').classList.add('hidden');
-      setTimeout(() => {
-        if (inBattle) {
-          document.getElementById('btn-attack').classList.remove('hidden');
-          document.getElementById('btn-run').classList.remove('hidden');
-        }
-      }, 1000);
-      
-      let weightBuff = getWeightBuffMultiplier();
-      let dmg = Math.floor(player.stats.atk * 5 * dmgMultiplier * weightBuff);
-      currentEnemy.currentHp -= dmg;
-      if (currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
-      
-      let log = isSuccess ? `✨ [성공!] 적에게 ${dmg} 데미지!` : `💦 [실패!] 공격이 빗나갔다!`;
-      let enemyDmg = 0;
-      if (currentEnemy.currentHp > 0) {
-        enemyDmg = isSuccess ? Math.max(1, currentEnemy.atk - Math.floor(player.stats.def * 0.5)) : currentEnemy.atk + 5; 
-        log += `<br>💥 적의 반격! 내게 ${enemyDmg} 데미지!`;
-      }
+      setTimeout(() => { if (inBattle) { document.getElementById('btn-attack').classList.remove('hidden'); document.getElementById('btn-run').classList.remove('hidden'); } }, 1000);
+      let weightBuff = getWeightBuffMultiplier(); let dmg = Math.floor(player.stats.atk * 5 * dmgMultiplier * weightBuff);
+      currentEnemy.currentHp -= dmg; if (currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
+      let log = isSuccess ? `✨ [성공!] 적에게 ${dmg} 데미지!` : `💦 [실패!] 공격이 빗나갔다!`; let enemyDmg = 0;
+      if (currentEnemy.currentHp > 0) { enemyDmg = isSuccess ? Math.max(1, currentEnemy.atk - Math.floor(player.stats.def * 0.5)) : currentEnemy.atk + 5; log += `<br>💥 적의 반격! 내게 ${enemyDmg} 데미지!`; }
       finishAttack(log, enemyDmg);
     }
 
     let clickCount = 0; let clickTimer = null;
     function initClickerGame() {
-      clickCount = 0;
-      document.getElementById('minigame-area').innerHTML = `
-        <div style="font-weight:bold; margin-bottom:10px; color:#e74c3c;">🔥 광클 15회! (3초)</div>
-        <button class="btn btn-dungeon" onclick="clickCount++" style="width:60%; padding: 10px; font-size:16px; margin: 10px auto; display: block;">터치!!!</button>`;
-      document.getElementById('battle-log').innerHTML = "버튼을 미친듯이 누르세요!";
-      clearTimeout(clickTimer);
-      clickTimer = setTimeout(() => {
-        if (clickCount >= 15) endMinigame(true, 2.0); 
-        else endMinigame(false, 0); 
-      }, 3000);
+      clickCount = 0; document.getElementById('minigame-area').innerHTML = `<div style="font-weight:bold; margin-bottom:10px; color:#e74c3c;">🔥 광클 15회! (3초)</div><button class="btn btn-dungeon" onclick="clickCount++" style="width:60%; padding: 10px; font-size:16px; margin: 10px auto; display: block;">터치!!!</button>`;
+      document.getElementById('battle-log').innerHTML = "버튼을 미친듯이 누르세요!"; clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { if (clickCount >= 15) endMinigame(true, 2.0); else endMinigame(false, 0); }, 3000);
     }
 
     function initRPSGame() {
-      document.getElementById('minigame-area').innerHTML = `
-        <div style="font-weight:bold; margin-bottom:10px; color:#e67e22;">✌️✊🖐️ 가위바위보!</div>
-        <div style="display:flex; justify-content:space-around;">
-          <button class="btn" onclick="playRPS('가위')" style="font-size:20px;">✌️</button>
-          <button class="btn" onclick="playRPS('바위')" style="font-size:20px;">✊</button>
-          <button class="btn" onclick="playRPS('보')" style="font-size:20px;">🖐️</button>
-        </div>`;
+      document.getElementById('minigame-area').innerHTML = `<div style="font-weight:bold; margin-bottom:10px; color:#e67e22;">✌️✊🖐️ 가위바위보!</div><div style="display:flex; justify-content:space-around;"><button class="btn" onclick="playRPS('가위')" style="font-size:20px;">✌️</button><button class="btn" onclick="playRPS('바위')" style="font-size:20px;">✊</button><button class="btn" onclick="playRPS('보')" style="font-size:20px;">🖐️</button></div>`;
       document.getElementById('battle-log').innerHTML = "가위바위보를 이기면 추가 데미지!";
     }
+    
     function playRPS(userPick) {
-      const choices = ['가위', '바위', '보'];
-      const enemyPick = choices[Math.floor(Math.random()*3)];
-      let win = false; let tie = false;
-      if (userPick === enemyPick) tie = true;
-      else if ((userPick==='가위'&&enemyPick==='보') || (userPick==='바위'&&enemyPick==='가위') || (userPick==='보'&&enemyPick==='바위')) win = true;
-      
-      if (win) { alert(`상대는 ${enemyPick}! 당신이 이겼습니다!`); endMinigame(true, 2.5); }
-      else if (tie) { alert(`상대도 ${enemyPick}! 비겼습니다!`); endMinigame(true, 1.0); }
-      else { alert(`상대는 ${enemyPick}! 졌습니다 ㅠㅠ`); endMinigame(false, 0); }
+      const choices = ['가위', '바위', '보']; const enemyPick = choices[Math.floor(Math.random()*3)]; let win = false; let tie = false;
+      if (userPick === enemyPick) tie = true; else if ((userPick==='가위'&&enemyPick==='보') || (userPick==='바위'&&enemyPick==='가위') || (userPick==='보'&&enemyPick==='바위')) win = true;
+      if (win) { alert(`상대는 ${enemyPick}! 이겼습니다!`); endMinigame(true, 2.5); } else if (tie) { alert(`상대도 ${enemyPick}! 비겼습니다!`); endMinigame(true, 1.0); } else { alert(`상대는 ${enemyPick}! 졌습니다 ㅠㅠ`); endMinigame(false, 0); }
     }
 
     let timingInterval = null; let timingPos = 0; let timingDir = 1;
     function initTimingGame() {
       timingPos = 0; timingDir = 5;
-      document.getElementById('minigame-area').innerHTML = `
-        <div style="font-weight:bold; margin-bottom:10px; color:#2ecc71;">⏱️ 타이밍 맞춰 정지!</div>
-        <div style="width:100%; height:20px; background:linear-gradient(90deg, #e74c3c 30%, #2ecc71 30%, #2ecc71 70%, #e74c3c 70%); position:relative; border-radius:5px; overflow:hidden;">
-          <div id="timing-cursor" style="width:10px; height:20px; background:#000; position:absolute; left:0%;"></div>
-        </div>
-        <button class="btn btn-dungeon" onclick="stopTiming()" style="margin-top:15px; width:100%;">정지!</button>`;
-      document.getElementById('battle-log').innerHTML = "초록색 영역에서 누르세요!";
-      clearInterval(timingInterval);
-      timingInterval = setInterval(() => {
-        timingPos += timingDir;
-        if(timingPos >= 100 || timingPos <= 0) timingDir *= -1;
-        document.getElementById('timing-cursor').style.left = timingPos + '%';
-      }, 30);
+      document.getElementById('minigame-area').innerHTML = `<div style="font-weight:bold; margin-bottom:10px; color:#2ecc71;">⏱️ 타이밍 맞춰 정지!</div><div style="width:100%; height:20px; background:linear-gradient(90deg, #e74c3c 30%, #2ecc71 30%, #2ecc71 70%, #e74c3c 70%); position:relative; border-radius:5px; overflow:hidden;"><div id="timing-cursor" style="width:10px; height:20px; background:#000; position:absolute; left:0%;"></div></div><button class="btn btn-dungeon" onclick="stopTiming()" style="margin-top:15px; width:100%;">정지!</button>`;
+      document.getElementById('battle-log').innerHTML = "초록색 영역에서 누르세요!"; clearInterval(timingInterval);
+      timingInterval = setInterval(() => { timingPos += timingDir; if(timingPos >= 100 || timingPos <= 0) timingDir *= -1; document.getElementById('timing-cursor').style.left = timingPos + '%'; }, 30);
     }
-    function stopTiming() {
-      clearInterval(timingInterval);
-      if (timingPos >= 30 && timingPos <= 70) endMinigame(true, 2.0);
-      else endMinigame(false, 0);
-    }
+    
+    function stopTiming() { clearInterval(timingInterval); if (timingPos >= 30 && timingPos <= 70) endMinigame(true, 2.0); else endMinigame(false, 0); }
 
     function finishAttack(logText, enemyDmg) {
-      const enemySprite = document.getElementById('battle-enemy-img');
-      if (enemySprite) {
-        enemySprite.classList.add('shake');
-        setTimeout(() => enemySprite.classList.remove('shake'), 200);
-      }
-      if (enemyDmg > 0) {
-        setTimeout(() => {
-          const playerSprite = document.getElementById('battle-player-img');
-          if (playerSprite) {
-            playerSprite.classList.add('shake');
-            setTimeout(() => playerSprite.classList.remove('shake'), 200);
-          }
-        }, 300);
-      }
-      if (enemyDmg > 0) {
-        player.currentHp -= enemyDmg;
-        if (player.currentHp < 0) player.currentHp = 0;
-      }
+      const enemySprite = document.getElementById('battle-enemy-img'); if (enemySprite) { enemySprite.classList.add('shake'); setTimeout(() => enemySprite.classList.remove('shake'), 200); }
+      if (enemyDmg > 0) { setTimeout(() => { const playerSprite = document.getElementById('battle-player-img'); if (playerSprite) { playerSprite.classList.add('shake'); setTimeout(() => playerSprite.classList.remove('shake'), 200); } }, 300); }
+      if (enemyDmg > 0) { player.currentHp -= enemyDmg; if (player.currentHp < 0) player.currentHp = 0; }
       updateBattleUI();
-
       if (player.currentHp === 0) {
         document.getElementById('battle-log').innerHTML = logText;
-        setTimeout(() => {
-          const lostGold = currentEnemy.penalty;
-          player.gold = Math.max(0, player.gold - lostGold);
-          alert(`💀 전투 패배...\n골드 [${lostGold} G]를 떨어뜨렸습니다!`);
-          exitBattle();
-        }, 200);
-        return;
+        setTimeout(() => { const lostGold = currentEnemy.penalty; player.gold = Math.max(0, player.gold - lostGold); alert(`💀 전투 패배...\n골드 [${lostGold} G]를 떨어뜨렸습니다!`); exitBattle(); }, 200); return;
       }
       document.getElementById('battle-log').innerHTML = logText;
-
       if (currentEnemy.currentHp === 0) {
-        setTimeout(() => {
-          alert(`🎉 [${currentEnemy.name}] 토벌 성공!\n보상: ${currentEnemy.reward} 골드 획득!`);
-          player.gold += currentEnemy.reward;
-          player.records.totalGold += currentEnemy.reward;
-          if (currentEnemy.isBoss) player.records.bossKills += 1;
-          exitBattle(); 
-        }, 300);
+        setTimeout(() => { alert(`🎉 [${currentEnemy.name}] 토벌 성공!\n보상: ${currentEnemy.reward} 골드 획득!`); player.gold += currentEnemy.reward; player.records.totalGold += currentEnemy.reward; if (currentEnemy.isBoss) player.records.bossKills += 1; exitBattle(); }, 300);
       }
     }
 
     function surrenderBattle() {
-      let lostGold = 0; let alertMsg = "";
-      let basePenalty = Math.floor(currentEnemy.penalty / 2);
-
-      if (currentEnemy.currentHp >= currentEnemy.maxHp / 2) {
-        lostGold = basePenalty;
-        alertMsg = `🏃 적이 쌩쌩하게 쫓아와 골드 [${lostGold} G]를 흘렸습니다!`;
-      } else {
-        let discountRate = Math.min(0.9, player.stats.spd * 0.01);
-        lostGold = Math.floor(basePenalty * (1 - discountRate));
-        alertMsg = `💨 잽싸게 도망쳤습니다!\n(골드 손실 감소! [${lostGold} G] 잃음)`;
-      }
-      player.gold = Math.max(0, player.gold - lostGold);
-      alert(alertMsg);
-      exitBattle();
+      let lostGold = 0; let alertMsg = ""; let basePenalty = Math.floor(currentEnemy.penalty / 2);
+      if (currentEnemy.currentHp >= currentEnemy.maxHp / 2) { lostGold = basePenalty; alertMsg = `🏃 적이 쫓아와 골드 [${lostGold} G]를 흘렸습니다!`; } 
+      else { let discountRate = Math.min(0.9, player.stats.spd * 0.01); lostGold = Math.floor(basePenalty * (1 - discountRate)); alertMsg = `💨 잽싸게 도망쳤습니다!\n(골드 손실 감소! [${lostGold} G] 잃음)`; }
+      player.gold = Math.max(0, player.gold - lostGold); alert(alertMsg); exitBattle();
     }
 
     function exitBattle() {
-      inBattle = false;
-      const mainSprite = document.getElementById('main-sprite');
-      if (mainSprite) { mainSprite.src = player.image; mainSprite.classList.remove('boss-img'); }
-      
-      const normalArea = document.getElementById('normal-sprite-area');
-      const battleArea = document.getElementById('battle-scene-area');
-      if (normalArea) normalArea.classList.remove('hidden');
-      if (battleArea) battleArea.classList.add('hidden');
-
-      document.getElementById('normal-action-area').classList.remove('hidden');
-      document.getElementById('battle-ui-area').classList.add('hidden');
-      closeSelectBoxes();
-      updateStatus();
+      inBattle = false; const mainSprite = document.getElementById('main-sprite'); if (mainSprite) { mainSprite.src = player.image; mainSprite.classList.remove('boss-img'); }
+      const normalArea = document.getElementById('normal-sprite-area'); const battleArea = document.getElementById('battle-scene-area');
+      if (normalArea) normalArea.classList.remove('hidden'); if (battleArea) battleArea.classList.add('hidden');
+      document.getElementById('normal-action-area').classList.remove('hidden'); document.getElementById('battle-ui-area').classList.add('hidden');
+      closeSelectBoxes(); updateStatus();
     }
 
     function updateBattleUI() {
-      document.getElementById('enemy-hp-text').innerText = currentEnemy.currentHp;
-      document.getElementById('enemy-max-hp').innerText = currentEnemy.maxHp;
+      document.getElementById('enemy-hp-text').innerText = currentEnemy.currentHp; document.getElementById('enemy-max-hp').innerText = currentEnemy.maxHp;
       document.getElementById('enemy-hp-bar').style.width = ((currentEnemy.currentHp / currentEnemy.maxHp) * 100) + "%";
-      document.getElementById('player-hp-text').innerText = player.currentHp;
-      document.getElementById('player-max-hp').innerText = player.maxHp;
+      document.getElementById('player-hp-text').innerText = player.currentHp; document.getElementById('player-max-hp').innerText = player.maxHp;
       document.getElementById('player-hp-bar').style.width = ((player.currentHp / player.maxHp) * 100) + "%";
     }
 
     function buyTheme(key, name, bgValue, cost, isImage = false) {
       if (player.unlockedThemes[key]) { alert("이미 구매한 테마입니다!"); return; }
       if (player.gold < cost) { alert("골드가 부족합니다!"); return; }
-      player.gold -= cost;
-      player.unlockedThemes[key] = { name: name, value: bgValue, isImage: isImage };
-      alert(`[${name}] 테마 구매 완료!`);
-      updateStatus();
+      player.gold -= cost; player.unlockedThemes[key] = { name: name, value: bgValue, isImage: isImage };
+      alert(`[${name}] 테마 구매 완료!`); updateStatus();
     }
 
     function buyBgm(key, name, file, cost, minLevel = 1) {
-      if (player.level < minLevel) { alert(`레벨이 부족합니다! (필요 레벨: ${minLevel})`); return; }
+      if (player.level < minLevel) { alert(`레벨 부족! (필요: ${minLevel})`); return; }
       if (player.unlockedBgms[key]) { alert("이미 구매한 배경음악입니다!"); return; }
-      if (player.gold < cost) { alert("골드가 부족합니다!"); return; }
-      player.gold -= cost;
-      player.unlockedBgms[key] = { name: name, file: file };
-      alert(`[${name}] 배경음악 구매 완료!`);
-      updateStatus();
+      if (player.gold < cost) { alert("골드 부족!"); return; }
+      player.gold -= cost; player.unlockedBgms[key] = { name: name, file: file }; alert(`[${name}] BGM 구매 완료!`); updateStatus();
     }
 
     function changeTheme(key) {
-      player.currentTheme = key;
-      const selected = player.unlockedThemes[key];
-      document.getElementById('theme-title').innerText = selected.name;
-      const container = document.getElementById('game-container');
-      let bgVal = selected.value || selected.color; 
-      if (selected.isImage) {
-        container.style.backgroundImage = `url('${bgVal}')`;
-        container.style.backgroundSize = 'cover';
-        container.style.backgroundPosition = 'center';
-      } else {
-        container.style.backgroundImage = 'none';
-        document.documentElement.style.setProperty('--bg-color', bgVal);
-      }
+      player.currentTheme = key; const selected = player.unlockedThemes[key]; document.getElementById('theme-title').innerText = selected.name;
+      const container = document.getElementById('game-container'); let bgVal = selected.value || selected.color; 
+      if (selected.isImage) { container.style.backgroundImage = `url('${bgVal}')`; container.style.backgroundSize = 'cover'; container.style.backgroundPosition = 'center'; } 
+      else { container.style.backgroundImage = 'none'; document.documentElement.style.setProperty('--bg-color', bgVal); }
     }
 
     function changeBgm(key) {
-      player.currentBgm = key;
-      const selected = player.unlockedBgms[key];
-      document.getElementById('audio-source').src = selected.file;
-      const audio = document.getElementById('game-audio');
-      audio.load();
-      if(isPlaying) audio.play();
-      alert(`배경음악 변경: [${selected.name}]`);
+      player.currentBgm = key; const selected = player.unlockedBgms[key]; document.getElementById('audio-source').src = selected.file;
+      const audio = document.getElementById('game-audio'); audio.load(); if(isPlaying) audio.play(); alert(`BGM 변경: [${selected.name}]`);
     }
 
     function buyItem(type, cost) {
-      if (player.gold < cost) { alert("골드가 부족합니다!"); return; }
-      if (type === 'ticket') { player.gold -= cost; player.tickets += 1; alert("가챠 티켓 구매 완료!"); }
-      updateStatus();
+      if (player.gold < cost) { alert("골드 부족!"); return; }
+      if (type === 'ticket') { player.gold -= cost; player.tickets += 1; alert("티켓 구매 완료!"); } updateStatus();
     }
 
     function rollGacha() {
-      if (player.tickets < 1) { alert("가챠 티켓이 부족합니다!"); return; }
-      player.tickets -= 1;
-      
-      const rand = Math.random() * 100;
-      let tier, pool, tierName, cssClass;
+      if (player.tickets < 1) { alert("티켓 부족!"); return; } player.tickets -= 1;
+      const rand = Math.random() * 100; let tier, pool, tierName, cssClass;
+      if (rand < 1) { tier = 'mythic'; pool = gachaPool.mythic; tierName = "✨신화✨"; cssClass = "mythic"; } else if (rand < 10) { tier = 'epic'; pool = gachaPool.epic; tierName = "💜에픽💜"; cssClass = "epic"; }
+      else if (rand < 40) { tier = 'rare'; pool = gachaPool.rare; tierName = "💙레어💙"; cssClass = "rare"; } else { tier = 'normal'; pool = gachaPool.normal; tierName = "🤍일반🤍"; cssClass = "normal"; }
 
-      if (rand < 1) { tier = 'mythic'; pool = gachaPool.mythic; tierName = "✨신화✨"; cssClass = "mythic"; }
-      else if (rand < 10) { tier = 'epic'; pool = gachaPool.epic; tierName = "💜에픽💜"; cssClass = "epic"; }
-      else if (rand < 40) { tier = 'rare'; pool = gachaPool.rare; tierName = "💙레어💙"; cssClass = "rare"; }
-      else { tier = 'normal'; pool = gachaPool.normal; tierName = "🤍일반🤍"; cssClass = "normal"; }
-
-      const item = pool[Math.floor(Math.random() * pool.length)];
-      let displayEffect = item.effect;
-
-      if (item.type === 'ticket') { player.tickets += item.amount; }
-      else if (item.type === 'gold') { player.gold += item.amount; player.records.totalGold += item.amount; }
+      const item = pool[Math.floor(Math.random() * pool.length)]; let displayEffect = item.effect;
+      if (item.type === 'ticket') { player.tickets += item.amount; } else if (item.type === 'gold') { player.gold += item.amount; player.records.totalGold += item.amount; }
       else if (item.type === 'bgm') {
-        if (!player.unlockedBgms[item.bgmKey]) {
-          player.unlockedBgms[item.bgmKey] = { name: item.name, file: item.bgmFile };
-          alert(`🎉 새로운 배경음악 [${item.name}] 획득!`);
-        } else {
-          player.gold += 1500;
-          displayEffect = "이미 보유한 BGM (1500G 획득)";
-        }
+        if (!player.unlockedBgms[item.bgmKey]) { player.unlockedBgms[item.bgmKey] = { name: item.name, file: item.bgmFile }; alert(`🎉 새 BGM [${item.name}] 획득!`); } 
+        else { player.gold += 1500; displayEffect = "중복 BGM (1500G 환급)"; }
       }
-      else if (item.mult) { player.stats[item.stat] = Math.floor(player.stats[item.stat] * item.mult); }
-      else if (item.add) { player.stats[item.stat] += item.add; }
+      else if (item.mult) { player.stats[item.stat] = Math.floor(player.stats[item.stat] * item.mult); } else if (item.add) { player.stats[item.stat] += item.add; }
 
-      if (!player.inventory[item.name]) {
-        player.inventory[item.name] = { name: item.name, icon: item.icon || "🎁", tierName: tierName, cssClass: cssClass, count: 0, statName: item.stat || null, totalStat: 0 };
-      }
-      player.inventory[item.name].count += 1;
-      if (item.add) player.inventory[item.name].totalStat += item.add;
+      if (!player.inventory[item.name]) { player.inventory[item.name] = { name: item.name, icon: item.icon || "🎁", tierName: tierName, cssClass: cssClass, count: 0, statName: item.stat || null, totalStat: 0 }; }
+      player.inventory[item.name].count += 1; if (item.add) player.inventory[item.name].totalStat += item.add;
 
-      document.getElementById('gacha-result-box').innerHTML = `<div class="gacha-result">
-        <div style="font-size:12px; margin-bottom:5px;">${tierName} 등급 등장!</div>
-        <strong class="${cssClass}">${item.name}</strong><br><small style="color:#333;">효과: ${displayEffect}</small>
-      </div>`;
+      document.getElementById('gacha-result-box').innerHTML = `<div class="gacha-result"><div style="font-size:12px; margin-bottom:5px;">${tierName} 등장!</div><strong class="${cssClass}">${item.name}</strong><br><small style="color:#333;">효과: ${displayEffect}</small></div>`;
       updateStatus();
     }
 
     function updateStatus() {
-      document.getElementById('ui-level').innerText = player.level;
-      document.getElementById('ui-exp').innerText = player.exp;
-      document.getElementById('ui-max-exp').innerText = player.maxExp;
-      document.getElementById('ui-gold').innerText = player.gold;
-      document.getElementById('ui-tickets').innerText = player.tickets;
-      document.getElementById('st-name').innerText = player.name;
-      document.getElementById('st-class').innerText = player.job;
-      document.getElementById('st-start-weight').innerText = player.startWeight;
-      document.getElementById('st-curr-weight').innerText = player.currentWeight;
+      document.getElementById('ui-level').innerText = player.level; document.getElementById('ui-exp').innerText = player.exp;
+      document.getElementById('ui-max-exp').innerText = player.maxExp; document.getElementById('ui-gold').innerText = player.gold; document.getElementById('ui-tickets').innerText = player.tickets;
+      document.getElementById('st-name').innerText = player.name; document.getElementById('st-class').innerText = player.job;
+      document.getElementById('st-start-weight').innerText = player.startWeight; document.getElementById('st-curr-weight').innerText = player.currentWeight;
       
-      let loss = player.startWeight - player.currentWeight;
-      document.getElementById('st-loss-weight').innerText = loss.toFixed(1) + " kg";
-      
+      let loss = player.startWeight - player.currentWeight; document.getElementById('st-loss-weight').innerText = loss.toFixed(1) + " kg";
       const buffLabel = document.getElementById('st-weight-buff');
-      if (loss >= 5.0) { buffLabel.style.color = "#2ecc71"; buffLabel.innerText = "✨ [가벼워진 몸놀림] 전투력 +30% 버프 폭발!"; } 
-      else if (loss >= 3.0) { buffLabel.style.color = "#3498db"; buffLabel.innerText = "💪 [안정권] 디버프 해제 (정상 전투력)"; } 
-      else { buffLabel.style.color = "#e74c3c"; buffLabel.innerText = "💤 [몸 무거움] 전투력 -30% 디버프 적용 중"; }
+      if (loss >= 5.0) { buffLabel.style.color = "#2ecc71"; buffLabel.innerText = "✨ 전투력 +30% 버프!"; } 
+      else if (loss >= 3.0) { buffLabel.style.color = "#3498db"; buffLabel.innerText = "💪 정상 전투력"; } 
+      else { buffLabel.style.color = "#e74c3c"; buffLabel.innerText = "💤 전투력 -30% 디버프 중"; }
       
       let title = "포동돼지커플"; let questCount = player.records.royalQuests;
-      if(questCount >= 5) title = "포동커플";
-      if(questCount >= 50) title = "아직 부족해!";
-      if(questCount >= 100) title = "잘하고 있어~";
-      if(questCount >= 200) title = "조금 날씬해졌을지도?";
-      if(questCount >= 300) title = "이제야 좀 달라!";
-      if(questCount >= 500) title = "날씬커플";
-      if(questCount >= 800) title = "정말 멋져";
-      if(questCount >= 1000) title = "넌...최고의 용사";
+      if(questCount >= 5) title = "포동커플"; if(questCount >= 50) title = "아직 부족해!"; if(questCount >= 100) title = "잘하고 있어~"; if(questCount >= 200) title = "조금 날씬해졌을지도?";
+      if(questCount >= 300) title = "이제야 좀 달라!"; if(questCount >= 500) title = "날씬커플"; if(questCount >= 800) title = "정말 멋져"; if(questCount >= 1000) title = "넌...최고의 용사";
       document.getElementById('st-title').innerText = title;
 
-      document.getElementById('st-atk').innerText = player.stats.atk;
-      document.getElementById('st-ratk').innerText = player.stats.ratk;
-      document.getElementById('st-def').innerText = player.stats.def;
-      document.getElementById('st-spd').innerText = player.stats.spd;
-      document.getElementById('st-int').innerText = player.stats.int;
-      document.getElementById('st-royal').innerText = player.records.royalQuests;
-      document.getElementById('st-boss-kill').innerText = player.records.bossKills;
-      document.getElementById('st-total-gold').innerText = player.records.totalGold;
+      document.getElementById('st-atk').innerText = player.stats.atk; document.getElementById('st-ratk').innerText = player.stats.ratk;
+      document.getElementById('st-def').innerText = player.stats.def; document.getElementById('st-spd').innerText = player.stats.spd; document.getElementById('st-int').innerText = player.stats.int;
+      document.getElementById('st-royal').innerText = player.records.royalQuests; document.getElementById('st-boss-kill').innerText = player.records.bossKills; document.getElementById('st-total-gold').innerText = player.records.totalGold;
       
       const invDiv = document.getElementById('st-items');
-      if (Object.keys(player.inventory).length === 0) {
-        invDiv.innerHTML = "아직 뽑은 아이템이 없습니다.";
-      } else {
-        let invHTML = "";
-        const statKor = { atk: "공격력", ratk: "원거리", def: "방어력", spd: "스피드", int: "지력" };
+      if (Object.keys(player.inventory).length === 0) { invDiv.innerHTML = "아직 뽑은 아이템이 없습니다."; } 
+      else {
+        let invHTML = ""; const statKor = { atk: "공격력", ratk: "원거리", def: "방어력", spd: "스피드", int: "지력" };
         for (let key in player.inventory) {
-          let invItem = player.inventory[key];
-          let statText = (invItem.statName && invItem.totalStat > 0) ? `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">(+${statKor[invItem.statName]} ${invItem.totalStat})</span>` : "";
-          invHTML += `<div style="margin: 4px 0; padding: 6px; background: rgba(255,255,255,0.8); border-radius: 5px; border: 1px dashed #ccc; font-size: 13px;">
-            ${invItem.icon} <span class="${invItem.cssClass}">[${invItem.tierName}] ${invItem.name}</span> <strong style="margin-left: 5px;">x${invItem.count}</strong> ${statText}</div>`;
+          let invItem = player.inventory[key]; let statText = (invItem.statName && invItem.totalStat > 0) ? `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">(+${statKor[invItem.statName]} ${invItem.totalStat})</span>` : "";
+          invHTML += `<div style="margin: 4px 0; padding: 6px; background: rgba(255,255,255,0.8); border-radius: 5px; border: 1px dashed #ccc; font-size: 13px;">${invItem.icon} <span class="${invItem.cssClass}">[${invItem.tierName}] ${invItem.name}</span> <strong style="margin-left: 5px;">x${invItem.count}</strong> ${statText}</div>`;
         }
         invDiv.innerHTML = invHTML;
       }
 
       const themeSelect = document.getElementById('theme-select');
-      themeSelect.innerHTML = "";
-      for (let key in player.unlockedThemes) {
-        let opt = document.createElement('option');
-        opt.value = key; opt.innerText = player.unlockedThemes[key].name;
-        if (key === player.currentTheme) opt.selected = true;
-        themeSelect.appendChild(opt);
-      }
-
+      if(themeSelect) { themeSelect.innerHTML = ""; for (let key in player.unlockedThemes) { let opt = document.createElement('option'); opt.value = key; opt.innerText = player.unlockedThemes[key].name; if (key === player.currentTheme) opt.selected = true; themeSelect.appendChild(opt); } }
       const bgmSelect = document.getElementById('bgm-select');
-      bgmSelect.innerHTML = "";
-      for (let key in player.unlockedBgms) {
-        let opt = document.createElement('option');
-        opt.value = key; opt.innerText = player.unlockedBgms[key].name;
-        if (key === player.currentBgm) opt.selected = true;
-        bgmSelect.appendChild(opt);
-      }
+      if(bgmSelect) { bgmSelect.innerHTML = ""; for (let key in player.unlockedBgms) { let opt = document.createElement('option'); opt.value = key; opt.innerText = player.unlockedBgms[key].name; if (key === player.currentBgm) opt.selected = true; bgmSelect.appendChild(opt); } }
+
+      const btnDungeon = document.getElementById('btn-enter-dungeon');
+      if (btnDungeon) { if (!inBattle && player.tickets > 0) { btnDungeon.classList.remove('hidden'); } else { btnDungeon.classList.add('hidden'); } }
     }
 
     function updateCurrentWeight() {
-      const val = document.getElementById('update-weight-input').value;
-      if (!val || val <= 0) { alert("올바른 체중을 입력해주세요!"); return; }
-      
-      player.currentWeight = parseFloat(val);
-      let loss = player.startWeight - player.currentWeight;
-      if (loss > 0) alert(`🎉 총 ${loss.toFixed(1)}kg 감량 성공!`);
-      else if (loss < 0) alert(`앗... 체중이 ${Math.abs(loss).toFixed(1)}kg 늘었습니다.`);
+      const val = document.getElementById('update-weight-input').value; if (!val || val <= 0) { alert("올바른 체중을 입력해주세요!"); return; }
+      player.currentWeight = parseFloat(val); let loss = player.startWeight - player.currentWeight;
+      if (loss > 0) alert(`🎉 총 ${loss.toFixed(1)}kg 감량 성공!`); else if (loss < 0) alert(`앗... 체중이 ${Math.abs(loss).toFixed(1)}kg 늘었습니다.`);
       updateStatus();
     }
 
-    function getWeightBuffMultiplier() {
-      let loss = player.startWeight - player.currentWeight;
-      if (loss >= 5.0) return 1.3;
-      else if (loss >= 3.0) return 1.0;
-      else return 0.7;
-    }
+    function getWeightBuffMultiplier() { let loss = player.startWeight - player.currentWeight; if (loss >= 5.0) return 1.3; else if (loss >= 3.0) return 1.0; else return 0.7; }
 
-    // --- 💡 여기서부터 가장 중요한 저장 & 불러오기 핵심 로직 --- //
-    
     function saveGame() {
-      try {
-        // 이름이 빈칸이면 아직 캐릭터 생성 안 된 것이므로 덮어쓰기 방지
-        if (!player || !player.name) return;
-        localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
-        console.log("게임 저장 완료!", player.name);
-      } catch (e) {
-        console.error("데이터 저장 실패:", e);
-      }
+      try { if (!player || !player.name) return; localStorage.setItem('dietRpgSaveData', JSON.stringify(player)); } catch (e) { console.error("저장 실패", e); }
     }
 
     function loadGame() {
       try {
-        const savedData = localStorage.getItem('dietRpgSaveData');
-        if (!savedData) return false;
-
+        const savedData = localStorage.getItem('dietRpgSaveData'); if (!savedData) return false;
         const loadedPlayer = JSON.parse(savedData);
-        // 저장된 데이터에 캐릭터 이름이 온전히 있는지 확인
         if (loadedPlayer && loadedPlayer.name) {
           player = loadedPlayer;
-          
-          // 시작 화면 숨기기 (class 와 inline-style 둘 다 확실하게 처리)
-          const startScreen = document.getElementById('start-screen');
-          if (startScreen) {
-            startScreen.classList.add('hidden');
-            startScreen.style.display = 'none';
-          }
-          
-          // 메인 화면 보이기 (flex로 확실하게)
-          const uiLayer = document.getElementById('ui-layer');
-          if (uiLayer) {
-            uiLayer.classList.remove('hidden');
-            uiLayer.style.display = 'flex';
-          }
-          
-          const mainSprite = document.getElementById('main-sprite');
-          if (mainSprite && player.image) mainSprite.src = player.image;
-          
-          if (typeof renderQuests === 'function') renderQuests();
-          if (typeof updateStatus === 'function') updateStatus();
-          
+          const startScreen = document.getElementById('start-screen'); if (startScreen) { startScreen.classList.add('hidden'); startScreen.style.display = 'none'; }
+          const uiLayer = document.getElementById('ui-layer'); if (uiLayer) { uiLayer.classList.remove('hidden'); uiLayer.style.display = 'flex'; }
+          const mainSprite = document.getElementById('main-sprite'); if (mainSprite && player.image) mainSprite.src = player.image;
+          if (typeof renderQuests === 'function') renderQuests(); if (typeof updateStatus === 'function') updateStatus();
           return true;
         }
-      } catch (e) {
-        console.error("불러오기 실패:", e);
-      }
-      return false;
+      } catch (e) { console.error("불러오기 실패", e); } return false;
     }
 
-    // 페이지가 로드되자마자 불러오기 실행
-    window.addEventListener('DOMContentLoaded', () => {
-      loadGame();
-    });
-
-    // 화면의 아무 버튼이나 누를 때, 내부 함수 작동을 기다린 후(50ms) 저장 실행
-    document.addEventListener('click', (event) => {
-      if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
-        setTimeout(() => { saveGame(); }, 50);
-      }
-    });
+    window.addEventListener('DOMContentLoaded', () => { loadGame(); });
+    document.addEventListener('click', (event) => { if (event.target.tagName === 'BUTTON' || event.target.closest('button')) { setTimeout(() => { saveGame(); }, 50); } });
 
   </script>
 </body>
