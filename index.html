@@ -67,6 +67,18 @@
       50% { transform: translateY(-30px) scale(1.3); }
       100% { opacity: 0; transform: translateY(-50px) scale(1); }
     }
+/* 🐾 메인 화면 펫 스타일 */
+.pet-companion-img {
+      width: 50px; height: 50px; object-fit: contain;
+      position: absolute; right: 85px; top: 40px;
+      animation: petFloat 1.8s infinite ease-in-out alternate;
+    }
+    @keyframes petFloat {
+      0% { transform: translateY(0) rotate(-5deg); }
+      100% { transform: translateY(-12px) rotate(5deg); }
+    }
+    .sprite-area { position: relative; }
+
   </style>
 </head>
 <body>
@@ -103,6 +115,7 @@
         <div id="normal-sprite-area" class="sprite-area">
           <h3 id="target-name">오늘도 운동 힘내자!</h3>
           <img id="main-sprite" class="character-img" src="" alt="캐릭터" onerror="this.onerror=null; this.src='https://img.icons8.com/color/150/pixel-star.png';">
+          <img id="main-pet-sprite" class="pet-companion-img hidden" src="" alt="펫">
         </div>
 
         <div id="battle-scene-area" class="hidden" style="display: flex; justify-content: space-around; align-items: center; padding: 20px 0; min-height: 180px;">
@@ -156,6 +169,8 @@
       <div id="tab-shop" class="content-area hidden">
         <h2>🛒 잡화점</h2>
         <button class="btn btn-theme" style="background:#f9a826; color:#fff;" onclick="buyItem('ticket', 1000)">🎟️ 왕궁 가챠 티켓 (1000 G)</button>
+        <button class="btn btn-theme" style="background:#e67e22; color:#fff;" onclick="rollPetGacha()">🐾 랜덤 펫 뽑기 (🎟️ 티켓 1장)</button>
+        <div id="pet-gacha-result-box"></div>
         <hr>
         <h4 style="margin: 5px;">배경 테마 구매</h4>
         <button class="btn btn-theme" style="background:#2c3e50; color:#fff;" onclick="buyTheme('theme_night', '🌙 고요한 밤', '#2c3e50', 3000, false)">🌙 고요한 밤 (3000 G)</button>
@@ -169,6 +184,19 @@
         <button class="btn btn-theme" style="background:#323874; color:#fff;" onclick="buyBgm('bgm_boss', '🌝 밤의 캠프파이어', 'night01.mp3', 10000, 20)">🌝 밤의 캠프파이어 BGM (10000 G) [Lv.20+]</button>
         <button class="btn btn-theme" style="background:#cf4141; color:#fff;" onclick="buyBgm('bgm_boss', '🔥 결전의 테마', 'final_boss02.mp3', 20000, 30)">🔥 결전의 테마 BGM (20000 G) [Lv.30+]</button>
         <button class="btn btn-theme" style="background:#f88d29; color:#fff;" onclick="buyBgm('bgm_boss', '⚔ 용감한 기사의 노래', 'dig_brave.mp3', 50000, 50)">⚔ 용감한 기사의 노래 BGM (50000 G) [Lv.50+]</button>
+      </div>
+
+      <div id="tab-inventory" class="content-area hidden">
+        <h2>🎒 나의 소지품 & 펫 관리</h2>
+        <div class="status-box">
+          <strong>🌿 나뭇잎 토큰:</strong> <span id="inv-leaf-tokens" style="color:#27ae60; font-weight:bold;">0</span> 개<br>
+          <hr>
+          <strong>🐾 보유 펫 관리 (클릭하여 장착/해제)</strong>
+          <div id="inv-pets-list" style="font-size: 12px; margin-top:5px;">보유한 펫이 없습니다.</div>
+          <hr>
+          <strong>🎁 획득한 가챠 아이템 도감</strong>
+          <div id="inv-items-list" style="font-size: 12px; margin-top:5px;">없음</div>
+        </div>
       </div>
 
       <div id="tab-status" class="content-area hidden">
@@ -209,6 +237,7 @@
         <div class="nav-item" onclick="switchTab('main')">🏠<br>메인</div>
         <div class="nav-item" onclick="switchTab('gacha')">🔮<br>가챠</div>
         <div class="nav-item" onclick="switchTab('shop')">🛒<br>상점</div>
+        <div class="nav-item" onclick="switchTab('inventory')">🎒<br>소지품</div>
         <div class="nav-item" onclick="switchTab('status')">📜<br>상태</div>
       </div>
 
@@ -272,12 +301,14 @@
 
     function switchTab(tabName) {
       if (inBattle && tabName !== 'main') { alert("전투 중에는 다른 탭으로 이동할 수 없습니다!"); return; }
-      ['main', 'gacha', 'shop', 'status'].forEach(t => { const tab = document.getElementById('tab-' + t); if(tab) tab.classList.add('hidden'); });
+      ['main', 'gacha', 'shop', 'inventory', 'status'].forEach(t => { 
+        const tab = document.getElementById('tab-' + t); 
+        if(tab) tab.classList.add('hidden'); 
+      });
       const targetTab = document.getElementById('tab-' + tabName);
       if(targetTab) targetTab.classList.remove('hidden');
       if(tabName === 'status') updateStatus();
     }
-
     function toggleBGM() {
       const audio = document.getElementById('game-audio'); const btn = document.getElementById('bgm-player');
       if (isPlaying) { audio.pause(); btn.innerText = "🎵 BGM: OFF"; } else { audio.play().catch(e => alert('오디오 권한 필요')); btn.innerText = "🎵 BGM: ON"; }
