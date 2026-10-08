@@ -1347,38 +1347,25 @@ function updateCurrentWeight() {
       }
     }
 
-// 1. 게임 데이터 저장하기 (버튼 누를 때마다 자동 저장)
-function saveGame() {
-      try {
-        localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
-      } catch (e) {
-        console.error("저장 실패:", e);
-      }
-    }
-
-    // 2. 게임 데이터 불러오기 및 화면 자동 전환
-    function loadGame() {
+// 데이터 불러오기 및 자동 화면 전환
+function loadGame() {
       try {
         const savedData = localStorage.getItem('dietRpgSaveData');
         if (savedData) {
           const loadedPlayer = JSON.parse(savedData);
-          
-          // 저장된 데이터에 이름이나 캐릭터 정보가 있다면 정상 데이터로 인정
           if (loadedPlayer && loadedPlayer.name) {
             player = loadedPlayer;
-            isPlaying = true; // 게임 플레이 중 상태로 변경
-            
-            console.log("저장된 게임 데이터를 불러왔습니다!", player);
+            console.log("저장된 데이터를 불러왔습니다!");
 
-            // 💡 [핵심] 저장된 데이터가 있으므로 초기 입력 화면을 숨기고 메인 화면을 보여줍니다!
-            // (만약 초기 화면 HTML 태그의 아이디가 다르다면 아래 'setup-screen' 부분을 실제 아이디로 맞춰주세요)
-            const setupScreen = document.getElementById('setup-screen') || document.querySelector('.setup-container');
-            if (setupScreen) setupScreen.classList.add('hidden');
+            // 💡 ID를 몰라도 입력 관련 화면이나 요소를 찾아 자동으로 숨김 처리
+            const elements = document.querySelectorAll('div, section, form');
+            elements.forEach(el => {
+              // 입력창이나 버튼 문구 중에 '몸무게'나 '입력' 같은 단어가 포함된 영역을 자동 감지
+              if (el.innerText && (el.innerText.includes('몸무게') && el.innerText.includes('시작'))) {
+                el.style.display = 'none';
+              }
+            });
 
-            const mainGameArea = document.getElementById('main-game-area') || document.querySelector('.game-container');
-            if (mainGameArea) mainGameArea.classList.remove('hidden');
-
-            // 화면 UI 갱신 함수 실행
             if (typeof updateStatus === 'function') {
               updateStatus();
             }
@@ -1391,17 +1378,20 @@ function saveGame() {
       return false;
     }
 
-    // 3. 페이지가 열리자마자 데이터 불러오기 실행
     window.onload = function() {
       loadGame();
     };
 
-    // 4. 어떤 버튼을 누르든 자동 저장
     document.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
         saveGame();
       }
     });
+
+// 2. 페이지가 열리자마자 가장 먼저 실행되도록 설정
+window.addEventListener('DOMContentLoaded', () => {
+  loadGame();
+});
 
   </script>
 </body>
