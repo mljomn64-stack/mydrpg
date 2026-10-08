@@ -216,7 +216,9 @@
   </div>
 
   <script>
-    let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold: 500, tickets: 3, maxHp: 100, currentHp: 100, stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 }, records: { royalQuests: 0, totalGold: 0, bossKills: 0 }, inventory: {}, unlockedThemes: { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } }, unlockedBgms: { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } }, currentTheme: 'default', currentBgm: 'default', startWeight: 0, currentWeight: 0 };
+    let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold: 500, tickets: 3, leafTokens: 0,
+      pets: {},
+      equippedPet: null,  maxHp: 100, currentHp: 100, stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 }, records: { royalQuests: 0, totalGold: 0, bossKills: 0 }, inventory: {}, unlockedThemes: { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } }, unlockedBgms: { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } }, currentTheme: 'default', currentBgm: 'default', startWeight: 0, currentWeight: 0 };
     let isPlaying = false; let inBattle = false; let currentEnemy = null;
 
     const fieldMonsters = [
@@ -576,6 +578,41 @@
 
       const btnDungeon = document.getElementById('btn-enter-dungeon');
       if (btnDungeon) { if (!inBattle && player.tickets > 0) { btnDungeon.classList.remove('hidden'); } else { btnDungeon.classList.add('hidden'); } }
+      // 🐾 소지품 탭의 토큰 및 펫 리스트 갱신
+      const leafTokenSpan = document.getElementById('inv-leaf-tokens');
+      if (leafTokenSpan) leafTokenSpan.innerText = player.leafTokens || 0;
+
+      const invPetsDiv = document.getElementById('inv-pets-list');
+      if (invPetsDiv) {
+        if (!player.pets || Object.keys(player.pets).length === 0) {
+          invPetsDiv.innerHTML = "보유한 펫이 없습니다. 상점에서 펫을 뽑아보세요!";
+        } else {
+          let pHTML = "";
+          for (let pName in player.pets) {
+            let p = player.pets[pName];
+            let isEquipped = player.equippedPet === pName;
+            let btnText = isEquipped ? "장착 해제" : "장착하기";
+            let btnColor = isEquipped ? "#e74c3c" : "#27ae60";
+            
+            pHTML += `<div style="margin: 6px 0; padding: 6px; background: rgba(255,255,255,0.9); border-radius: 5px; border: 1px dashed #ccc; display: flex; justify-content: space-between; align-items: center;">
+              <div>${p.icon} <span class="${p.cssClass}">[${p.tier}] ${p.name}</span><br><small style="color:#555;">효과: ${p.effect}</small></div>
+              <button class="btn" style="padding: 4px 8px; margin: 0; background: ${btnColor}; color: white; font-size: 10px;" onclick="toggleEquipPet('${pName}')">${btnText}</button>
+            </div>`;
+          }
+          invPetsDiv.innerHTML = pHTML;
+        }
+      }
+
+      // 🐾 메인 화면 펫 스프라이트 표시 제어
+      const mainPetImg = document.getElementById('main-pet-sprite');
+      if (mainPetImg) {
+        if (player.equippedPet && player.pets[player.equippedPet]) {
+          mainPetImg.src = player.pets[player.equippedPet].image;
+          mainPetImg.classList.remove('hidden');
+        } else {
+          mainPetImg.classList.add('hidden');
+        }
+      }
     }
 
     function updateCurrentWeight() {
@@ -666,6 +703,77 @@
         alert("데이터가 완전히 초기화되었습니다. 새로운 모험을 시작합니다!");
         location.reload(); // 화면 강제 새로고침 (시작 화면으로 이동)
       }
+    }
+
+    // 🐾 펫 데이터 풀
+    const petPool = {
+      common: [
+        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "일반 퀘스트 골드 +5%", token: 1, image: "https://img.icons8.com/color/100/pigeon.png" },
+        { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "최대 체력 +10", token: 1, image: "https://img.icons8.com/color/100/slime.png" }
+      ],
+      rare: [
+        { name: "물마시는 해달", icon: "🦦", tier: "레어", cssClass: "rare", effect: "수분 보충 퀘스트 보너스", token: 3, image: "https://img.icons8.com/color/100/otter.png" },
+        { name: "만보 걷는 다람쥐", icon: "🐿️", tier: "레어", cssClass: "rare", effect: "스피드(SPD) +5", token: 3, image: "https://img.icons8.com/color/100/squirrel.png" },
+        { name: "공복의 치타", icon: "🐆", tier: "레어", cssClass: "rare", effect: "원거리(RATK) +10", token: 3, image: "https://img.icons8.com/color/100/cheetah.png" }
+      ],
+      epic: [
+        { name: "코렐라인 인형", icon: "🪡", tier: "에픽", cssClass: "epic", effect: "방어력(DEF) +15", token: 10, image: "https://img.icons8.com/color/100/doll.png" },
+        { name: "디지블루 디아블로몬", icon: "😈", tier: "에픽", cssClass: "epic", effect: "공격력(ATK) +15", token: 10, image: "https://img.icons8.com/color/100/monster.png" },
+        { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "지력(INT) +15", token: 10, image: "https://img.icons8.com/color/100/jack-o-lantern.png" }
+      ],
+      mythic: [
+        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10%", token: 30, image: "https://img.icons8.com/color/100/koala.png" },
+        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "보스 데미지 +20%", token: 30, image: "https://img.icons8.com/color/100/cube.png" }
+      ]
+    };
+
+    // 🐾 펫 랜덤 뽑기 함수
+    function rollPetGacha() {
+      if (player.tickets < 1) { alert("가챠 티켓이 부족합니다!"); return; }
+      player.tickets -= 1;
+
+      const rand = Math.random() * 100;
+      let tier, pool, tierName, cssClass;
+
+      if (rand < 1) { tier = 'mythic'; pool = petPool.mythic; tierName = "✨신화✨"; cssClass = "mythic"; }
+      else if (rand < 10) { tier = 'epic'; pool = petPool.epic; tierName = "💜에픽💜"; cssClass = "epic"; }
+      else if (rand < 40) { tier = 'rare'; pool = petPool.rare; tierName = "💙레어💙"; cssClass = "rare"; }
+      else { tier = 'normal'; pool = petPool.common; tierName = "🤍일반🤍"; cssClass = "normal"; }
+
+      const pet = pool[Math.floor(Math.random() * pool.length)];
+      let msg = "";
+
+      if (player.pets[pet.name]) {
+        player.leafTokens += pet.token;
+        msg = `이미 보유한 펫이라 자동으로 분해되어<br><strong style="color:#27ae60;">🌿 나뭇잎 토큰 +${pet.token}개</strong>로 교환되었습니다!`;
+      } else {
+        player.pets[pet.name] = { ...pet, count: 1 };
+        msg = `🎉 새로운 펫을 영입했습니다!`;
+      }
+
+      const resultBox = document.getElementById('pet-gacha-result-box');
+      if(resultBox) {
+        resultBox.innerHTML = `<div class="gacha-result">
+          <div style="font-size:12px; margin-bottom:5px;">[펫 뽑기] ${tierName} 등급!</div>
+          <strong class="${cssClass}">${pet.icon} ${pet.name}</strong><br>
+          <small style="color:#333;">효과: ${pet.effect}</small><br>
+          <div style="font-size:11px; margin-top:5px; color:#555;">${msg}</div>
+        </div>`;
+      }
+      
+      if(typeof updateStatus === 'function') updateStatus();
+    }
+
+    // 🐾 펫 장착 및 해제 함수
+    function toggleEquipPet(petName) {
+      if (player.equippedPet === petName) {
+        player.equippedPet = null;
+        alert("펫을 해제했습니다.");
+      } else {
+        player.equippedPet = petName;
+        alert(`[${petName}]을(를) 장착했습니다! 메인 화면을 확인해 보세요.`);
+      }
+      if(typeof updateStatus === 'function') updateStatus();
     }
 
   </script>
