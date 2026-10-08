@@ -660,6 +660,7 @@
       const isConfirm = confirm("⚠️ 경고!\n정말로 모든 데이터를 지우고 처음부터 다시 시작하시겠습니까?\n(이 작업은 절대 되돌릴 수 없습니다!)");
       
       if (isConfirm) {
+        player.name = "";
         localStorage.removeItem('dietRpgSaveData'); // 금고에 저장된 데이터 파기
         alert("데이터가 완전히 초기화되었습니다. 새로운 모험을 시작합니다!");
         location.reload(); // 화면 강제 새로고침 (시작 화면으로 이동)
