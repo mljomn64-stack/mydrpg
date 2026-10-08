@@ -1347,25 +1347,34 @@ function updateCurrentWeight() {
       }
     }
 
-// 데이터 불러오기 및 자동 화면 전환
-function loadGame() {
+// 1. 게임 데이터 자동 저장
+function saveGame() {
+      try {
+        localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
+      } catch (e) {
+        console.error("데이터 저장 실패:", e);
+      }
+    }
+
+    // 2. 게임 데이터 불러오기 및 시작 화면 숨기기
+    function loadGame() {
       try {
         const savedData = localStorage.getItem('dietRpgSaveData');
         if (savedData) {
           const loadedPlayer = JSON.parse(savedData);
+          
+          // 데이터가 존재하고, 캐릭터 이름이 정상적으로 들어있는지 확인
           if (loadedPlayer && loadedPlayer.name) {
             player = loadedPlayer;
-            console.log("저장된 데이터를 불러왔습니다!");
+            console.log("저장된 모험가 데이터를 불러왔습니다!", player.name);
 
-            // 💡 ID를 몰라도 입력 관련 화면이나 요소를 찾아 자동으로 숨김 처리
-            const elements = document.querySelectorAll('div, section, form');
-            elements.forEach(el => {
-              // 입력창이나 버튼 문구 중에 '몸무게'나 '입력' 같은 단어가 포함된 영역을 자동 감지
-              if (el.innerText && (el.innerText.includes('몸무게') && el.innerText.includes('시작'))) {
-                el.style.display = 'none';
-              }
-            });
+            // 💡 HTML에 이미 있는 'start-screen'을 콕 집어서 숨깁니다!
+            const startScreen = document.getElementById('start-screen');
+            if (startScreen) {
+              startScreen.style.display = 'none';
+            }
 
+            // 화면 UI 갱신 (기존에 작성하신 함수)
             if (typeof updateStatus === 'function') {
               updateStatus();
             }
@@ -1378,20 +1387,17 @@ function loadGame() {
       return false;
     }
 
-    window.onload = function() {
+    // 3. 웹페이지가 켜지자마자 데이터 불러오기 실행
+    window.addEventListener('DOMContentLoaded', () => {
       loadGame();
-    };
+    });
 
+    // 4. 어떤 버튼이든 누를 때마다(사냥, 상점 등) 알아서 자동 저장
     document.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
         saveGame();
       }
     });
-
-// 2. 페이지가 열리자마자 가장 먼저 실행되도록 설정
-window.addEventListener('DOMContentLoaded', () => {
-  loadGame();
-});
 
   </script>
 </body>
