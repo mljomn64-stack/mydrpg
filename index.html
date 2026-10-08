@@ -1346,6 +1346,39 @@ function updateCurrentWeight() {
       }
     }
 
+    // 1. 게임 데이터 저장하기 함수
+    function saveGame() {
+      // 현재 player 객체와 필요한 게임 상태를 JSON 문자열로 변환하여 브라우저에 저장
+      localStorage.setItem('dietRpgSaveData', JSON.stringify(player));
+    }
+
+    // 2. 게임 데이터 불러오기 함수
+    function loadGame() {
+      const savedData = localStorage.getItem('dietRpgSaveData');
+      if (savedData) {
+        try {
+          const loadedPlayer = JSON.parse(savedData);
+          // 기존 player 데이터에 불러온 값 덮어쓰기
+          Object.assign(player, loadedPlayer);
+        } catch (e) {
+          console.error("데이터 불러오기 실패:", e);
+        }
+      }
+    }
+
+    // 3. 페이지가 켜지자마자 데이터 자동 불러오기 실행
+    window.addEventListener('DOMContentLoaded', () => {
+      loadGame();
+      updateStatus(); // 화면 UI 갱신
+    });
+
+    // 4. 어떤 행동(버튼 클릭)을 하든 자동으로 저장되도록 후킹(Hooking) 걸기
+    document.addEventListener('click', (event) => {
+      // 게임 내의 버튼(.btn 등)을 클릭했을 때만 자동 저장 실행
+      if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
+        saveGame();
+      }
+    });
 
   </script>
 </body>
