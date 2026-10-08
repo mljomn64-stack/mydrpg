@@ -40,6 +40,33 @@
     hr { border: 1px dashed var(--line-color); margin: 15px 0; }
     .rpg-start-box { background: rgba(255, 255, 255, 0.85); border: 4px double var(--line-color); border-radius: 12px; padding: 25px 20px; width: 80%; max-width: 320px; box-shadow: 0 8px 0 rgba(106, 76, 156, 0.3); margin: auto; }
     .rpg-title-banner { font-size: 18px; font-weight: bold; color: var(--line-color); text-shadow: 2px 2px 0px var(--accent-pink); margin-bottom: 20px; letter-spacing: 1px; }
+    /* 💡 버튼 누를 때 번쩍이며 쏙 들어가는 이펙트 */
+    .btn-flash {
+      animation: btnFlash 0.3s !important;
+    }
+    @keyframes btnFlash {
+      0% { filter: brightness(1); transform: scale(1); }
+      50% { filter: brightness(1.2); transform: scale(0.95); background-color: #ffeaa7; }
+      100% { filter: brightness(1); transform: scale(1); }
+    }
+    
+    /* 💡 클릭한 곳에서 둥둥 떠오르는 텍스트 이펙트 */
+    .floating-vfx {
+      position: fixed;
+      font-family: 'Galmuri9', sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      pointer-events: none;
+      z-index: 99999;
+      animation: floatUpVfx 0.8s ease-out forwards;
+      /* 글자 테두리를 하얗게 줘서 어디서든 잘 보이게 함 */
+      text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff;
+    }
+    @keyframes floatUpVfx {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.3); }
+      100% { opacity: 0; transform: translateY(-50px) scale(1); }
+    }
   </style>
 </head>
 <body>
@@ -172,6 +199,9 @@
           <hr>
           <strong>[획득한 가챠 아이템]</strong>
           <div id="st-items" style="font-size: 12px; margin-top:5px;">없음</div>
+          <hr>
+          <strong>[시스템]</strong><br>
+          <button class="btn btn-dungeon" style="width: 90%; margin: 10px auto; display: block; background-color: #c0392b; color: white;" onclick="resetGame()">⚠️ 게임 초기화 (처음부터)</button>
         </div>
       </div>
 
@@ -577,6 +607,64 @@
 
     window.addEventListener('DOMContentLoaded', () => { loadGame(); });
     document.addEventListener('click', (event) => { if (event.target.tagName === 'BUTTON' || event.target.closest('button')) { setTimeout(() => { saveGame(); }, 50); } });
+    // 💡 모든 버튼에 자동 감지되어 발동하는 이펙트 마법진!
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (btn) {
+        // 1. 버튼 번쩍임 효과 적용
+        btn.classList.add('btn-flash');
+        setTimeout(() => btn.classList.remove('btn-flash'), 300);
+
+        // 2. 둥둥 떠오르는 플로팅 텍스트 생성
+        const vfx = document.createElement('div');
+        vfx.className = 'floating-vfx';
+        
+        // 3. 버튼에 적힌 글자에 따라 이펙트 글자와 색상을 다르게 표현!
+        const btnText = btn.innerText;
+        if (btnText.includes('공격')) {
+          vfx.innerText = '💥 퍽!';
+          vfx.style.color = '#e74c3c'; // 빨간색
+        } else if (btnText.includes('EXP') || btnText.includes('퀘스트')) {
+          vfx.innerText = '✨ 완료!';
+          vfx.style.color = '#f39c12'; // 주황색
+        } else if (btnText.includes('티켓') || btnText.includes('가챠')) {
+          vfx.innerText = '🎟️ 겟!';
+          vfx.style.color = '#9b59b6'; // 보라색
+        } else {
+          vfx.innerText = '👆 띡!';
+          vfx.style.color = '#3498db'; // 파란색
+        }
+
+        // 4. 클릭한 마우스(손가락) 좌표 가져오기
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+        
+        // 좌표가 잡히지 않으면 버튼 정중앙에서 튀어나오게 설정
+        if (!clientX || clientX === 0) {
+          const rect = btn.getBoundingClientRect();
+          clientX = rect.left + rect.width / 2;
+          clientY = rect.top + rect.height / 2;
+        }
+
+        vfx.style.left = (clientX - 20) + 'px';
+        vfx.style.top = (clientY - 20) + 'px';
+
+        document.body.appendChild(vfx);
+
+        // 애니메이션이 끝나면 쓰레기통에 버리기
+        setTimeout(() => vfx.remove(), 800);
+      }
+    });
+    // 💡 게임 초기화 (리셋) 기능
+    function resetGame() {
+      const isConfirm = confirm("⚠️ 경고!\n정말로 모든 데이터를 지우고 처음부터 다시 시작하시겠습니까?\n(이 작업은 절대 되돌릴 수 없습니다!)");
+      
+      if (isConfirm) {
+        localStorage.removeItem('dietRpgSaveData'); // 금고에 저장된 데이터 파기
+        alert("데이터가 완전히 초기화되었습니다. 새로운 모험을 시작합니다!");
+        location.reload(); // 화면 강제 새로고침 (시작 화면으로 이동)
+      }
+    }
 
   </script>
 </body>
