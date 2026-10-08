@@ -1347,45 +1347,40 @@ function updateCurrentWeight() {
       }
     }
 
-// 2. 게임 데이터 불러오기 및 화면 완벽 전환
-function loadGame() {
-      try {
-        const savedData = localStorage.getItem('dietRpgSaveData');
-        if (savedData) {
-          const loadedPlayer = JSON.parse(savedData);
-          
-          if (loadedPlayer && loadedPlayer.name) {
-            player = loadedPlayer;
-            console.log("저장된 모험가 데이터를 불러왔습니다!", player.name);
-
-            // 💡 1. 시작 화면은 숨기고!
-            const startScreen = document.getElementById('start-screen');
-            if (startScreen) startScreen.style.display = 'none';
-
-            // 💡 2. 숨겨져 있던 메인 게임 UI 화면을 짠! 하고 보여줍니다.
-            const uiLayer = document.getElementById('ui-layer');
-            if (uiLayer) uiLayer.classList.remove('hidden');
-
-            // 💡 3. 내 캐릭터(쿼카/코알라) 이미지를 중앙에 다시 그려줍니다.
-            const mainSprite = document.getElementById('main-sprite');
-            if (mainSprite) mainSprite.src = player.image;
-
-            // 💡 4. 퀘스트 목록 버튼들도 다시 생성해 줍니다.
-            if (typeof renderQuests === 'function') {
-              renderQuests();
-            }
-
-            // 화면 UI 전체 갱신
-            if (typeof updateStatus === 'function') {
-              updateStatus();
-            }
-            return true;
-          }
-        }
-      } catch (e) {
-        console.error("불러오기 실패:", e);
+    function tryStartGame(charName, jobName, imgUrl) {
+      const weightInput = document.getElementById('input-start-weight').value;
+      if (!weightInput || weightInput <= 0) {
+        alert("현재 몸무게를 숫자로 올바르게 입력해주세요! (다이어트의 시작입니다 💪)");
+        return;
       }
-      return false;
+      
+      // 몸무게 초기값 세팅
+      player.startWeight = parseFloat(weightInput);
+      player.currentWeight = parseFloat(weightInput);
+      
+      startGame(charName, jobName, imgUrl);
+    }
+
+    function startGame(charName, jobName, imgUrl) {
+      player.name = charName;
+      player.job = jobName;
+      player.image = imgUrl;
+      
+      // 화면 전환
+      const startScreen = document.getElementById('start-screen');
+      if (startScreen) startScreen.style.display = 'none';
+      
+      const uiLayer = document.getElementById('ui-layer');
+      if (uiLayer) uiLayer.classList.remove('hidden');
+      
+      const mainSprite = document.getElementById('main-sprite');
+      if (mainSprite) mainSprite.src = player.image;
+      
+      if (typeof renderQuests === 'function') renderQuests();
+      if (typeof updateStatus === 'function') updateStatus();
+
+      // 💡 [핵심] 캐릭터 생성이 끝나자마자 즉시 로컬 스토리지에 강제 저장!
+      saveGame();
     }
 
   </script>
