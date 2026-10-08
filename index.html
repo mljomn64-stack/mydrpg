@@ -220,23 +220,24 @@
     let isPlaying = false; let inBattle = false; let currentEnemy = null;
 
     const fieldMonsters = [
-      { name: "웃고있는 식혜", hp: 150, atk: 5, reward: 150, penalty: 30, image: "monster_hye.png" },
-      { name: "서울도넛 고스트", hp: 250, atk: 8, reward: 280, penalty: 60, image: "monster_seoul.png" },
-      { name: "데블 초코콘", hp: 400, atk: 10, reward: 450, penalty: 100, image: "monster_cho.png" },
-      { name: "사천탕수육 임프", hp: 800, atk: 20, reward: 1000, penalty: 200, image: "monster_sa.png" },
-      { name: "심야의 후라이드 치킨", hp: 1500, atk: 35, reward: 2000, penalty: 400, image: "https://img.icons8.com/color/150/chicken.png" },
-      { name: "흑당 버블티 골렘", hp: 2500, atk: 50, reward: 3500, penalty: 700, image: "https://img.icons8.com/color/150/bubble-tea.png" }
+    { name: "웃고있는 식혜", hp: 300, atk: 10, reward: 150, penalty: 30, image: "monster_hye.png" },
+      { name: "서울도넛 고스트", hp: 750, atk: 20, reward: 280, penalty: 60, image: "monster_seoul.png" },
+      { name: "데블 초코콘", hp: 1000, atk: 30, reward: 450, penalty: 300, image: "monster_cho.png" },
+      // 👇 새로 추가된 고레벨 몬스터들
+      { name: "사천탕수육 임프", hp: 2000, atk: 50, reward: 800, penalty: 1000, image: "monster_sa.png" },
+      { name: "심야의 후라이드 치킨", hp: 3000, atk: 70, reward: 1000, penalty: 1500, image: "https://img.icons8.com/color/150/chicken.png" },
+      { name: "흑당 버블티 골렘", hp: 5500, atk: 100, reward: 2000, penalty: 2000, image: "https://img.icons8.com/color/150/bubble-tea.png" }
     ];
 
     const bossList = [
-      { name: "🌊 심해의 김밥 오로치", hp: 800, atk: 15, reward: 2000, penalty: 200, image: "boss_cham.png" },
-      { name: "🖤 블랙 누들 골렘", hp: 1200, atk: 22, reward: 3500, penalty: 350, image: "boss_jja.png" },
-      { name: "🔥 블러드 스파이시 뱀파이어", hp: 1800, atk: 30, reward: 5500, penalty: 600, image: "boss_mara.png" },
-      { name: "🌋 핵폭탄 치즈 퐁듀 슬라임", hp: 2500, atk: 40, reward: 8000, penalty: 900, image: "boss_yup.png" },
-      { name: "🛡️🥔 흑백의 기사와 눈물 흘리는 대지의 마법사", hp: 3500, atk: 55, reward: 12000, penalty: 1200, image: "boss_snack.png" },
-      { name: "🌋 발효의 군주 김치찜", hp: 5000, atk: 70, reward: 18000, penalty: 2000, image: "boss_gim.png" },
-      { name: "💀 네크로 립 로드", hp: 7000, atk: 90, reward: 25000, penalty: 3500, image: "boss_gal.png" },
-      { name: "🌯 타락한 천사와 악마의 부리또", hp: 9999, atk: 120, reward: 50000, penalty: 5000, image: "boss_burito.png" }
+      { name: "🌊 심해의 김밥 오로치", hp: 1500, atk: 30, reward: 1500, penalty: 200, image: "boss_cham.png" },
+      { name: "🖤 블랙 누들 골렘", hp: 3000, atk: 80, reward: 3000, penalty: 350, image: "boss_jja.png" },
+      { name: "🔥 블러드 스파이시 뱀파이어", hp: 8000, atk: 60, reward: 5500, penalty: 600, image: "boss_mara.png" },
+      { name: "🌋 핵폭탄 치즈 퐁듀 슬라임", hp: 7500, atk: 100, reward: 8000, penalty: 900, image: "boss_yup.png" },
+      { name: "🛡️🥔 흑백의 기사와 눈물 흘리는 대지의 마법사", hp: 13000, atk: 80, reward: 12000, penalty: 1200, image: "boss_snack.png" },
+      { name: "🌋 발효의 군주 김치찜", hp: 10000, atk: 150, reward: 18000, penalty: 2000, image: "boss_gim.png" },
+      { name: "💀 네크로 립 로드", hp: 15000, atk: 130, reward: 25000, penalty: 3500, image: "boss_gal.png" },
+      { name: "🌯 타락한 천사와 악마의 부리또", hp: 25000, atk: 200, reward: 50000, penalty: 5000, image: "boss_burito.png" }
     ];
 
     const normalQuests = [ { name: "💧 물 한잔 마시기", exp: 20, gold: 50 }, { name: "🔥 배달음식 픽업해오기", exp: 30, gold: 100 }, { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 }, { name: "🥗 8시 이후 금식", exp: 50, gold: 80 }, { name: "🍳 집밥 먹기", exp: 25, gold: 50 } ];
