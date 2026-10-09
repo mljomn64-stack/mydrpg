@@ -357,8 +357,8 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       { name: "🌯 타락한 천사와 악마의 부리또", hp: 25000, atk: 200, reward: 50000, penalty: 5000, image: "boss_burito.png" }
     ];
 
-    const normalQuests = [ { name: "💧 물 한잔 마시기", exp: 20, gold: 50 }, { name: "🔥 배달음식 픽업해오기", exp: 30, gold: 100 }, { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 }, { name: "🥗 8시 이후 금식", exp: 50, gold: 80 }, { name: "🍳 집밥 먹기", exp: 25, gold: 50 } ];
-    const royalQuests = [ { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", ticket: 1 }, { name: "👑 [왕궁] 용사의 스쿼트 30회 3세트", ticket: 1 }, { name: "👑 [왕궁] 숲 속의 달리기 훈련", ticket: 2 }, { name: "👑 [왕궁] 마법사의 식단 먹기", ticket: 1 } ];
+    const normalQuests = [ { name: "💧 물 한잔 마시기", exp: 20, gold: 50 }, { name: "☀ 아침에 몸무게재기", exp: 30, gold: 50 }, { name: "🔥 배달음식 픽업해오기", exp: 10, gold: 20 }, { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 }, { name: "🥗 8시 이후 금식", exp: 50, gold: 80 }, { name: "🍳 집밥 먹기", exp: 25, gold: 50 }, { name: "🚶‍♀️제자리 걷기 100회", exp: 35, gold: 40 }, { name: "🦶종아리 운동하기", exp: 40, gold: 50 }, { name: "👍밥 먹고 눕지않기", exp: 20, gold: 30 } ];
+    const royalQuests = [ { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", exp: 30, ticket: 1 }, { name: "👑 [왕궁] 고독한 타워 오르기", exp: 30, ticket: 1 }, { name: "👑 [왕궁] 용사의 스쿼트 3세트", exp: 50, ticket: 2 }, { name: "👑 [왕궁] 숲 속의 달리기 훈련", exp: 100, ticket: 3 }, { name: "👑 [왕궁] 마법사의 식단 먹기", exp: 80, ticket: 1 }, { name: "👑 [왕궁] 탐험을 위해 12시전에 잠자리에 들기", exp: 100, ticket: 3 } ];
 
     const gachaPool = {
       mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 대폭 상승 (+20)", stat: "spd", add: 20 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 대폭 상승 (+20)", stat: "ratk", add: 20 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 대폭 상승 (+20)", stat: "def", add: 20 }, { name: "디지바이스", icon: "📱", effect: "지력 대폭 상승 (+20)", stat: "int", add: 20 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 대폭 상승 (+20)", stat: "atk", add: 20 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" } ],
