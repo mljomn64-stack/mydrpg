@@ -12,6 +12,18 @@
   <style>
     @import url('https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css');
     
+    /* ✨ 상점 교환용 캐릭터 이펙트 스타일 */
+    .effect-sparkle {
+      filter: drop-shadow(0 0 10px gold) drop-shadow(0 0 20px yellow);
+    }
+    .effect-fire {
+      filter: drop-shadow(0 0 10px red) drop-shadow(0 0 20px orange);
+      animation: firePulse 0.8s infinite alternate;
+    }
+    @keyframes firePulse {
+      0% { filter: drop-shadow(0 0 8px red) drop-shadow(0 0 15px orange); }
+      100% { filter: drop-shadow(0 0 15px red) drop-shadow(0 0 30px yellow); transform: scale(1.02); }
+    }
     :root { --bg-color: #fdf5d3; --line-color: #6a4c9c; --accent-green: #67c28c; --accent-pink: #f094c3; --bgm-color: #4a90e2; }
     body { background-color: #e0d8b0; color: var(--line-color); font-family: 'Galmuri9', sans-serif; text-align: center; margin: 0; padding: 0; display: flex; justify-content: center; }
     #game-container { width: 100%; max-width: 400px; background-color: var(--bg-color); min-height: 100vh; height: 100vh; border-left: 4px solid var(--line-color); border-right: 4px solid var(--line-color); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background-color 0.5s ease; }
@@ -67,19 +79,19 @@
       50% { transform: translateY(-30px) scale(1.3); }
       100% { opacity: 0; transform: translateY(-50px) scale(1); }
     }
-/* 🐾 메인 화면 펫 스타일 */
+/* 🐾 메인 화면 펫 스타일 (주인공 곁으로 밀착!) */
 .pet-companion-img {
-      width: 60px; height: 60px; object-fit: contain;
+      width: 55px; height: 55px; object-fit: contain;
       position: absolute; 
-      right: 20px; /* 주인공 오른쪽 여백 */
-      top: 50%;    /* 세로 중앙 */
+      left: 60%; /* 주인공 바로 옆으로 바짝 붙임 */
+      top: 50%;  /* 세로 중앙 */
       transform: translateY(-50%);
       animation: petFloat 1.8s infinite ease-in-out alternate;
       z-index: 5;
     }
     @keyframes petFloat {
-      0% { transform: translateY(calc(-50% - 6px)) rotate(-5deg); }
-      100% { transform: translateY(calc(-50% + 6px)) rotate(5deg); }
+      0% { transform: translateY(calc(-50% - 8px)) rotate(-5deg); }
+      100% { transform: translateY(calc(-50% + 8px)) rotate(5deg); }
     }
     .sprite-area { position: relative; }
 
@@ -112,8 +124,11 @@
       <div class="top-bar">
         <div>Lv. <span id="ui-level">1</span> <br><small style="font-size:10px;">EXP: <span id="ui-exp">0</span>/<span id="ui-max-exp">100</span></small></div>
         <div id="theme-title" style="font-size: 16px;">🌲 평화로운 숲</div>
-        <div style="text-align: right;">💰 <span id="ui-gold">0</span> G<br>🎟️ 티켓: <span id="ui-tickets">0</span></div>
-      </div>
+        <div style="text-align: right; line-height: 1.4;">
+          💰 <span id="ui-gold">0</span> G<br>
+          🎟️ 티켓: <span id="ui-tickets">0</span><br>
+          👃 코쑥권: <span id="ui-kossuk-tickets">0</span>
+        </div>
 
       <div id="tab-main" class="content-area">
         <div id="normal-sprite-area" class="sprite-area">
@@ -168,6 +183,11 @@
         <img src="https://img.icons8.com/color/150/treasure-chest.png" class="character-img" style="margin-bottom:20px;"><br>
         <button class="btn btn-dungeon" style="background-color:var(--accent-pink); color:white;" onclick="rollGacha()">🎟️ 가챠 돌리기!</button>
         <div id="gacha-result-box"></div>
+        <hr>
+        <h2 style="color: #27ae60;">👃 코쑥 가챠 👃</h2>
+        <p>1회 뽑기: 👃 코쑥 가챠권 1장</p>
+        <button class="btn btn-dungeon" style="background-color:#27ae60; color:white;" onclick="rollKossukGacha()">👃 코쑥 가챠 돌리기!</button>
+        <div id="kossuk-result-box"></div>
       </div>
 
       <div id="tab-shop" class="content-area hidden">
@@ -176,6 +196,14 @@
         <button class="btn btn-theme" style="background:#e67e22; color:#fff;" onclick="rollPetGacha()">🐾 랜덤 펫 뽑기 (🎟️ 티켓 1장)</button>
         <div id="pet-gacha-result-box"></div>
         <hr>
+        <div style="background: rgba(39, 174, 96, 0.1); padding: 10px; border: 2px dashed #27ae60; border-radius: 10px; margin-bottom: 15px;">
+          <h3 style="margin: 0 0 10px 0; color: #27ae60;">🌿 나뭇잎 토큰 교환소</h3>
+          <p style="font-size:12px; margin:0 0 10px 0;">현재 보유 토큰: <strong id="shop-leaf-tokens" style="color:#27ae60;">0</strong>개</p>
+          <button class="btn" style="width: 90%; background:#fff; color:#27ae60; border-color:#27ae60;" onclick="buyWithToken('kossuk', 3, '👃 코쑥 가챠권 1장')">👃 코쑥 가챠권 1장 (🌿 3개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#f1c40f; border-color:#f1c40f;" onclick="buyWithToken('gold', 5, '💰 10,000 골드 주머니')">💰 10,000 골드 (🌿 5개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#9b59b6; border-color:#9b59b6;" onclick="buyWithToken('effect_sparkle', 15, '✨ 반짝이 오라 이펙트')">✨ 반짝이 오라 이펙트 (🌿 15개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#e74c3c; border-color:#e74c3c;" onclick="buyWithToken('effect_fire', 30, '🔥 불타는 열정 이펙트')">🔥 불타는 열정 이펙트 (🌿 30개)</button>
+        </div>
         <h4 style="margin: 5px;">배경 테마 구매</h4>
         <button class="btn btn-theme" style="background:#2c3e50; color:#fff;" onclick="buyTheme('theme_night', '🌙 고요한 밤', '#2c3e50', 3000, false)">🌙 고요한 밤 (3000 G)</button>
         <button class="btn btn-theme" style="background:#ff9ff3; color:#fff;" onclick="buyTheme('theme_cherry', '🌸 흩날리는 벚꽃', '#ff9ff3', 3000, false)">🌸 흩날리는 벚꽃 (3000 G)</button>
@@ -222,6 +250,7 @@
           배경 테마: <select id="theme-select" onchange="changeTheme(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           배경 음악: <select id="bgm-select" onchange="changeBgm(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           볼륨 조절: <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)" style="vertical-align: middle;">
+          캐릭터 이펙트: <select id="effect-select" onchange="changeEffect(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           <hr>
           <strong>[스탯]</strong><br>
           ⚔️ 공격력: <span id="st-atk">10</span> <br>🏹 원거리: <span id="st-ratk">10</span> <br>🛡️ 방어력: <span id="st-def">10</span> <br>💨 스피드: <span id="st-spd">10</span> <br>🧠 지력: <span id="st-int">10</span> <br>
@@ -578,7 +607,9 @@
       document.getElementById('ui-max-exp').innerText = player.maxExp; document.getElementById('ui-gold').innerText = player.gold; document.getElementById('ui-tickets').innerText = player.tickets;
       document.getElementById('st-name').innerText = player.name; document.getElementById('st-class').innerText = player.job;
       document.getElementById('st-start-weight').innerText = player.startWeight; document.getElementById('st-curr-weight').innerText = player.currentWeight;
-      
+      document.getElementById('ui-kossuk-tickets').innerText = player.kossukTickets || 0;
+      const shopLeafTokens = document.getElementById('shop-leaf-tokens');
+      if(shopLeafTokens) shopLeafTokens.innerText = player.leafTokens || 0;      
       let loss = player.startWeight - player.currentWeight; document.getElementById('st-loss-weight').innerText = loss.toFixed(1) + " kg";
       const buffLabel = document.getElementById('st-weight-buff');
       if (loss >= 5.0) { buffLabel.style.color = "#2ecc71"; buffLabel.innerText = "✨ 전투력 +30% 버프!"; } 
@@ -621,7 +652,27 @@
       // 🐾 소지품 탭의 토큰 및 펫 리스트 갱신
       const leafTokenSpan = document.getElementById('inv-leaf-tokens');
       if (leafTokenSpan) leafTokenSpan.innerText = player.leafTokens || 0;
+// 💡 주인공 이펙트 적용
+const mainSprite = document.getElementById('main-sprite');
+      if (mainSprite) {
+        mainSprite.classList.remove('effect-sparkle', 'effect-fire'); // 기존 거 지우고
+        if (player.currentEffect && player.currentEffect !== 'none') {
+          mainSprite.classList.add(player.currentEffect); // 선택한 거 붙이기!
+        }
+      }
 
+      // 💡 상태창 이펙트 드롭다운 목록 갱신
+      const effectSelect = document.getElementById('effect-select');
+      if(effectSelect) { 
+        effectSelect.innerHTML = ""; 
+        const effectNames = { 'none': '선택 안함 (기본)', 'effect-sparkle': '✨ 반짝이 오라', 'effect-fire': '🔥 불타는 열정' };
+        if(!player.unlockedEffects) player.unlockedEffects = ['none'];
+        player.unlockedEffects.forEach(eff => {
+          let opt = document.createElement('option'); opt.value = eff; opt.innerText = effectNames[eff] || eff; 
+          if (eff === player.currentEffect) opt.selected = true; 
+          effectSelect.appendChild(opt); 
+        }); 
+      }
       const invPetsDiv = document.getElementById('inv-pets-list');
       if (invPetsDiv) {
         if (!player.pets || Object.keys(player.pets).length === 0) {
@@ -674,7 +725,9 @@
         const loadedPlayer = JSON.parse(savedData);
         if (loadedPlayer && loadedPlayer.name) {
           player = loadedPlayer;
-          
+          if (player.kossukTickets === undefined) player.kossukTickets = 0;
+          if (!player.unlockedEffects) player.unlockedEffects = ['none'];
+          if (player.currentEffect === undefined) player.currentEffect = 'none';
           // 💡 핵심 안전장치: 예전 세이브 파일에 누락된 새로운 속성들을 자동으로 채워줌!
           if (!player.unlockedThemes) player.unlockedThemes = { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } };
           if (!player.unlockedBgms) player.unlockedBgms = { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } };
@@ -791,10 +844,57 @@ function rollPetGacha() {
       else if (rand < 40) { tier = 'rare'; pool = petPool.rare; tierName = "💙레어💙"; cssClass = "rare"; }
       else { tier = 'normal'; pool = petPool.common; tierName = "🤍일반🤍"; cssClass = "normal"; }
 
+// 🐾 펫 데이터 풀 (실제 능력치 적용 데이터 추가!)
+const petPool = {
+      common: [
+        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "지력(INT) +5 (퀘스트 보상 증가)", token: 1, image: "pet_pi.png", stats: { int: 5 } },
+        { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "최대 체력 +20", token: 1, image: "pet_omega.png", stats: { hp: 20 } }
+      ],
+      rare: [
+        { name: "물마시는 해달", icon: "🦦", tier: "레어", cssClass: "rare", effect: "최대 체력 +40", token: 3, image: "pet_su.png", stats: { hp: 40 } },
+        { name: "만보 걷는 다람쥐", icon: "🐿️", tier: "레어", cssClass: "rare", effect: "스피드(SPD) +10", token: 3, image: "https://img.icons8.com/color/100/squirrel.png", stats: { spd: 10 } },
+        { name: "공복의 치타", icon: "🐆", tier: "레어", cssClass: "rare", effect: "원거리(RATK) +15", token: 3, image: "pet_chi.png", stats: { ratk: 15 } }
+      ],
+      epic: [
+        { name: "코렐라인 인형", icon: "🪡", tier: "에픽", cssClass: "epic", effect: "방어력(DEF) +20", token: 10, image: "pet_coral.png", stats: { def: 20 } },
+        { name: "디지블루 디아블로몬", icon: "😈", tier: "에픽", cssClass: "epic", effect: "공격력(ATK) +20", token: 10, image: "https://img.icons8.com/color/100/monster.png", stats: { atk: 20 } },
+        { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "지력(INT) +20", token: 10, image: "pet_jack.png", stats: { int: 20 } }
+      ],
+      mythic: [
+        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10 증가", token: 30, image: "pet_quko01.png", stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 } },
+        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력 및 원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } }
+      ]
+      
+    };
+
+    // 🐾 이름으로 펫 정보 찾기 (도우미 함수)
+    function getPetDataByName(petName) {
+      for (let tier in petPool) {
+        let found = petPool[tier].find(p => p.name === petName);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    // 🐾 펫 랜덤 뽑기 함수
+    function rollPetGacha() {
+      if (player.tickets < 1) { 
+        alert("가챠 티켓이 부족합니다! (현재 티켓: " + player.tickets + "장)"); 
+        return; 
+      }
+      player.tickets -= 1;
+
+      const rand = Math.random() * 100;
+      let tier, pool, tierName, cssClass;
+
+      if (rand < 1) { tier = 'mythic'; pool = petPool.mythic; tierName = "✨신화✨"; cssClass = "mythic"; }
+      else if (rand < 10) { tier = 'epic'; pool = petPool.epic; tierName = "💜에픽💜"; cssClass = "epic"; }
+      else if (rand < 40) { tier = 'rare'; pool = petPool.rare; tierName = "💙레어💙"; cssClass = "rare"; }
+      else { tier = 'normal'; pool = petPool.common; tierName = "🤍일반🤍"; cssClass = "normal"; }
+
       const pet = pool[Math.floor(Math.random() * pool.length)];
       let msg = "";
 
-      // 펫 데이터 객체가 없으면 안전하게 생성
       if (!player.pets) player.pets = {};
 
       if (player.pets[pet.name]) {
@@ -805,7 +905,6 @@ function rollPetGacha() {
         msg = `🎉 새로운 펫을 영입했습니다!`;
       }
 
-      // 상점에 있는 펫 뽑기 결과 박스에 출력
       const resultBox = document.getElementById('pet-gacha-result-box');
       if(resultBox) {
         resultBox.innerHTML = `<div class="gacha-result">
@@ -818,17 +917,116 @@ function rollPetGacha() {
       
       updateStatus();
     }
+// 🌿 토큰 교환 함수
+function buyWithToken(type, cost, name) {
+      if ((player.leafTokens || 0) < cost) { alert(`나뭇잎 토큰이 부족합니다! (필요: ${cost}개)`); return; }
+      
+      if (type === 'kossuk') {
+        player.kossukTickets = (player.kossukTickets || 0) + 1;
+      } else if (type === 'gold') {
+        player.gold += 10000;
+        player.records.totalGold += 10000;
+      } else if (type.startsWith('effect_')) {
+        let effectClass = type.replace('effect_', 'effect-');
+        if (!player.unlockedEffects) player.unlockedEffects = ['none'];
+        if (player.unlockedEffects.includes(effectClass)) {
+          alert("이미 보유한 이펙트입니다!"); return;
+        }
+        player.unlockedEffects.push(effectClass);
+        alert(`[${name}] 획득! 상태창에서 장착할 수 있습니다.`);
+      }
 
-    // 🐾 펫 장착 및 해제 함수
+      player.leafTokens -= cost;
+      alert(`[${name}] 교환 성공!`);
+      updateStatus();
+      saveGame();
+    }
+
+    // 👃 코쑥 가챠 전용 풀
+    const kossukPool = [
+      { name: "🐽 쿼카의 돼지코", icon: "🐽", tier: "✨신화", cssClass: "mythic", effect: "모든 스탯 +30 대박!", stat: "all", add: 30, chance: 3 },
+      { name: "🤧 부드러운 비염티슈", icon: "🤧", tier: "💜에픽", cssClass: "epic", effect: "공격력 +25", stat: "atk", add: 25, chance: 15 },
+      { name: "👃 코알라의 긴코", icon: "🦏", tier: "💙레어", cssClass: "rare", effect: "방어력 +20", stat: "def", add: 20, chance: 32 },
+      { name: "🧻 먼지나는 휴지", icon: "🧻", tier: "🤍일반", cssClass: "normal", effect: "1,000 골드 획득 (꽝...)", type: "gold", add: 1000, chance: 50 }
+    ];
+
+    // 👃 코쑥 가챠 돌리기 함수
+    function rollKossukGacha() {
+      if ((player.kossukTickets || 0) < 1) { alert("코쑥 가챠권이 없습니다! 토큰 교환소에서 얻어보세요."); return; }
+      player.kossukTickets -= 1;
+
+      const rand = Math.random() * 100;
+      let cumulative = 0;
+      let item = kossukPool[kossukPool.length - 1]; // 기본값(일반)
+
+      for (let i = 0; i < kossukPool.length; i++) {
+        cumulative += kossukPool[i].chance;
+        if (rand < cumulative) { item = kossukPool[i]; break; }
+      }
+
+      let msg = item.effect;
+      if (item.type === 'gold') {
+        player.gold += item.add;
+        player.records.totalGold += item.add;
+      } else if (item.stat === 'all') {
+        player.stats.atk += item.add; player.stats.ratk += item.add;
+        player.stats.def += item.add; player.stats.spd += item.add; player.stats.int += item.add;
+      } else if (item.stat) {
+        player.stats[item.stat] += item.add;
+      }
+
+      const resultBox = document.getElementById('kossuk-result-box');
+      if(resultBox) {
+        resultBox.innerHTML = `<div class="gacha-result">
+          <div style="font-size:12px; margin-bottom:5px;">[코쑥 가챠] ${item.tier} 등장!</div>
+          <strong class="${item.cssClass}">${item.icon} ${item.name}</strong><br>
+          <small style="color:#333;">효과: ${msg}</small>
+        </div>`;
+      }
+      updateStatus(); saveGame();
+    }
+
+    // ✨ 캐릭터 이펙트 변경 함수
+    function changeEffect(effectClass) {
+      player.currentEffect = effectClass;
+      updateStatus(); saveGame();
+    }
+    // 🐾 펫 장착 및 해제 함수 (스탯 완벽 연동!)
     function toggleEquipPet(petName) {
+      // 1. 기존 장착 펫 해제 시 스탯 원상복구
+      if (player.equippedPet) {
+        let oldPet = getPetDataByName(player.equippedPet);
+        if (oldPet && oldPet.stats) {
+          if(oldPet.stats.hp) { player.maxHp -= oldPet.stats.hp; if(player.currentHp > player.maxHp) player.currentHp = player.maxHp; }
+          if(oldPet.stats.atk) player.stats.atk -= oldPet.stats.atk;
+          if(oldPet.stats.ratk) player.stats.ratk -= oldPet.stats.ratk;
+          if(oldPet.stats.def) player.stats.def -= oldPet.stats.def;
+          if(oldPet.stats.spd) player.stats.spd -= oldPet.stats.spd;
+          if(oldPet.stats.int) player.stats.int -= oldPet.stats.int;
+        }
+      }
+
+      // 2. 다시 누르면 해제만 하고 종료
       if (player.equippedPet === petName) {
         player.equippedPet = null;
-        alert("펫을 해제했습니다.");
+        alert("펫을 해제하여 스탯이 원상복구 되었습니다.");
       } else {
+      // 3. 새로운 펫 장착 시 스탯 추가
         player.equippedPet = petName;
-        alert(`[${petName}]을(를) 장착했습니다! 메인 화면을 확인해 보세요.`);
+        let newPet = getPetDataByName(petName);
+        if (newPet && newPet.stats) {
+          if(newPet.stats.hp) { player.maxHp += newPet.stats.hp; player.currentHp += newPet.stats.hp; }
+          if(newPet.stats.atk) player.stats.atk += newPet.stats.atk;
+          if(newPet.stats.ratk) player.stats.ratk += newPet.stats.ratk;
+          if(newPet.stats.def) player.stats.def += newPet.stats.def;
+          if(newPet.stats.spd) player.stats.spd += newPet.stats.spd;
+          if(newPet.stats.int) player.stats.int += newPet.stats.int;
+        }
+        alert(`[${petName}] 장착 완료! 펫 효과가 상태창에 적용되었습니다.`);
       }
+      
       if(typeof updateStatus === 'function') updateStatus();
+      saveGame(); // 스탯 변경 후 즉시 세이브 파일 덮어쓰기
     }
 
   </script>
