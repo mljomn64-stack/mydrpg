@@ -20,13 +20,55 @@
       70% { transform: translateY(-5px) scale(0.95, 1.05); }
       80% { transform: translateY(0) scale(1.02, 0.98); }
     }
-    /* ✨ 상점 교환용 캐릭터 이펙트 스타일 */
-    .effect-sparkle {
-      filter: drop-shadow(0 0 10px gold) drop-shadow(0 0 20px yellow);
+/* ✨ 1. 영롱한 황금빛 오라 (반짝이) */
+.effect-sparkle { animation: holySparkle 1.5s infinite ease-in-out; }
+    @keyframes holySparkle {
+      0%, 100% { filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 15px #f1c40f) drop-shadow(0 0 30px #f39c12) brightness(1); transform: translateY(0); }
+      50% { filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 35px #f1c40f) drop-shadow(0 0 60px #f39c12) brightness(1.3); transform: translateY(-5px) scale(1.02); }
     }
-    .effect-fire {
-      filter: drop-shadow(0 0 10px red) drop-shadow(0 0 20px orange);
-      animation: firePulse 0.8s infinite alternate;
+
+    /* 🔥 2. 이글거리는 지옥불 오라 */
+    .effect-fire { animation: hellFire 0.5s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
+    @keyframes hellFire {
+      0% { filter: drop-shadow(0 5px 10px #ffeb3b) drop-shadow(0 -10px 20px #ff9800) drop-shadow(0 -20px 30px #f44336) brightness(1.1); transform: scale(1); }
+      100% { filter: drop-shadow(0 5px 20px #ffeb3b) drop-shadow(0 -15px 35px #ff5722) drop-shadow(0 -35px 60px #b71c1c) brightness(1.4); transform: scale(1.05); }
+    }
+
+    /* ⚡ 3. 짜릿한 번개 (불규칙하게 번쩍임!) */
+    .effect-lightning { animation: lightningStrike 1.5s infinite; }
+    @keyframes lightningStrike {
+      0%, 90%, 100% { filter: drop-shadow(0 0 2px #00e5ff); transform: translateX(0); }
+      92% { filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 40px #fff) brightness(2); transform: translateX(-3px) scale(1.05) skew(-5deg); }
+      94% { filter: drop-shadow(0 0 5px #00e5ff); transform: translateX(3px) scale(0.95); }
+      96% { filter: drop-shadow(0 0 30px #00ffff) drop-shadow(0 0 50px #fff) brightness(2); transform: translateX(-2px) scale(1.1) skew(5deg); }
+      98% { filter: drop-shadow(0 0 2px #00e5ff); transform: translateX(0) scale(1); }
+    }
+
+    /* 🌑 4. 칠흑의 어둠 오라 (검보라색의 묵직한 파동) */
+    .effect-dark { animation: darkAura 2s infinite alternate ease-in-out; }
+    @keyframes darkAura {
+      0% { filter: drop-shadow(0 0 10px #4a235a) drop-shadow(0 0 20px #17202a) brightness(0.7); transform: scale(1); }
+      100% { filter: drop-shadow(0 -10px 25px #6c3483) drop-shadow(0 -20px 50px #000) brightness(0.4); transform: scale(1.08); }
+    }
+
+    /* 👼 5. 성스러운 빛 (천사처럼 은은하게 떠오르는 빛) */
+    .effect-holy { animation: holyAura 3s infinite ease-in-out; }
+    @keyframes holyAura {
+      0%, 100% { filter: drop-shadow(0 0 15px #fcf3cf) drop-shadow(0 0 30px #fff) brightness(1.1); transform: translateY(0); }
+      50% { filter: drop-shadow(0 -15px 30px #f9e79f) drop-shadow(0 -30px 60px #fff) brightness(1.5); transform: translateY(-8px); }
+    }
+
+    /* 👾 6. 시스템 에러 글리치 (화면이 깨지는 듯한 버그 효과!) */
+    .effect-glitch { animation: glitchSkew 2.5s infinite linear; }
+    @keyframes glitchSkew {
+      0%, 18%, 22%, 38%, 42%, 100% { filter: drop-shadow(0 0 0 transparent); transform: skew(0deg) translate(0); }
+      20% { filter: drop-shadow(-4px 0 0 rgba(255,0,0,0.8)) drop-shadow(4px 0 0 rgba(0,255,255,0.8)); transform: skew(3deg) translate(-2px, 1px); }
+      40% { filter: drop-shadow(-4px 0 0 rgba(255,0,255,0.8)) drop-shadow(4px 0 0 rgba(0,255,0,0.8)); transform: skew(-4deg) translate(3px, -2px); }
+      41% { filter: drop-shadow(4px 0 0 rgba(255,0,0,0.8)) drop-shadow(-4px 0 0 rgba(0,255,255,0.8)); transform: skew(5deg) translate(-1px, 2px); }
+    }
+    @keyframes hellFire {
+      0% { filter: drop-shadow(0 5px 10px #ffeb3b) drop-shadow(0 -10px 20px #ff9800) drop-shadow(0 -20px 30px #f44336) brightness(1.1); transform: scale(1); }
+      100% { filter: drop-shadow(0 5px 20px #ffeb3b) drop-shadow(0 -15px 35px #ff5722) drop-shadow(0 -35px 60px #b71c1c) brightness(1.4); transform: scale(1.05); }
     }
     @keyframes firePulse {
       0% { filter: drop-shadow(0 0 8px red) drop-shadow(0 0 15px orange); }
@@ -103,6 +145,17 @@
     }
     .sprite-area { position: relative; }
 
+    /* 💡 배경이 비쳐도 UI 박스 안의 글자가 선명하게 읽히도록 수정 */
+    .status-box, .rpg-start-box, #boss-select-box, .gacha-result, #dynamic-field-box {
+      background: rgba(253, 245, 211, 0.93) !important; /* 따뜻한 레트로 종이 질감 배경 */
+      box-shadow: 4px 4px 0px rgba(106, 76, 156, 0.4);
+    }
+
+    /* ✍️ 글자 테두리에 은은한 빛을 주어 가독성 극대화 */
+    body, .btn, .top-bar, .status-box, h3, h4 {
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+
   </style>
 </head>
 <body>
@@ -177,7 +230,24 @@
             <div id="boss-list-container" style="max-height: 250px; overflow-y: auto;"></div>
             <button class="btn" style="padding: 5px 15px; margin-top: 10px;" onclick="closeSelectBoxes()">취소</button>
           </div>
-          <hr>
+          
+          <!-- 👇 메인 화면 하단 스탯/체력/칭호 요약창 추가! -->
+          <div class="status-box" style="margin: 15px 20px; font-size: 13px; text-align: center; border: 2px solid var(--line-color);">
+            <strong style="color: #e74c3c;">💖 내 체력:</strong> <span id="main-hp-text" style="font-weight:bold;">100</span> / <span id="main-max-hp-text">100</span><br>
+            <strong style="color: var(--accent-pink);">👑 칭호:</strong> <span id="main-title-text" style="font-weight:bold;">포동돼지커플</span>
+            <hr style="margin: 10px 0;">
+            <strong style="color: #3498db;">📊 현재 스탯</strong><br>
+            <div style="display: flex; justify-content: space-around; margin-top: 8px;">
+              <div>⚔️공격: <span id="main-atk">10</span></div>
+              <div>🏹원거리: <span id="main-ratk">10</span></div>
+              <div>🛡️방어: <span id="main-def">10</span></div>
+            </div>
+            <div style="display: flex; justify-content: space-around; margin-top: 8px;">
+              <div>💨스피드: <span id="main-spd">10</span></div>
+              <div>🧠지력: <span id="main-int">10</span></div>
+            </div>
+          </div>
+          
         </div>
       </div>
 <!-- 🎯 분리된 미션 탭 -->
@@ -213,16 +283,20 @@
         <div style="background: rgba(39, 174, 96, 0.1); padding: 10px; border: 2px dashed #27ae60; border-radius: 10px; margin-bottom: 15px;">
           <h3 style="margin: 0 0 10px 0; color: #27ae60;">🌿 나뭇잎 토큰 교환소</h3>
           <p style="font-size:12px; margin:0 0 10px 0;">현재 보유 토큰: <strong id="shop-leaf-tokens" style="color:#27ae60;">0</strong>개</p>
-          <button class="btn" style="width: 90%; background:#fff; color:#27ae60; border-color:#27ae60;" onclick="buyWithToken('kossuk', 3, '👃 코쑥 가챠권 1장')">👃 코쑥 가챠권 1장 (🌿 15개)</button>
-          <button class="btn" style="width: 90%; background:#fff; color:#f1c40f; border-color:#f1c40f;" onclick="buyWithToken('gold', 5, '💰 10,000 골드 주머니')">💰 10,000 골드 (🌿 30개)</button>
-          <button class="btn" style="width: 90%; background:#fff; color:#9b59b6; border-color:#9b59b6;" onclick="buyWithToken('effect_sparkle', 15, '✨ 반짝이 오라 이펙트')">✨ 반짝이 오라 이펙트 (🌿 50개)</button>
-          <button class="btn" style="width: 90%; background:#fff; color:#e74c3c; border-color:#e74c3c;" onclick="buyWithToken('effect_fire', 30, '🔥 불타는 열정 이펙트')">🔥 불타는 열정 이펙트 (🌿 100개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#27ae60; border-color:#27ae60;" onclick="buyWithToken('kossuk', 10, '👃 코쑥 가챠권 1장')">👃 코쑥 가챠권 1장 (🌿 10개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#f1c40f; border-color:#f1c40f;" onclick="buyWithToken('gold', 20, '💰 10,000 골드 주머니')">💰 10,000 골드 (🌿 20개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#9b59b6; border-color:#9b59b6;" onclick="buyWithToken('effect_sparkle', 30, '✨ 반짝이 오라 이펙트')">✨ 반짝이 오라 이펙트 (🌿 30개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#e74c3c; border-color:#e74c3c;" onclick="buyWithToken('effect_fire', 50, '🔥 불타는 열정 이펙트')">🔥 불타는 열정 이펙트 (🌿 50개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#3498db; border-color:#3498db;" onclick="buyWithToken('effect_lightning', 150, '⚡ 짜릿한 번개 이펙트')">⚡ 짜릿한 번개 이펙트 (🌿 150개)</button>
+          <button class="btn" style="width: 90%; background:#000; color:#fff; border-color:#6c3483;" onclick="buyWithToken('effect_dark', 200, '🌑 칠흑의 어둠 오라')">🌑 칠흑의 어둠 오라 (🌿 200개)</button>
+          <button class="btn" style="width: 90%; background:#fff; color:#f1c40f; border-color:#f1c40f;" onclick="buyWithToken('effect_holy', 300, '👼 성스러운 빛의 오라')">👼 성스러운 빛의 오라 (🌿 300개)</button>
+          <button class="btn" style="width: 90%; background:#333; color:#00ffcc; border-color:#ff0055;" onclick="buyWithToken('effect_glitch', 500, '👾 시스템 에러 글리치')">👾 시스템 에러 글리치 (🌿 500개)</button>
         </div>
         <h4 style="margin: 5px;">배경 테마 구매</h4>
-        <button class="btn btn-theme" style="background:#2c3e50; color:#fff;" onclick="buyTheme('theme_night', '🌙 고요한 밤', '#2c3e50', 3000, false)">🌙 고요한 밤 (3000 G)</button>
-        <button class="btn btn-theme" style="background:#ff9ff3; color:#fff;" onclick="buyTheme('theme_cherry', '🌸 흩날리는 벚꽃', '#ff9ff3', 3000, false)">🌸 흩날리는 벚꽃 (3000 G)</button>
-        <button class="btn btn-theme" style="background:#48dbfb; color:#fff;" onclick="buyTheme('theme_sea', '🌊 푸른 바다', '#48dbfb', 4000, false)">🌊 푸른 바다 (4000 G)</button>
-        <button class="btn btn-theme" style="background:#d35400; color:#fff;" onclick="buyTheme('theme_maple', '🍁 단풍나무숲', '#d35400', 4000, false)">🍁 단풍나무숲 (4000 G)</button>
+        <button class="btn btn-theme" style="background:#ff9ff3; color:#fff;" onclick="buyTheme('theme_cherry', '🌸 흩날리는 벚꽃', 'sakura_00.png', 5000, true)">🌸 흩날리는 벚꽃 (5000 G)</button>
+        <button class="btn btn-theme" style="background:#48dbfb; color:#fff;" onclick="buyTheme('theme_sea', '🌊 푸른 바다', 'ocean_00.png', 8000, true)">🌊 푸른 바다 (8000 G)</button>
+        <button class="btn btn-theme" style="background:#d35400; color:#fff;" onclick="buyTheme('theme_maple', '🍁 단풍나무숲', 'fall_00.png', 10000, true)">🍁 단풍나무숲 (10000 G)</button>
+        <button class="btn btn-theme" style="background:#2c3e50; color:#fff;" onclick="buyTheme('theme_night', '🌙 고요한 밤', 'night_00.png', 15000, true)">🌙 고요한 밤 (15000 G)</button>
         <hr>
         <h4 style="margin: 5px;">배경음악(BGM) 구매</h4>
         <button class="btn btn-theme" style="background:#27ae60; color:#fff;" onclick="buyBgm('bgm_new', '🌿 평화의 숲', 'cute02.mp3', 1000, 5)">🌿 평화의 숲 BGM (1000 G) [Lv.5+]</button>
@@ -282,7 +356,7 @@
       </div>
 
       <div id="tab-status" class="content-area hidden">
-        <h2>📊 상태창 및 보관함</h2>
+        <h2>📊 환경설정 및 기록</h2>
         <div class="status-box">
           <strong>👤 이름:</strong> <span id="st-name"></span> (<span id="st-class"></span>)<br>
           <strong>⚖️ 체중 관리:</strong><br>
@@ -321,7 +395,7 @@
         <div class="nav-item" onclick="switchTab('gacha')">🔮<br>가챠</div>
         <div class="nav-item" onclick="switchTab('shop')">🛒<br>상점</div>
         <div class="nav-item" onclick="switchTab('inventory')">🎒<br>소지품</div>
-        <div class="nav-item" onclick="switchTab('status')">📜<br>상태</div>
+        <div class="nav-item" onclick="switchTab('status')">📜<br>설정</div>
       </div>
 
     </div>
@@ -341,29 +415,31 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       { name: "웃고있는 식혜", hp: 300, atk: 10, reward: 150, penalty: 30, image: "monster_hye.png" },
       { name: "서울도넛 고스트", hp: 750, atk: 20, reward: 280, penalty: 60, image: "monster_seoul.png" },
       { name: "데블 초코콘", hp: 1000, atk: 30, reward: 450, penalty: 300, image: "monster_cho.png" },
-      { name: "사천탕수육 임프", hp: 2000, atk: 50, reward: 800, penalty: 1000, image: "monster_sa.png" },
-      { name: "심야의 후라이드 치킨", hp: 3000, atk: 70, reward: 1000, penalty: 1500, image: "https://img.icons8.com/color/150/chicken.png" },
-      { name: "흑당 버블티 골렘", hp: 5500, atk: 100, reward: 2000, penalty: 2000, image: "https://img.icons8.com/color/150/bubble-tea.png" }
+      // 👇 후반 몬스터 대폭 상향!
+      { name: "사천탕수육 임프", hp: 3000, atk: 80, reward: 800, penalty: 1000, image: "monster_sa.png" },
+      { name: "심야의 후라이드 치킨", hp: 5000, atk: 120, reward: 1000, penalty: 1500, image: "https://img.icons8.com/color/150/chicken.png" },
+      { name: "흑당 버블티 골렘", hp: 9000, atk: 180, reward: 2000, penalty: 2000, image: "https://img.icons8.com/color/150/bubble-tea.png" }
     ];
 
     const bossList = [
       { name: "🌊 심해의 김밥 오로치", hp: 1500, atk: 30, reward: 1500, penalty: 200, image: "boss_cham.png" },
       { name: "🖤 블랙 누들 골렘", hp: 3000, atk: 80, reward: 3000, penalty: 350, image: "boss_jja.png" },
-      { name: "🔥 블러드 스파이시 뱀파이어", hp: 8000, atk: 60, reward: 5500, penalty: 600, image: "boss_mara.png" },
-      { name: "🌋 핵폭탄 치즈 퐁듀 슬라임", hp: 7500, atk: 100, reward: 8000, penalty: 900, image: "boss_yup.png" },
-      { name: "🛡️🥔 흑백의 기사와 눈물 흘리는 대지의 마법사", hp: 13000, atk: 80, reward: 12000, penalty: 1200, image: "boss_snack.png" },
-      { name: "🌋 발효의 군주 김치찜", hp: 10000, atk: 150, reward: 18000, penalty: 2000, image: "boss_gim.png" },
-      { name: "💀 네크로 립 로드", hp: 15000, atk: 130, reward: 25000, penalty: 3500, image: "boss_gal.png" },
-      { name: "🌯 타락한 천사와 악마의 부리또", hp: 25000, atk: 200, reward: 50000, penalty: 5000, image: "boss_burito.png" }
+      // 👇 중후반 보스 체력 & 공격력 무시무시하게 상승!
+      { name: "🔥 블러드 스파이시 뱀파이어", hp: 10000, atk: 100, reward: 5500, penalty: 600, image: "boss_mara.png" },
+      { name: "🌋 핵폭탄 치즈 퐁듀 슬라임", hp: 12000, atk: 150, reward: 8000, penalty: 900, image: "boss_yup.png" },
+      { name: "🛡️🥔 흑백의 기사와 눈물 흘리는 대지의 마법사", hp: 18000, atk: 130, reward: 12000, penalty: 1200, image: "boss_snack.png" },
+      { name: "🌋 발효의 군주 김치찜", hp: 22000, atk: 200, reward: 18000, penalty: 2000, image: "boss_gim.png" },
+      { name: "💀 네크로 립 로드", hp: 30000, atk: 250, reward: 25000, penalty: 3500, image: "boss_gal.png" },
+      { name: "🌯 타락한 천사와 악마의 부리또", hp: 50000, atk: 350, reward: 50000, penalty: 5000, image: "boss_burito.png" }
     ];
 
     const normalQuests = [ { name: "💧 물 한잔 마시기", exp: 20, gold: 50 }, { name: "☀ 아침에 몸무게재기", exp: 30, gold: 50 }, { name: "🔥 배달음식 픽업해오기", exp: 10, gold: 20 }, { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 }, { name: "🥗 8시 이후 금식", exp: 50, gold: 80 }, { name: "🍳 집밥 먹기", exp: 25, gold: 50 }, { name: "🚶‍♀️제자리 걷기 100회", exp: 35, gold: 40 }, { name: "🦶종아리 운동하기", exp: 40, gold: 50 }, { name: "👍밥 먹고 눕지않기", exp: 20, gold: 30 } ];
     const royalQuests = [ { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", exp: 30, ticket: 1 }, { name: "👑 [왕궁] 고독한 타워 오르기", exp: 30, ticket: 1 }, { name: "👑 [왕궁] 용사의 스쿼트 3세트", exp: 50, ticket: 2 }, { name: "👑 [왕궁] 숲 속의 달리기 훈련", exp: 100, ticket: 3 }, { name: "👑 [왕궁] 마법사의 식단 먹기", exp: 80, ticket: 1 }, { name: "👑 [왕궁] 탐험을 위해 12시전에 잠자리에 들기", exp: 100, ticket: 3 } ];
 
     const gachaPool = {
-      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 대폭 상승 (+20)", stat: "spd", add: 20 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 대폭 상승 (+20)", stat: "ratk", add: 20 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 대폭 상승 (+20)", stat: "def", add: 20 }, { name: "디지바이스", icon: "📱", effect: "지력 대폭 상승 (+20)", stat: "int", add: 20 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 대폭 상승 (+20)", stat: "atk", add: 20 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" } ],
-      epic: [ { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "콘서타", icon: "💊", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" } ],
-      rare: [ { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +5", stat: "int", add: 5 }, { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 }, { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +5", stat: "int", add: 5 }, { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +5", stat: "def", add: 5 }, { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 }, { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" } ],
+      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "디지바이스", icon: "📱", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" } ],
+      epic: [ { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+5)", stat: "ratk", add: 5 }, { name: "콘서타", icon: "💊", effect: "공격력 상승 (+5)", stat: "atk", add: 5 }, { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+5)", stat: "int", add: 5 }, { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+5)", stat: "spd", add: 5 }, { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+5)", stat: "def", add: 5 }, { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+5)", stat: "int", add: 5 }, { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" } ],
+      rare: [ { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +2", stat: "int", add: 2 }, { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 }, { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +2", stat: "int", add: 2 }, { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +2", stat: "def", add: 2 }, { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 }, { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" } ],
       normal: [ { name: "알콜스왑", icon: "🩹", effect: "스피드 +1", stat: "spd", add: 1 }, { name: "대나무 화장지", icon: "🧻", effect: "방어력 +1", stat: "def", add: 1 }, { name: "돌돌이", icon: "🧹", effect: "공격력 +1", stat: "atk", add: 1 }, { name: "먼지 낀 서큘레이터", icon: "🌀", effect: "지력 +1", stat: "int", add: 1 }, { name: "가챠 1회권(다시)", icon: "🎫", effect: "티켓 +1", type: "ticket", amount: 1 } ]
     };
 
@@ -382,6 +458,9 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       if (uiLayer) { uiLayer.classList.remove('hidden'); uiLayer.style.display = 'flex'; }
       const mainSprite = document.getElementById('main-sprite');
       if (mainSprite) mainSprite.src = player.image;
+
+      checkAttendance(); // 👈 신규 유저도 시작하자마자 1일차 보상 획득!
+
       renderQuests(); updateStatus(); saveGame();
     }
 
@@ -504,12 +583,25 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
 
     function attackBoss() {
       let weightBuff = getWeightBuffMultiplier(); let baseDamage = player.stats.atk * 5; let totalDamage = Math.floor((baseDamage + Math.floor(Math.random() * 20)) * weightBuff);
+      
       if (currentEnemy.currentHp <= currentEnemy.maxHp * 0.5 && !currentEnemy.missionTriggered) {
         currentEnemy.missionTriggered = true;
-        let success = confirm(`🔥 [보스 발악 패턴!] 현실 운동 미션 발생!\n\n지금 당장 현실에서 [스쿼트 10회]를 하고 오세요!\n성공적으로 마쳤다면 '확인'을 누르세요.`);
+        
+        // 💡 3가지 현실 운동 미션을 배열에 담기!
+        const bossMissions = [
+          { name: "스쿼트 10회", desc: "지금 당장 현실에서 [스쿼트 10회]를 하고 오세요!" },
+          { name: "카프레이즈 20회", desc: "종아리 스트레칭! [카프레이즈 20회]를 하고 오세요!" },
+          { name: "제자리걸음 50회", desc: "유산소 폭발! [제자리걸음 50회]를 하고 오세요!" }
+        ];
+        
+        // 랜덤으로 하나 고르기
+        let selectedMission = bossMissions[Math.floor(Math.random() * bossMissions.length)];
+
+        let success = confirm(`🔥 [보스 발악 패턴!] 현실 운동 미션 발생!\n\n${selectedMission.desc}\n성공적으로 마쳤다면 '확인'을 누르세요.`);
+        
         if (success) {
           let dmg = player.stats.atk * 30; currentEnemy.currentHp -= dmg; if(currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
-          let log = `💪 [미션 성공!] 스쿼트의 힘으로 ${dmg} 데미지!!<br>😵 보스가 기절했습니다!`; finishAttack(log, 0); return;
+          let log = `💪 [미션 성공!] ${selectedMission.name}의 힘으로 ${dmg} 데미지!!<br>😵 보스가 기절했습니다!`; finishAttack(log, 0); return;
         } else {
           alert("운동을 포기했습니다... 보스의 맹공격이 쏟아집니다!");
           let dmg = player.stats.atk * 3; let log = `😥 [미션 실패] 적에게 ${dmg} 데미지...`;
@@ -521,6 +613,7 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
           finishAttack(log, enemyDmg); return;
         }
       }
+      
       let dmg = totalDamage; currentEnemy.currentHp -= dmg; if (currentEnemy.currentHp < 0) currentEnemy.currentHp = 0;
       let log = `⚔️ 내 공격! 적에게 ${dmg} 데미지!`; let enemyDmg = Math.max(3, currentEnemy.atk - Math.floor(player.stats.def * 0.5));
       finishAttack(log, enemyDmg);
@@ -676,26 +769,26 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       updateStatus(); saveGame();
     }
 
-    // 🐾 펫 데이터 풀
-    const petPool = {
+// 🐾 펫 데이터 풀 (스탯 너프)
+const petPool = {
       common: [
-        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "지력(INT) +5", token: 1, image: "pet_pi.png", stats: { int: 5 } },
-        { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "최대 체력 +20", token: 1, image: "pet_omega.png", stats: { hp: 20 } }
+        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "지력(INT) +2", token: 1, image: "pet_pi.png", stats: { int: 2 } },
+        { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "최대 체력 +10", token: 1, image: "pet_omega.png", stats: { hp: 10 } }
       ],
       rare: [
-        { name: "물마시는 해달", icon: "🦦", tier: "레어", cssClass: "rare", effect: "최대 체력 +40", token: 3, image: "pet_su.png", stats: { hp: 40 } },
-        { name: "만보 걷는 다람쥐", icon: "🐿️", tier: "레어", cssClass: "rare", effect: "스피드(SPD) +10", token: 3, image: "https://img.icons8.com/color/100/squirrel.png", stats: { spd: 10 } },
-        { name: "공복의 치타", icon: "🐆", tier: "레어", cssClass: "rare", effect: "원거리(RATK) +15", token: 3, image: "pet_chi.png", stats: { ratk: 15 } }
+        { name: "물마시는 해달", icon: "🦦", tier: "레어", cssClass: "rare", effect: "최대 체력 +20", token: 3, image: "pet_su.png", stats: { hp: 20 } },
+        { name: "만보 걷는 다람쥐", icon: "🐿️", tier: "레어", cssClass: "rare", effect: "스피드(SPD) +3", token: 3, image: "pet_daram.png", stats: { spd: 3 } },
+        { name: "공복의 치타", icon: "🐆", tier: "레어", cssClass: "rare", effect: "원거리(RATK) +5", token: 3, image: "pet_chi.png", stats: { ratk: 5 } }
       ],
       epic: [
-        { name: "코렐라인 인형", icon: "🪡", tier: "에픽", cssClass: "epic", effect: "방어력(DEF) +20", token: 10, image: "pet_coral.png", stats: { def: 20 } },
-        { name: "디지블루 디아블로몬", icon: "😈", tier: "에픽", cssClass: "epic", effect: "공격력(ATK) +20", token: 10, image: "https://img.icons8.com/color/100/monster.png", stats: { atk: 20 } },
-        { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "지력(INT) +20", token: 10, image: "pet_jack.png", stats: { int: 20 } }
+        { name: "코렐라인 인형", icon: "🪡", tier: "에픽", cssClass: "epic", effect: "방어력(DEF) +7", token: 10, image: "pet_coral.png", stats: { def: 7 } },
+        { name: "디지블루 디아블로몬", icon: "😈", tier: "에픽", cssClass: "epic", effect: "공격력(ATK) +7", token: 10, image: "pet_dia.png", stats: { atk: 7 } },
+        { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "지력(INT) +7", token: 10, image: "pet_jack.png", stats: { int: 7 } }
       ],
       mythic: [
-        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10", token: 30, image: "pet_quko01.png", stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 } },
-        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력/원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } },
-        { name: "칠흑의 파괴신 블랙워그레이몬", icon: "🐉", tier: "신화", cssClass: "mythic", effect: "공격력(ATK) +50 대폭발", token: 30, image: "pet_black.png", stats: { atk: 50 } }
+        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +3", token: 30, image: "pet_quko01.png", stats: { atk: 3, ratk: 3, def: 3, spd: 3, int: 3 } },
+        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력/원거리 +10", token: 30, image: "pet_quko02.png", stats: { atk: 10, ratk: 10 } },
+        { name: "칠흑의 파괴신 블랙워그레이몬", icon: "🐉", tier: "신화", cssClass: "mythic", effect: "공격력(ATK) +15 대폭발", token: 30, image: "pet_black.png", stats: { atk: 15 } }
       ]
     };
 
@@ -763,10 +856,11 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       updateStatus(); saveGame();
     }
 
-    const kossukPool = [
-      { name: "🐽 쿼카의 돼지코", icon: "🐽", tier: "✨신화", cssClass: "mythic", effect: "모든 스탯 +30 대박!", stat: "all", add: 30, chance: 3 },
-      { name: "🤧 부드러운 비염티슈", icon: "🤧", tier: "💜에픽", cssClass: "epic", effect: "공격력 +25", stat: "atk", add: 25, chance: 15 },
-      { name: "👃 코알라의 긴코", icon: "🦏", tier: "💙레어", cssClass: "rare", effect: "방어력 +20", stat: "def", add: 20, chance: 32 },
+// 👃 코쑥 가챠 전용 풀 (스탯 너프)
+const kossukPool = [
+      { name: "🐽 쿼카의 돼지코", icon: "🐽", tier: "✨신화", cssClass: "mythic", effect: "모든 스탯 +5 대박!", stat: "all", add: 5, chance: 3 },
+      { name: "🤧 부드러운 비염티슈", icon: "🤧", tier: "💜에픽", cssClass: "epic", effect: "공격력 +8", stat: "atk", add: 8, chance: 15 },
+      { name: "👃 코알라의 긴코", icon: "🦏", tier: "💙레어", cssClass: "rare", effect: "방어력 +5", stat: "def", add: 5, chance: 32 },
       { name: "🧻 먼지나는 휴지", icon: "🧻", tier: "🤍일반", cssClass: "normal", effect: "1,000 골드 획득 (꽝...)", type: "gold", add: 1000, chance: 50 }
     ];
 
@@ -843,6 +937,19 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       if(questCount >= 300) title = "이제야 좀 달라!"; if(questCount >= 500) title = "날씬커플"; if(questCount >= 800) title = "정말 멋져"; if(questCount >= 1000) title = "넌...최고의 용사";
       document.getElementById('st-title').innerText = title;
 
+      // 👇 메인 화면(몬스터 사냥 탭) 요약창 스탯 업데이트 추가!
+      const mainHpText = document.getElementById('main-hp-text');
+      if (mainHpText) {
+        mainHpText.innerText = player.currentHp;
+        document.getElementById('main-max-hp-text').innerText = player.maxHp;
+        document.getElementById('main-title-text').innerText = title;
+        document.getElementById('main-atk').innerText = player.stats.atk;
+        document.getElementById('main-ratk').innerText = player.stats.ratk;
+        document.getElementById('main-def').innerText = player.stats.def;
+        document.getElementById('main-spd').innerText = player.stats.spd;
+        document.getElementById('main-int').innerText = player.stats.int;
+      }
+
       document.getElementById('st-atk').innerText = player.stats.atk; document.getElementById('st-ratk').innerText = player.stats.ratk; document.getElementById('st-def').innerText = player.stats.def; document.getElementById('st-spd').innerText = player.stats.spd; document.getElementById('st-int').innerText = player.stats.int;
       document.getElementById('st-royal').innerText = player.records.royalQuests; document.getElementById('st-boss-kill').innerText = player.records.bossKills; document.getElementById('st-total-gold').innerText = player.records.totalGold;
       
@@ -868,14 +975,37 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       
       const leafTokenSpan = document.getElementById('inv-leaf-tokens'); if (leafTokenSpan) leafTokenSpan.innerText = player.leafTokens || 0;
       
-      const mainSprite = document.getElementById('main-sprite');
-      if (mainSprite) { mainSprite.classList.remove('effect-sparkle', 'effect-fire'); if (player.currentEffect && player.currentEffect !== 'none') { mainSprite.classList.add(player.currentEffect); } }
-
-      const effectSelect = document.getElementById('effect-select');
+// 💡 주인공 이펙트 적용
+const mainSprite = document.getElementById('main-sprite');
+      if (mainSprite) {
+        // 기존 거 지우고 (6개 모두 등록!)
+        mainSprite.classList.remove('effect-sparkle', 'effect-fire', 'effect-lightning', 'effect-dark', 'effect-holy', 'effect-glitch'); 
+        if (player.currentEffect && player.currentEffect !== 'none') {
+          mainSprite.classList.add(player.currentEffect); // 선택한 거 붙이기!
+        }
+      }
+// 💡 상태창 이펙트 드롭다운 목록 갱신
+const effectSelect = document.getElementById('effect-select');
       if(effectSelect) { 
-        effectSelect.innerHTML = ""; const effectNames = { 'none': '선택 안함 (기본)', 'effect-sparkle': '✨ 반짝이 오라', 'effect-fire': '🔥 불타는 열정' };
+        effectSelect.innerHTML = ""; 
+        // 👇 이펙트 이름 6개로 업데이트!
+        const effectNames = { 
+          'none': '선택 안함 (기본)', 
+          'effect-sparkle': '✨ 반짝이 오라', 
+          'effect-fire': '🔥 불타는 열정',
+          'effect-lightning': '⚡ 짜릿한 번개',
+          'effect-dark': '🌑 칠흑의 어둠',
+          'effect-holy': '👼 성스러운 빛',
+          'effect-glitch': '👾 버그 글리치'
+        };
         if(!player.unlockedEffects) player.unlockedEffects = ['none'];
-        player.unlockedEffects.forEach(eff => { let opt = document.createElement('option'); opt.value = eff; opt.innerText = effectNames[eff] || eff; if (eff === player.currentEffect) opt.selected = true; effectSelect.appendChild(opt); }); 
+        player.unlockedEffects.forEach(eff => { 
+          let opt = document.createElement('option'); 
+          opt.value = eff; 
+          opt.innerText = effectNames[eff] || eff; 
+          if (eff === player.currentEffect) opt.selected = true; 
+          effectSelect.appendChild(opt); 
+        }); 
       }
       
       const invPetsDiv = document.getElementById('inv-pets-list');
@@ -916,6 +1046,8 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
         const loadedPlayer = JSON.parse(savedData);
         if (loadedPlayer && loadedPlayer.name) {
           player = loadedPlayer;
+          if (player.attendanceCount === undefined) player.attendanceCount = 0; // 👈 출석일수
+          if (player.lastLoginDate === undefined) player.lastLoginDate = "";    // 👈 마지막 로그인 날짜
           if (player.activeTask === undefined) player.activeTask = null; // 👈 데이터 보정
           if (player.kossukTickets === undefined) player.kossukTickets = 0; if (!player.unlockedEffects) player.unlockedEffects = ['none']; if (player.currentEffect === undefined) player.currentEffect = 'none';
           if (!player.unlockedThemes) player.unlockedThemes = { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } }; if (!player.unlockedBgms) player.unlockedBgms = { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } };
@@ -925,6 +1057,8 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
           const uiLayer = document.getElementById('ui-layer'); if (uiLayer) { uiLayer.classList.remove('hidden'); uiLayer.style.display = 'flex'; }
           const mainSprite = document.getElementById('main-sprite'); if (mainSprite && player.image) mainSprite.src = player.image;
           if (typeof renderQuests === 'function') renderQuests(); if (typeof updateStatus === 'function') updateStatus(); if (typeof updateTaskUI === 'function') updateTaskUI();
+          checkAttendance(); // 👈 접속 시 출석체크 실행!
+          
           return true;
         }
       } catch (e) { console.error("불러오기 실패", e); } return false;
@@ -1049,7 +1183,9 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
         const stats = ['atk', 'ratk', 'def', 'spd', 'int'];
         const statKor = { atk: '공격력', ratk: '원거리', def: '방어력', spd: '스피드', int: '지력' };
         let pick = stats[Math.floor(Math.random() * stats.length)];
-        let gain = 5 * mult; // 30분=5, 1시간=10, 2시간=20 상승!
+        
+        // 👇 상승량 하향 조절! (2.5 곱하기)
+        let gain = Math.floor(2.5 * mult); 
         
         player.stats[pick] += gain;
         msg = `💪 훈련 완료!\n가장 열심히 한 [${statKor[pick]}] 스탯이 ${gain}만큼 영구 상승했습니다!`;
@@ -1080,6 +1216,50 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       updateTaskUI();
       saveGame();
     }
+
+// ==========================================
+    // 📅 매일 오전 8시 리셋! 출석체크 시스템
+    // ==========================================
+    function checkAttendance() {
+      // 1. 현재 시간 가져오기
+      const now = new Date();
+      // 2. 핵심 로직: 현재 시간에서 8시간을 빼서 계산합니다. 
+      // (이렇게 하면 오전 8시 전까지는 어제 날짜로, 8시가 넘어가면 오늘 날짜로 인식합니다!)
+      const gameDateObj = new Date(now.getTime() - (8 * 60 * 60 * 1000));
+      const gameDateStr = gameDateObj.getFullYear() + "-" + (gameDateObj.getMonth() + 1) + "-" + gameDateObj.getDate();
+
+      // 마지막 접속 날짜와 다르면 출석 인정!
+      if (player.lastLoginDate !== gameDateStr) {
+        player.lastLoginDate = gameDateStr;
+        player.attendanceCount = (player.attendanceCount || 0) + 1;
+        
+        // 7일을 넘기면 다시 1일차로 리셋
+        if (player.attendanceCount > 7) { player.attendanceCount = 1; }
+
+        let msg = `📅 출석체크 ${player.attendanceCount}일차 보상 도착!\n\n`;
+        let day = player.attendanceCount;
+
+        // 3. 일자별 보상 지급 로직
+        if (day === 1) { player.gold += 100; player.records.totalGold += 100; msg += "💰 100 골드"; }
+        else if (day === 2) { player.gold += 200; player.records.totalGold += 200; msg += "💰 200 골드"; }
+        else if (day === 3) { player.gold += 300; player.records.totalGold += 300; msg += "💰 300 골드"; }
+        else if (day === 4) { player.gold += 500; player.records.totalGold += 500; msg += "💰 500 골드"; }
+        else if (day === 5) { player.gold += 1000; player.records.totalGold += 1000; msg += "💰 1,000 골드"; }
+        else if (day === 6) { player.tickets += 1; msg += "🎟️ 가챠 티켓 1장"; }
+        else if (day === 7) { 
+          player.gold += 500; player.records.totalGold += 500;
+          player.tickets += 1; 
+          player.kossukTickets += 1;
+          msg += "💰 500 골드\n🎟️ 가챠 티켓 1장\n👃 코쑥 가챠권 1장\n\n🎉 7일 연속 출석 완료! 내일부터 다시 1일차 보상이 시작됩니다."; 
+        }
+
+        alert(msg); // 팝업으로 보상 알림 띄우기!
+        updateStatus();
+        saveGame();
+      }
+    }
+
+    
 
   </script>
 </body>
