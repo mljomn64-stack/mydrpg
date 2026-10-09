@@ -864,7 +864,6 @@ const petPool = {
         { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10 증가", token: 30, image: "pet_quko01.png", stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 } },
         { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력 및 원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } }
       ]
-      
     };
 
     // 🐾 이름으로 펫 정보 찾기 (도우미 함수)
@@ -916,9 +915,11 @@ const petPool = {
       }
       
       updateStatus();
+      saveGame();
     }
-// 🌿 토큰 교환 함수
-function buyWithToken(type, cost, name) {
+
+    // 🌿 토큰 교환 함수
+    function buyWithToken(type, cost, name) {
       if ((player.leafTokens || 0) < cost) { alert(`나뭇잎 토큰이 부족합니다! (필요: ${cost}개)`); return; }
       
       if (type === 'kossuk') {
@@ -991,9 +992,9 @@ function buyWithToken(type, cost, name) {
       player.currentEffect = effectClass;
       updateStatus(); saveGame();
     }
-    // 🐾 펫 장착 및 해제 함수 (스탯 완벽 연동!)
+
+    // 🐾 펫 장착 및 해제 함수 (스탯 연동)
     function toggleEquipPet(petName) {
-      // 1. 기존 장착 펫 해제 시 스탯 원상복구
       if (player.equippedPet) {
         let oldPet = getPetDataByName(player.equippedPet);
         if (oldPet && oldPet.stats) {
@@ -1006,12 +1007,10 @@ function buyWithToken(type, cost, name) {
         }
       }
 
-      // 2. 다시 누르면 해제만 하고 종료
       if (player.equippedPet === petName) {
         player.equippedPet = null;
         alert("펫을 해제하여 스탯이 원상복구 되었습니다.");
       } else {
-      // 3. 새로운 펫 장착 시 스탯 추가
         player.equippedPet = petName;
         let newPet = getPetDataByName(petName);
         if (newPet && newPet.stats) {
@@ -1026,7 +1025,7 @@ function buyWithToken(type, cost, name) {
       }
       
       if(typeof updateStatus === 'function') updateStatus();
-      saveGame(); // 스탯 변경 후 즉시 세이브 파일 덮어쓰기
+      saveGame();
     }
 
   </script>
