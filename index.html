@@ -12,6 +12,14 @@
   <style>
     @import url('https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css');
     
+    /* 💡 생동감 넘치는 통통 튀는 애니메이션 (찌그러짐+늘어남 효과) */
+    @keyframes livelyBounce {
+      0%, 100% { transform: translateY(0) scale(1, 1); }
+      30% { transform: translateY(-15px) scale(0.9, 1.1); }
+      50% { transform: translateY(0) scale(1.1, 0.9); }
+      70% { transform: translateY(-5px) scale(0.95, 1.05); }
+      80% { transform: translateY(0) scale(1.02, 0.98); }
+    }
     /* ✨ 상점 교환용 캐릭터 이펙트 스타일 */
     .effect-sparkle {
       filter: drop-shadow(0 0 10px gold) drop-shadow(0 0 20px yellow);
@@ -257,11 +265,14 @@
             <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 120)">2시간 알바 시작</button>
           </div>
 
-          <!-- 타이머 진행 화면 -->
-          <div id="task-progress-area" class="hidden">
-            <h3 id="task-title" style="margin-bottom: 5px;">현재 진행 중...</h3>
-            <img src="https://img.icons8.com/color/150/sand-timer.png" style="width: 60px; height: 60px; animation: float 2s infinite ease-in-out;">
-            <div style="font-size: 35px; font-weight: bold; color: #e74c3c; margin: 15px 0; text-shadow: 2px 2px 0px #fff;" id="task-timer-display">00:00:00</div>
+<!-- 타이머 진행 화면 -->
+<div id="task-progress-area" class="hidden">
+  <h3 id="task-title" style="margin-bottom: 5px;">현재 진행 중...</h3>
+  
+  <!-- 👇 id를 추가하고 애니메이션을 livelyBounce로 바꿨습니다! -->
+  <img id="task-progress-img" src="" style="width: 70px; height: 70px; object-fit: contain; animation: livelyBounce 1s infinite;">
+  
+  <div style="font-size: 35px; font-weight: bold; color: #e74c3c; margin: 15px 0; text-shadow: 2px 2px 0px #fff;" id="task-timer-display">00:00:00</div>
             
             <button id="btn-claim-task" class="btn btn-dungeon hidden" style="width: 80%; padding: 15px; font-size: 16px; background: #27ae60;" onclick="claimTaskReward()">🎁 보상 받기!</button>
             <button id="btn-cancel-task" class="btn" style="width: 80%; margin-top: 10px;" onclick="cancelTask()">❌ 포기하기 (보상 없음)</button>
@@ -288,7 +299,7 @@
           <strong>[환경설정 & 꾸미기]</strong><br>
           배경 테마: <select id="theme-select" onchange="changeTheme(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           배경 음악: <select id="bgm-select" onchange="changeBgm(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
-          볼륨 조절: <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)" style="vertical-align: middle;">
+          볼륨 조절: <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)" style="vertical-align: middle;"><br>
           캐릭터 이펙트: <select id="effect-select" onchange="changeEffect(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           <hr>
           <strong>[스탯]</strong><br>
@@ -299,8 +310,6 @@
           <hr>
           <strong>[시스템]</strong><br>
           <button class="btn" style="width: 90%; margin: 5px auto; display: block; background-color: #3498db; color: white;" onclick="alert('🔮 가챠 확률 안내 🔮\n- 일반(🤍): 60%\n- 레어(💙): 30%\n- 에픽(💜): 9%\n- 신화(✨): 1%\n\n💪 다이어트 팁 💪\n스탯의 [지력]이 높으면 퀘스트 완료 시 추가 경험치와 골드를 받습니다!\n감량 몸무게가 목표치를 넘으면 전투력 버프가 적용됩니다!')">❓ 게임 도움말 보기</button>
-          
-          <button class="btn btn-dungeon" style="width: 90%; margin: 10px auto; display: block; background-color: #c0392b; color: white;" onclick="resetGame()">⚠️ 게임 초기화 (처음부터)</button>
           <button class="btn btn-dungeon" style="width: 90%; margin: 10px auto; display: block; background-color: #c0392b; color: white;" onclick="resetGame()">⚠️ 게임 초기화 (처음부터)</button>
         </div>
       </div>
@@ -977,10 +986,19 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
         selectArea.classList.add('hidden');
         progressArea.classList.remove('hidden');
         
-        title.innerText = player.activeTask.type === 'training' ? "💪 훈련소에서 땀 흘리는 중..." : "💼 아르바이트로 돈 버는 중...";
+        // 👇 이미지 요소를 가져와서 훈련/알바에 맞게 그림을 바꿔줍니다!
+        const taskImg = document.getElementById('task-progress-img');
+
+        if (player.activeTask.type === 'training') {
+          title.innerText = "💪 훈련소에서 땀 흘리는 중...";
+          if (taskImg) taskImg.src = "training_01.png"; // 📌 훈련 이미지 파일명 입력
+        } else {
+          title.innerText = "💼 아르바이트로 돈 버는 중...";
+          if (taskImg) taskImg.src = "working_01.png";      // 📌 알바 이미지 파일명 입력
+        }
 
         if (taskInterval) clearInterval(taskInterval);
-        taskInterval = setInterval(checkTaskTimer, 1000); // 1초마다 타이머 검사
+        taskInterval = setInterval(checkTaskTimer, 1000);
         checkTaskTimer();
       }
     }
