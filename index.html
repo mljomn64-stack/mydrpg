@@ -170,14 +170,19 @@
             <button class="btn" style="padding: 5px 15px; margin-top: 10px;" onclick="closeSelectBoxes()">취소</button>
           </div>
           <hr>
-          <h4 style="margin: 5px;">📜 일반 퀘스트 (EXP 획득)</h4>
-          <div id="action-list" style="display: flex; flex-direction: column;"></div>
-          <hr>
-          <h4 style="margin: 5px; color: var(--accent-pink);">👑 왕궁 퀘스트 (티켓 획득)</h4>
-          <div id="royal-list" style="display: flex; flex-direction: column;"></div>
         </div>
       </div>
-
+<!-- 🎯 분리된 미션 탭 -->
+<div id="tab-missions" class="content-area hidden">
+  <h2>🎯 일일 및 왕궁 미션</h2>
+  <div class="status-box">
+    <h4 style="margin: 5px;">📜 일반 퀘스트 (EXP 획득)</h4>
+    <div id="action-list" style="display: flex; flex-direction: column;"></div>
+    <hr>
+    <h4 style="margin: 5px; color: var(--accent-pink);">👑 왕궁 퀘스트 (티켓 획득)</h4>
+    <div id="royal-list" style="display: flex; flex-direction: column;"></div>
+  </div>
+</div>
       <div id="tab-gacha" class="content-area hidden">
         <h2 style="color: var(--line-color);">🔮 왕실 가챠 🔮</h2>
         <p>1회 뽑기: 🎟️ 티켓 1장</p>
@@ -232,6 +237,39 @@
         </div>
       </div>
 
+      <!-- ⏳ 훈련소 & 아르바이트 (타이머) 탭 -->
+      <div id="tab-activity" class="content-area hidden">
+        <h2>⏳ 훈련소 & 아르바이트</h2>
+        <div class="status-box" style="text-align: center;">
+          
+          <!-- 임무 선택 화면 -->
+          <div id="task-selection-area">
+            <p style="font-size:12px; color:#555; margin-top:0;">운동을 하거나 쉴 때 켜두면 보상을 얻습니다!<br>(게임을 꺼도 시간은 흘러갑니다)</p>
+            <hr>
+            <h4 style="margin: 5px; color: #2ecc71;">💪 훈련소 (랜덤 스탯 상승)</h4>
+            <button class="btn" style="width: 80%; margin: 5px; border-color: #2ecc71;" onclick="startTask('training', 30)">30분 훈련 시작 (스탯 +5)</button>
+            <button class="btn" style="width: 80%; margin: 5px; border-color: #2ecc71;" onclick="startTask('training', 60)">1시간 훈련 시작 (스탯 +10)</button>
+            <button class="btn" style="width: 80%; margin: 5px; border-color: #2ecc71;" onclick="startTask('training', 120)">2시간 훈련 시작 (스탯 +20)</button>
+            <hr>
+            <h4 style="margin: 5px; color: #f1c40f;">💼 아르바이트 (재화 획득)</h4>
+            <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 30)">30분 알바 시작</button>
+            <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 60)">1시간 알바 시작</button>
+            <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 120)">2시간 알바 시작</button>
+          </div>
+
+          <!-- 타이머 진행 화면 -->
+          <div id="task-progress-area" class="hidden">
+            <h3 id="task-title" style="margin-bottom: 5px;">현재 진행 중...</h3>
+            <img src="https://img.icons8.com/color/150/sand-timer.png" style="width: 60px; height: 60px; animation: float 2s infinite ease-in-out;">
+            <div style="font-size: 35px; font-weight: bold; color: #e74c3c; margin: 15px 0; text-shadow: 2px 2px 0px #fff;" id="task-timer-display">00:00:00</div>
+            
+            <button id="btn-claim-task" class="btn btn-dungeon hidden" style="width: 80%; padding: 15px; font-size: 16px; background: #27ae60;" onclick="claimTaskReward()">🎁 보상 받기!</button>
+            <button id="btn-cancel-task" class="btn" style="width: 80%; margin-top: 10px;" onclick="cancelTask()">❌ 포기하기 (보상 없음)</button>
+          </div>
+
+        </div>
+      </div>
+
       <div id="tab-status" class="content-area hidden">
         <h2>📊 상태창 및 보관함</h2>
         <div class="status-box">
@@ -260,12 +298,17 @@
           👑 완료한 왕궁 퀘스트: <span id="st-royal">0</span>회<br>💀 처치한 몬스터/마왕: <span id="st-boss-kill">0</span>회<br>💰 누적 획득 골드: <span id="st-total-gold">0</span> G<br>
           <hr>
           <strong>[시스템]</strong><br>
+          <button class="btn" style="width: 90%; margin: 5px auto; display: block; background-color: #3498db; color: white;" onclick="alert('🔮 가챠 확률 안내 🔮\n- 일반(🤍): 60%\n- 레어(💙): 30%\n- 에픽(💜): 9%\n- 신화(✨): 1%\n\n💪 다이어트 팁 💪\n스탯의 [지력]이 높으면 퀘스트 완료 시 추가 경험치와 골드를 받습니다!\n감량 몸무게가 목표치를 넘으면 전투력 버프가 적용됩니다!')">❓ 게임 도움말 보기</button>
+          
+          <button class="btn btn-dungeon" style="width: 90%; margin: 10px auto; display: block; background-color: #c0392b; color: white;" onclick="resetGame()">⚠️ 게임 초기화 (처음부터)</button>
           <button class="btn btn-dungeon" style="width: 90%; margin: 10px auto; display: block; background-color: #c0392b; color: white;" onclick="resetGame()">⚠️ 게임 초기화 (처음부터)</button>
         </div>
       </div>
 
       <div class="bottom-nav">
         <div class="nav-item" onclick="switchTab('main')">🏠<br>메인</div>
+        <div class="nav-item" onclick="switchTab('missions')">🎯<br>미션</div> <!-- 👈 추가됨 -->
+        <div class="nav-item" onclick="switchTab('activity')">⏳<br>활동</div>
         <div class="nav-item" onclick="switchTab('gacha')">🔮<br>가챠</div>
         <div class="nav-item" onclick="switchTab('shop')">🛒<br>상점</div>
         <div class="nav-item" onclick="switchTab('inventory')">🎒<br>소지품</div>
@@ -335,7 +378,8 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
 
     function switchTab(tabName) {
       if (inBattle && tabName !== 'main') { alert("전투 중에는 다른 탭으로 이동할 수 없습니다!"); return; }
-      ['main', 'gacha', 'shop', 'inventory', 'status'].forEach(t => { 
+      // 👇 배열에 'activity' 를 추가했습니다!
+      ['main', 'missions', 'gacha', 'shop', 'inventory', 'activity', 'status'].forEach(t => { 
         const tab = document.getElementById('tab-' + t); 
         if(tab) tab.classList.add('hidden'); 
       });
@@ -517,17 +561,34 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
     function stopTiming() { clearInterval(timingInterval); if (timingPos >= 30 && timingPos <= 70) endMinigame(true, 2.0); else endMinigame(false, 0); }
 
     function finishAttack(logText, enemyDmg) {
-      const enemySprite = document.getElementById('battle-enemy-img'); if (enemySprite) { enemySprite.classList.add('shake'); setTimeout(() => enemySprite.classList.remove('shake'), 200); }
+      const enemySprite = document.getElementById('battle-enemy-img'); 
+      if (enemySprite) { enemySprite.classList.add('shake'); setTimeout(() => enemySprite.classList.remove('shake'), 200); }
+      
       if (enemyDmg > 0) { setTimeout(() => { const playerSprite = document.getElementById('battle-player-img'); if (playerSprite) { playerSprite.classList.add('shake'); setTimeout(() => playerSprite.classList.remove('shake'), 200); } }, 300); }
       if (enemyDmg > 0) { player.currentHp -= enemyDmg; if (player.currentHp < 0) player.currentHp = 0; }
+      
       updateBattleUI();
+      
+      // 내 체력이 0이 되어 패배했을 때
       if (player.currentHp === 0) {
         document.getElementById('battle-log').innerHTML = logText;
         setTimeout(() => { const lostGold = currentEnemy.penalty; player.gold = Math.max(0, player.gold - lostGold); alert(`💀 전투 패배...\n골드 [${lostGold} G]를 떨어뜨렸습니다!`); exitBattle(); }, 200); return;
       }
+      
       document.getElementById('battle-log').innerHTML = logText;
+      
+      // 💡 적의 체력이 0이 되어 승리했을 때 (여기 수정됨!)
       if (currentEnemy.currentHp === 0) {
-        setTimeout(() => { alert(`🎉 [${currentEnemy.name}] 토벌 성공!\n보상: ${currentEnemy.reward} 골드 획득!`); player.gold += currentEnemy.reward; player.records.totalGold += currentEnemy.reward; if (currentEnemy.isBoss) player.records.bossKills += 1; exitBattle(); }, 300);
+        setTimeout(() => { 
+          alert(`🎉 [${currentEnemy.name}] 토벌 성공!\n보상: ${currentEnemy.reward} 골드 획득!`); 
+          player.gold += currentEnemy.reward; 
+          player.records.totalGold += currentEnemy.reward; 
+          
+          // 💡 일반 몬스터, 보스 상관없이 모두 처치 횟수에 카운트되도록 제한 해제!
+          player.records.bossKills += 1; 
+          
+          exitBattle(); 
+        }, 300);
       }
     }
 
@@ -624,7 +685,8 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       ],
       mythic: [
         { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10", token: 30, image: "pet_quko01.png", stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 } },
-        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력/원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } }
+        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력/원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } },
+        { name: "칠흑의 파괴신 블랙워그레이몬", icon: "🐉", tier: "신화", cssClass: "mythic", effect: "공격력(ATK) +50 대폭발", token: 30, image: "pet_black.png", stats: { atk: 50 } }
       ]
     };
 
@@ -845,6 +907,7 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
         const loadedPlayer = JSON.parse(savedData);
         if (loadedPlayer && loadedPlayer.name) {
           player = loadedPlayer;
+          if (player.activeTask === undefined) player.activeTask = null; // 👈 데이터 보정
           if (player.kossukTickets === undefined) player.kossukTickets = 0; if (!player.unlockedEffects) player.unlockedEffects = ['none']; if (player.currentEffect === undefined) player.currentEffect = 'none';
           if (!player.unlockedThemes) player.unlockedThemes = { 'default': { name: '🌲 평화로운 숲', color: '#fdf5d3' } }; if (!player.unlockedBgms) player.unlockedBgms = { 'default': { name: '🎵 기본 평화 BGM', file: 'main.mp3' } };
           if (!player.pets) player.pets = {}; if (player.leafTokens === undefined) player.leafTokens = 0; if (!player.inventory) player.inventory = {};
@@ -852,7 +915,7 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
           const startScreen = document.getElementById('start-screen'); if (startScreen) { startScreen.classList.add('hidden'); startScreen.style.display = 'none'; }
           const uiLayer = document.getElementById('ui-layer'); if (uiLayer) { uiLayer.classList.remove('hidden'); uiLayer.style.display = 'flex'; }
           const mainSprite = document.getElementById('main-sprite'); if (mainSprite && player.image) mainSprite.src = player.image;
-          if (typeof renderQuests === 'function') renderQuests(); if (typeof updateStatus === 'function') updateStatus();
+          if (typeof renderQuests === 'function') renderQuests(); if (typeof updateStatus === 'function') updateStatus(); if (typeof updateTaskUI === 'function') updateTaskUI();
           return true;
         }
       } catch (e) { console.error("불러오기 실패", e); } return false;
@@ -877,6 +940,129 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       const isConfirm = confirm("⚠️ 경고!\n정말로 모든 데이터를 지우고 처음부터 다시 시작하시겠습니까?\n(이 작업은 절대 되돌릴 수 없습니다!)");
       if (isConfirm) { player.name = ""; localStorage.removeItem('dietRpgSaveData'); alert("데이터가 완전히 초기화되었습니다. 새로운 모험을 시작합니다!"); location.reload(); }
     }
+
+// ==========================================
+    // ⏳ 훈련소 & 아르바이트 (타이머 방치형 시스템)
+    // ==========================================
+    let taskInterval = null;
+
+    function startTask(type, minutes) {
+      if (player.activeTask) { alert("이미 진행 중인 활동이 있습니다!"); return; }
+      const endTime = Date.now() + (minutes * 60 * 1000); // 현재 시간 + 분(minutes)을 밀리초로 변환
+      player.activeTask = { type: type, duration: minutes, endTime: endTime };
+      saveGame();
+      updateTaskUI();
+    }
+
+    function cancelTask() {
+      if (confirm("정말로 활동을 취소하시겠습니까? (보상을 받을 수 없습니다!)")) {
+        player.activeTask = null;
+        saveGame();
+        updateTaskUI();
+      }
+    }
+
+    function updateTaskUI() {
+      const selectArea = document.getElementById('task-selection-area');
+      const progressArea = document.getElementById('task-progress-area');
+      const title = document.getElementById('task-title');
+
+      if (!selectArea || !progressArea) return;
+
+      if (!player.activeTask) {
+        selectArea.classList.remove('hidden');
+        progressArea.classList.add('hidden');
+        if (taskInterval) clearInterval(taskInterval);
+      } else {
+        selectArea.classList.add('hidden');
+        progressArea.classList.remove('hidden');
+        
+        title.innerText = player.activeTask.type === 'training' ? "💪 훈련소에서 땀 흘리는 중..." : "💼 아르바이트로 돈 버는 중...";
+
+        if (taskInterval) clearInterval(taskInterval);
+        taskInterval = setInterval(checkTaskTimer, 1000); // 1초마다 타이머 검사
+        checkTaskTimer();
+      }
+    }
+
+    function checkTaskTimer() {
+      if (!player.activeTask) return;
+      const now = Date.now();
+      const timeLeft = player.activeTask.endTime - now;
+
+      const timerDisplay = document.getElementById('task-timer-display');
+      const claimBtn = document.getElementById('btn-claim-task');
+      const cancelBtn = document.getElementById('btn-cancel-task');
+
+      if (timeLeft <= 0) {
+        // 시간이 다 되었을 때!
+        if(timerDisplay) timerDisplay.innerText = "00:00:00";
+        if(claimBtn) claimBtn.classList.remove('hidden');
+        if(cancelBtn) cancelBtn.classList.add('hidden');
+        if (taskInterval) clearInterval(taskInterval);
+      } else {
+        // 남은 시간 계산해서 보여주기
+        let hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+        hours = String(hours).padStart(2, '0');
+        minutes = String(minutes).padStart(2, '0');
+        seconds = String(seconds).padStart(2, '0');
+
+        if(timerDisplay) timerDisplay.innerText = `${hours}:${minutes}:${seconds}`;
+        if(claimBtn) claimBtn.classList.add('hidden');
+        if(cancelBtn) cancelBtn.classList.remove('hidden');
+      }
+    }
+
+    function claimTaskReward() {
+      if (!player.activeTask) return;
+      if (Date.now() < player.activeTask.endTime) { alert("아직 활동이 끝나지 않았습니다!"); return; }
+
+      let type = player.activeTask.type;
+      let duration = player.activeTask.duration; // 30, 60, 120
+      let mult = duration / 30; // 30분은 1배, 1시간은 2배, 2시간은 4배로 설정
+
+      let msg = "";
+
+      if (type === 'training') {
+        // 💪 훈련소: 랜덤 스탯 오름
+        const stats = ['atk', 'ratk', 'def', 'spd', 'int'];
+        const statKor = { atk: '공격력', ratk: '원거리', def: '방어력', spd: '스피드', int: '지력' };
+        let pick = stats[Math.floor(Math.random() * stats.length)];
+        let gain = 5 * mult; // 30분=5, 1시간=10, 2시간=20 상승!
+        
+        player.stats[pick] += gain;
+        msg = `💪 훈련 완료!\n가장 열심히 한 [${statKor[pick]}] 스탯이 ${gain}만큼 영구 상승했습니다!`;
+      } else {
+        // 💼 아르바이트: 골드 + 나뭇잎 토큰 + 확률형 가챠티켓
+        let goldGain = (Math.floor(Math.random() * 1001) + 500) * mult; // 500~1500 * 배수
+        let tokenGain = (Math.floor(Math.random() * 5) + 1) * mult; // 1~5 * 배수
+        
+        player.gold += goldGain;
+        player.records.totalGold += goldGain;
+        player.leafTokens = (player.leafTokens || 0) + tokenGain;
+        
+        msg = `💼 아르바이트 완료!\n💰 ${goldGain} 골드 획득!\n🌿 나뭇잎 토큰 ${tokenGain}개 획득!`;
+
+        // 가챠 티켓 보너스 확률 (30분=30%, 1시간=60%, 2시간=100% 확정)
+        let ticketChance = mult * 30; 
+        if (Math.random() * 100 < ticketChance) {
+          let tCount = 1;
+          if (mult === 4 && Math.random() * 100 < 50) tCount = 2; // 2시간 알바는 50% 확률로 티켓 2장!
+          player.tickets += tCount;
+          msg += `\n\n🎟️ 수고했다며 가챠 티켓을 ${tCount}장 더 받았습니다!`;
+        }
+      }
+
+      alert(msg);
+      player.activeTask = null;
+      updateStatus();
+      updateTaskUI();
+      saveGame();
+    }
+
   </script>
 </body>
 </html>
