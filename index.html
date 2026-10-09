@@ -844,10 +844,10 @@ function rollPetGacha() {
       else if (rand < 40) { tier = 'rare'; pool = petPool.rare; tierName = "💙레어💙"; cssClass = "rare"; }
       else { tier = 'normal'; pool = petPool.common; tierName = "🤍일반🤍"; cssClass = "normal"; }
 
-// 🐾 펫 데이터 풀 (실제 능력치 적용 데이터 추가!)
+// 🐾 펫 데이터 풀 (실제 능력치 적용 데이터)
 const petPool = {
       common: [
-        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "지력(INT) +5 (퀘스트 보상 증가)", token: 1, image: "pet_pi.png", stats: { int: 5 } },
+        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "지력(INT) +5", token: 1, image: "pet_pi.png", stats: { int: 5 } },
         { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "최대 체력 +20", token: 1, image: "pet_omega.png", stats: { hp: 20 } }
       ],
       rare: [
@@ -861,8 +861,8 @@ const petPool = {
         { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "지력(INT) +20", token: 10, image: "pet_jack.png", stats: { int: 20 } }
       ],
       mythic: [
-        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10 증가", token: 30, image: "pet_quko01.png", stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 } },
-        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력 및 원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } }
+        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +10", token: 30, image: "pet_quko01.png", stats: { atk: 10, ratk: 10, def: 10, spd: 10, int: 10 } },
+        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력/원거리 +30", token: 30, image: "https://img.icons8.com/color/100/cube.png", stats: { atk: 30, ratk: 30 } }
       ]
     };
 
@@ -1027,7 +1027,6 @@ const petPool = {
       if(typeof updateStatus === 'function') updateStatus();
       saveGame();
     }
-
   </script>
 </body>
 </html>
