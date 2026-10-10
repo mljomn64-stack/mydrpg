@@ -304,7 +304,7 @@
         <button class="btn btn-theme" style="background:#4a90e2; color:#fff;" onclick="buyBgm('bgm_battle', '⚔️ 전투의 고동', 'fight01.mp3', 3000, 10)">⚔️ 전투의 고동 BGM (3000 G) [Lv.10+]</button>
         <button class="btn btn-theme" style="background:#323874; color:#fff;" onclick="buyBgm('bgm_boss', '🌝 밤의 캠프파이어', 'night01.mp3', 10000, 20)">🌝 밤의 캠프파이어 BGM (10000 G) [Lv.20+]</button>
         <button class="btn btn-theme" style="background:#cf4141; color:#fff;" onclick="buyBgm('bgm_boss', '🔥 결전의 테마', 'final_boss02.mp3', 20000, 30)">🔥 결전의 테마 BGM (20000 G) [Lv.30+]</button>
-        <button class="btn btn-theme" style="background:#f88d29; color:#fff;" onclick="buyBgm('bgm_boss', '⚔ 용감한 기사의 노래', 'dig_brave.mp3', 50000, 50)">⚔ 용감한 기사의 노래 BGM (50000 G) [Lv.50+]</button>
+        <button class="btn btn-theme" style="background:#f88d29; color:#fff;" onclick="buyBgm('bgm_boss', '⚔ 용감한 기사의 노래', 'dig_brave.mp3', -5000, 1)">⚔ 용감한 기사의 노래 BGM (5000골드 보상)</button>
       </div>
 
       <div id="tab-inventory" class="content-area hidden">
@@ -883,6 +883,19 @@ const kossukPool = [
         player.stats.atk += item.add; player.stats.ratk += item.add; player.stats.def += item.add; player.stats.spd += item.add; player.stats.int += item.add;
       } else if (item.stat) { player.stats[item.stat] += item.add; }
 
+      // 👇 새로 추가된 부분: 코쑥 가챠 결과도 도감(인벤토리)에 저장하기!
+      if (item.type !== 'gold') { // 꽝(골드)은 소지품에 안 넣습니다
+        let cleanTier = item.tier.replace(/[^가-힣]/g, ''); // "✨신화"에서 "신화" 글자만 쏙 빼기
+        if (!player.inventory[item.name]) {
+          player.inventory[item.name] = { 
+            name: item.name, icon: item.icon, tierName: cleanTier, cssClass: item.cssClass, 
+            count: 0, statName: item.stat, totalStat: 0 
+          };
+        }
+        player.inventory[item.name].count += 1;
+        if (item.add) player.inventory[item.name].totalStat += item.add;
+      }
+
       const resultBox = document.getElementById('kossuk-result-box');
       if(resultBox) {
         resultBox.innerHTML = `<div class="gacha-result">
@@ -1186,7 +1199,7 @@ const effectSelect = document.getElementById('effect-select');
       if (type === 'training') {
         // 💪 훈련소: 랜덤 스탯 오름
         const stats = ['atk', 'ratk', 'def', 'spd', 'int'];
-        const statKor = { atk: '공격력', ratk: '원거리', def: '방어력', spd: '스피드', int: '지력' };
+        const statKor = { atk: '공격력', ratk: '원거리', def: '방어력', spd: '스피드', int: '지력', all: "올스탯" };
         let pick = stats[Math.floor(Math.random() * stats.length)];
         
         // 👇 상승량 하향 조절! (2.5 곱하기)
