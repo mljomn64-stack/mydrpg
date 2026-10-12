@@ -1397,6 +1397,7 @@ if (effect === 'effect-sparkle') {
           '<img src="pa_spa01.png" style="width: 15px; image-rendering: pixelated;">'
         ]; 
         size = 15; 
+        speed = 120; 
       }
       // 👇 불꽃 이펙트를 내 이미지로 교체! (엔터 쳐서 여러 줄로 써도 잘 작동합니다)
       else if (effect === 'effect-fire') { 
@@ -1405,58 +1406,102 @@ if (effect === 'effect-sparkle') {
           '<img src="pa_fire02.png" style="width: 16px; image-rendering: pixelated;">'
         ]; 
         size = 16; 
-        speed = 80; 
+        speed = 150; 
       }      else if (effect === 'effect-fire') { 
         shapes = [
           '<img src="pa_th01.png" style="width: 16px; image-rendering: pixelated;">', 
           '<img src="pa_th02.png" style="width: 16px; image-rendering: pixelated;">'
         ]; 
         size = 16; 
-        speed = 80; 
+        speed = 100; 
       }
       else if (effect === 'effect-dark') { shapes = ['🦇', '🌑', '💀']; size = 15; speed = 150; }
       else if (effect === 'effect-holy') { shapes = ['👼', '🕊️', '🤍']; size = 16; }
       else if (effect === 'effect-glitch') { shapes = ['0', '1', '👾', 'ERROR']; size = 12; speed = 30; }
 
-      // 파티클 생성기 가동!
-      particleTimer = setInterval(() => {
+// 파티클 생성기 가동!
+particleTimer = setInterval(() => {
         const p = document.createElement('div');
-        
-        // 배열에서 랜덤하게 모양 하나를 뽑아서 쏙 넣기
         p.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
-        
         p.style.position = 'absolute';
         p.style.fontSize = size + 'px';
-        p.style.color = '#fff'; // 글자(0,1 등)일 경우 하얀색
+        p.style.color = '#fff';
         p.style.fontWeight = 'bold';
-        p.style.pointerEvents = 'none'; // 클릭 방해 안 함
+        p.style.pointerEvents = 'none';
         
-        // 시작 위치 (주인공 몸통 부근)
         let startX = 40 + Math.random() * 20;
         let startY = 50 + Math.random() * 30;
-        p.style.left = startX + '%';
-        p.style.top = startY + '%';
-        
         let duration = 0.5 + Math.random(); // 0.5초 ~ 1.5초
-        p.style.transition = `all ${duration}s ease-out`;
-        
-        container.appendChild(p);
-        
-        // 0.01초 뒤에 사방으로 흩어지며 회전하는 명령!
-        setTimeout(() => {
-          p.style.top = (startY - 30 - Math.random() * 30) + '%';
-          p.style.opacity = '0';
-          // 빙글빙글 돌면서 작아지기
-          p.style.transform = `scale(0.5) `;
-        }, 10);
 
-        // 수명이 다하면 삭제
+        // 🌟 1. 반짝이: 제자리에서 깜빡이기
+        if (effect === 'effect-sparkle') {
+          p.style.left = startX + '%';
+          p.style.top = startY + '%';
+          p.style.opacity = '0'; // 처음엔 투명하게
+          p.style.transform = 'scale(0.5)';
+          p.style.transition = `all ${duration / 2}s ease-in-out`;
+          container.appendChild(p);
+
+          // 나타나면서 커지기
+          setTimeout(() => { p.style.opacity = '1'; p.style.transform = 'scale(1.2)'; }, 10);
+          // 절반 지났을 때 다시 작아지면서 사라지기
+          setTimeout(() => { p.style.opacity = '0'; p.style.transform = 'scale(0.5)'; }, (duration / 2) * 1000);
+        }
+        
+        // 🔥 2. 불꽃: 위로 둥실둥실 올라가며 사라지기
+        else if (effect === 'effect-fire') {
+          p.style.left = startX + '%';
+          p.style.top = (startY + 10) + '%'; // 약간 아랫쪽(발밑)에서 시작
+          p.style.opacity = '1';
+          p.style.transition = `all ${duration}s ease-out`;
+          container.appendChild(p);
+
+          setTimeout(() => {
+            p.style.top = (startY - 30 - Math.random() * 20) + '%'; // 위쪽 방향으로!
+            p.style.opacity = '0';
+            p.style.transform = 'scale(0.5)';
+          }, 10);
+        }
+        
+        // ⚡ 3. 번개: 위에서 아래로 떨어지며 지지직 흔들리기!
+        else if (effect === 'effect-lightning') {
+          startY = 20 + Math.random() * 20; // 머리 위쪽에서 시작
+          p.style.left = startX + '%';
+          p.style.top = startY + '%';
+          p.style.opacity = '1';
+          
+          // top(아래로 떨어짐)과 opacity(사라짐)만 부드럽게 주고, 좌우 흔들림은 애니메이션으로 맡김
+          p.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`; 
+          p.style.animation = `shake 0.1s infinite alternate`; // 덜덜 떠는 효과!
+          container.appendChild(p);
+
+          setTimeout(() => {
+            p.style.top = (startY + 40 + Math.random() * 20) + '%'; // 벼락 꽂히듯 아래로!
+            p.style.opacity = '0';
+          }, 10);
+        }
+        
+        // 🦇 4~6번: 기존처럼 사방으로 흩날리며 돌기
+        else {
+          p.style.left = startX + '%';
+          p.style.top = startY + '%';
+          p.style.transition = `all ${duration}s ease-out`;
+          container.appendChild(p);
+          
+          setTimeout(() => {
+            p.style.top = (startY - 30 - Math.random() * 30) + '%';
+            p.style.left = (startX - 20 + Math.random() * 40) + '%';
+            p.style.opacity = '0';
+            p.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+          }, 10);
+        }
+
+        // 수명이 다한 파티클 조각은 깔끔하게 청소
         setTimeout(() => {
           if (p.parentNode) p.parentNode.removeChild(p);
         }, duration * 1000);
         
       }, speed);
-    }
 
   </script>
 </body>
