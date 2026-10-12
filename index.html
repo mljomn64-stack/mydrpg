@@ -1435,6 +1435,13 @@ particleTimer = setInterval(() => {
 
         // 🌟 1. 반짝이: 제자리에서 깜빡이기
         if (effect === 'effect-sparkle') {
+        // 💡 캐릭터(가운데)를 가리지 않도록 왼쪽(10~30%) 또는 오른쪽(70~90%)으로 위치를 밀어줍니다!
+        if (Math.random() > 0.5) {
+            startX = 10 + Math.random() * 20; // 왼쪽 구역
+          } else {
+            startX = 70 + Math.random() * 20; // 오른쪽 구역
+          }
+          startY = 20 + Math.random() * 60; // 세로는 위아래로 넓게 퍼지도록 설정
           p.style.left = startX + '%';
           p.style.top = startY + '%';
           p.style.opacity = '0'; // 처음엔 투명하게
@@ -1450,6 +1457,13 @@ particleTimer = setInterval(() => {
         
         // 🔥 2. 불꽃: 위로 둥실둥실 올라가며 사라지기
         else if (effect === 'effect-fire') {
+        // 💡 캐릭터(가운데)를 가리지 않도록 왼쪽(10~30%) 또는 오른쪽(70~90%)으로 위치를 밀어줍니다!
+        if (Math.random() > 0.5) {
+            startX = 10 + Math.random() * 20; // 왼쪽 구역
+          } else {
+            startX = 70 + Math.random() * 20; // 오른쪽 구역
+          }
+          startY = 20 + Math.random() * 60; // 세로는 위아래로 넓게 퍼지도록 설정
           p.style.left = startX + '%';
           p.style.top = (startY + 10) + '%'; // 약간 아랫쪽(발밑)에서 시작
           p.style.opacity = '1';
@@ -1465,6 +1479,13 @@ particleTimer = setInterval(() => {
         
         // ⚡ 3. 번개: 위에서 아래로 떨어지며 지지직 흔들리기!
         else if (effect === 'effect-lightning') {
+        // 💡 캐릭터(가운데)를 가리지 않도록 왼쪽(10~30%) 또는 오른쪽(70~90%)으로 위치를 밀어줍니다!
+        if (Math.random() > 0.5) {
+            startX = 10 + Math.random() * 20; // 왼쪽 구역
+          } else {
+            startX = 70 + Math.random() * 20; // 오른쪽 구역
+          }
+          startY = 20 + Math.random() * 60; // 세로는 위아래로 넓게 퍼지도록 설정
           startY = 20 + Math.random() * 20; // 머리 위쪽에서 시작
           p.style.left = startX + '%';
           p.style.top = startY + '%';
