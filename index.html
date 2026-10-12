@@ -1445,10 +1445,9 @@ if (effect === 'effect-sparkle') {
         // 0.01초 뒤에 사방으로 흩어지며 회전하는 명령!
         setTimeout(() => {
           p.style.top = (startY - 30 - Math.random() * 30) + '%';
-          p.style.left = (startX - 20 + Math.random() * 40) + '%';
           p.style.opacity = '0';
           // 빙글빙글 돌면서 작아지기
-          p.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
+          p.style.transform = `scale(0.5) `;
         }, 10);
 
         // 수명이 다하면 삭제
