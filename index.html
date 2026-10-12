@@ -1373,8 +1373,8 @@ const effectSelect = document.getElementById('effect-select');
       }
     }
 
-    // ==========================================
-    // ✨ 픽셀 파티클(조각) 애니메이션 엔진
+// ==========================================
+    // ✨ 픽셀 파티클(조각) 애니메이션 엔진 (모양 커스텀 버전!)
     // ==========================================
     let particleTimer = null;
 
@@ -1382,56 +1382,81 @@ const effectSelect = document.getElementById('effect-select');
       const container = document.getElementById('particle-container');
       if (!container) return;
       
-      // 기존 파티클 리셋
       clearInterval(particleTimer);
       container.innerHTML = '';
-
       if (!effect || effect === 'none') return;
 
-      // 이펙트별 픽셀 색상, 크기, 생성 속도 세팅
-      let colors = []; let size = 4; let speed = 100;
-      if (effect === 'effect-sparkle') colors = ['#f1c40f', '#ffffff', '#f39c12'];
-      else if (effect === 'effect-fire') colors = ['#e74c3c', '#ff9800', '#ffeb3b'];
-      else if (effect === 'effect-lightning') { colors = ['#00ffff', '#ffffff']; speed = 50; }
-      else if (effect === 'effect-dark') { colors = ['#4a235a', '#17202a', '#6c3483']; size = 6; speed = 150; }
-      else if (effect === 'effect-holy') { colors = ['#fcf3cf', '#ffffff']; size = 5; }
-      else if (effect === 'effect-glitch') { colors = ['#00ffcc', '#ff0055', '#ffffff']; speed = 30; }
+      // 💡 여기서 파티클 모양을 자유롭게 바꿀 수 있습니다!
+      // 이모지 대신 직접 그린 이미지를 넣으려면 '<img src="내파일.png" width="15">' 처럼 적어주면 됩니다.
+      let shapes = []; let size = 14; let speed = 100;
+      
+// 💡 맨 처음 시작인 반짝이는 'if' 그대로 유지!
+if (effect === 'effect-sparkle') { 
+        shapes = [
+          '<img src="pa_spa01.png" style="width: 15px; image-rendering: pixelated;">',
+          '<img src="pa_spa01.png" style="width: 15px; image-rendering: pixelated;">'
+        ]; 
+        size = 15; 
+      }
+      // 👇 불꽃 이펙트를 내 이미지로 교체! (엔터 쳐서 여러 줄로 써도 잘 작동합니다)
+      else if (effect === 'effect-fire') { 
+        shapes = [
+          '<img src="pa_fire01.png" style="width: 16px; image-rendering: pixelated;">', 
+          '<img src="pa_fire02.png" style="width: 16px; image-rendering: pixelated;">'
+        ]; 
+        size = 16; 
+        speed = 80; 
+      }      else if (effect === 'effect-fire') { 
+        shapes = [
+          '<img src="pa_th01.png" style="width: 16px; image-rendering: pixelated;">', 
+          '<img src="pa_th02.png" style="width: 16px; image-rendering: pixelated;">'
+        ]; 
+        size = 16; 
+        speed = 80; 
+      }
+      else if (effect === 'effect-dark') { shapes = ['🦇', '🌑', '💀']; size = 15; speed = 150; }
+      else if (effect === 'effect-holy') { shapes = ['👼', '🕊️', '🤍']; size = 16; }
+      else if (effect === 'effect-glitch') { shapes = ['0', '1', '👾', 'ERROR']; size = 12; speed = 30; }
 
       // 파티클 생성기 가동!
       particleTimer = setInterval(() => {
         const p = document.createElement('div');
-        // 픽셀 감성을 위해 동그라미가 아닌 '각진 네모상자'로 생성
-        p.style.width = size + 'px';
-        p.style.height = size + 'px';
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
-        p.style.position = 'absolute';
         
-        // 캐릭터 발밑~몸통 사이(가운데 부근)에서 랜덤으로 등장
-        let startX = 40 + Math.random() * 20; // 가로 위치
-        let startY = 50 + Math.random() * 30; // 세로 위치
+        // 배열에서 랜덤하게 모양 하나를 뽑아서 쏙 넣기
+        p.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
+        
+        p.style.position = 'absolute';
+        p.style.fontSize = size + 'px';
+        p.style.color = '#fff'; // 글자(0,1 등)일 경우 하얀색
+        p.style.fontWeight = 'bold';
+        p.style.pointerEvents = 'none'; // 클릭 방해 안 함
+        
+        // 시작 위치 (주인공 몸통 부근)
+        let startX = 40 + Math.random() * 20;
+        let startY = 50 + Math.random() * 30;
         p.style.left = startX + '%';
         p.style.top = startY + '%';
         
-        // CSS 애니메이션 (스르륵 위로 올라가며 투명해지기)
         let duration = 0.5 + Math.random(); // 0.5초 ~ 1.5초
-        p.style.transition = `all ${duration}s linear`;
+        p.style.transition = `all ${duration}s ease-out`;
         
         container.appendChild(p);
         
-        // 생성 직후 0.01초 뒤에 목표 위치로 이동 명령 (위로 흩날림)
+        // 0.01초 뒤에 사방으로 흩어지며 회전하는 명령!
         setTimeout(() => {
-          p.style.top = (startY - 30 - Math.random() * 20) + '%';
-          p.style.left = (startX - 15 + Math.random() * 30) + '%';
+          p.style.top = (startY - 30 - Math.random() * 30) + '%';
+          p.style.left = (startX - 20 + Math.random() * 40) + '%';
           p.style.opacity = '0';
-          p.style.transform = 'scale(0.5)';
+          // 빙글빙글 돌면서 작아지기
+          p.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
         }, 10);
 
-        // 수명이 다한 파티클(div)은 메모리 관리를 위해 삭제!
+        // 수명이 다하면 삭제
         setTimeout(() => {
           if (p.parentNode) p.parentNode.removeChild(p);
         }, duration * 1000);
         
-      }, speed); // 이펙트 속도에 따라 계속 뿜어냄
+      }, speed);
     }
 
   </script>
