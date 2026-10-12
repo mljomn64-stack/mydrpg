@@ -231,6 +231,8 @@ body, .status-box, .top-bar {
         <div id="normal-sprite-area" class="sprite-area">
           <h3 id="target-name">오늘도 운동 힘내자!</h3>
           <img id="main-sprite" class="character-img" src="" alt="캐릭터" onerror="this.onerror=null; this.src='https://img.icons8.com/color/150/pixel-star.png';">
+          <!-- 👇 파티클 조각들이 생겨날 투명한 도화지 추가! -->
+          <div id="particle-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 15;"></div>
           <img id="main-pet-sprite" class="pet-companion-img hidden" src="" alt="펫">
         </div>
 
@@ -468,8 +470,26 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       { name: "🌯 타락한 천사와 악마의 부리또", hp: 50000, atk: 350, reward: 50000, penalty: 5000, image: "boss_burito.png" }
     ];
 
-    const normalQuests = [ { name: "💧 물 한잔 마시기", exp: 20, gold: 50 }, { name: "☀ 아침에 몸무게재기", exp: 30, gold: 50 }, { name: "🔥 배달음식 픽업해오기", exp: 10, gold: 20 }, { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80 }, { name: "🥗 8시 이후 금식", exp: 50, gold: 80 }, { name: "🍳 집밥 먹기", exp: 25, gold: 50 }, { name: "🚶‍♀️제자리 걷기 100회", exp: 35, gold: 40 }, { name: "🦶종아리 운동하기", exp: 40, gold: 50 }, { name: "👍밥 먹고 눕지않기", exp: 20, gold: 30 } ];
-    const royalQuests = [ { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", exp: 30, ticket: 1 }, { name: "👑 [왕궁] 고독한 타워 오르기", exp: 30, ticket: 1 }, { name: "👑 [왕궁] 용사의 스쿼트 3세트", exp: 50, ticket: 2 }, { name: "👑 [왕궁] 숲 속의 달리기 훈련", exp: 100, ticket: 3 }, { name: "👑 [왕궁] 마법사의 식단 먹기", exp: 80, ticket: 1 }, { name: "👑 [왕궁] 탐험을 위해 12시전에 잠자리에 들기", exp: 100, ticket: 3 } ];
+    const normalQuests = [ 
+      { name: "💧 물 한잔 마시기", exp: 20, gold: 50, max: 5 }, 
+      { name: "☀ 아침에 몸무게재기", exp: 30, gold: 50, max: 1 }, 
+      { name: "🔥 배달음식 픽업해오기", exp: 10, gold: 20, max: 1 }, 
+      { name: "🚶‍♀️ 가까운 거리는 걷기", exp: 40, gold: 80, max: 2 }, 
+      { name: "🥗 8시 이후 금식", exp: 50, gold: 80, max: 1 }, 
+      { name: "🍳 집밥 먹기", exp: 25, gold: 50, max: 3 }, 
+      { name: "🚶‍♀️제자리 걷기 100회", exp: 35, gold: 40, max: 3 }, 
+      { name: "🦶종아리 운동하기", exp: 40, gold: 50, max: 3 }, 
+      { name: "👍밥 먹고 눕지않기", exp: 20, gold: 30, max: 3 } 
+    ];
+    
+    const royalQuests = [ 
+      { name: "👑 [왕궁] 마을 순찰, 만보 걷기 달성", exp: 30, ticket: 1, max: 1 }, 
+      { name: "👑 [왕궁] 고독한 타워 오르기", exp: 30, ticket: 1, max: 2 }, 
+      { name: "👑 [왕궁] 용사의 스쿼트 3세트", exp: 50, ticket: 2, max: 1 }, 
+      { name: "👑 [왕궁] 숲 속의 달리기 훈련", exp: 100, ticket: 3, max: 1 }, 
+      { name: "👑 [왕궁] 마법사의 식단 먹기", exp: 80, ticket: 1, max: 3 }, 
+      { name: "👑 [왕궁] 탐험을 위해 12시전에 잠자리에 들기", exp: 100, ticket: 3, max: 1 } 
+    ];
 
     const gachaPool = {
       mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "디지바이스", icon: "📱", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" } ],
@@ -531,19 +551,51 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
     function renderQuests() {
       const nList = document.getElementById('action-list'); const rList = document.getElementById('royal-list');
       if(nList) nList.innerHTML = ""; if(rList) rList.innerHTML = "";
+      
+      // 💡 미션 카운트 저장소가 없으면 만들어줌
+      if (!player.dailyMissions) player.dailyMissions = {};
+
       normalQuests.forEach(q => {
         const btn = document.createElement('button'); btn.className = 'btn';
+        let count = player.dailyMissions[q.name] || 0; // 현재 수행한 횟수
         let effectiveInt = Math.max(0, player.stats.int - 10);
         let bonusG = Math.floor(q.gold * (effectiveInt * 0.01)); let bonusE = Math.floor(q.exp * (effectiveInt * 0.01));
-        if (effectiveInt > 0) { btn.innerHTML = `${q.name} <br><small>(+${q.gold + bonusG}G, +${q.exp + bonusE}EXP) <span style="color:#3498db;">[지력버프]</span></small>`; } 
-        else { btn.innerHTML = `${q.name} <br><small>(+${q.gold}G, +${q.exp}EXP)</small>`; }
-        btn.onclick = () => { player.gold += (q.gold + bonusG); player.records.totalGold += (q.gold + bonusG); gainExp(q.exp + bonusE); updateStatus(); saveGame(); };
+        
+        if (count >= q.max) {
+          // 횟수를 다 채웠을 때 (버튼 비활성화)
+          btn.innerHTML = `<s style="color:#999;">${q.name}</s> <br><small style="color:#e74c3c;">(오늘 완료! ${count}/${q.max}회)</small>`;
+          btn.disabled = true;
+          btn.style.opacity = "0.5";
+        } else {
+          // 아직 횟수가 남았을 때
+          let buffText = effectiveInt > 0 ? `<span style="color:#3498db;">[지력버프]</span>` : "";
+          btn.innerHTML = `${q.name} <br><small>(+${q.gold + bonusG}G, +${q.exp + bonusE}EXP) ${buffText} <strong style="color:#2ecc71;">[${count}/${q.max}회]</strong></small>`;
+          btn.onclick = () => { 
+            player.dailyMissions[q.name] = count + 1; // 횟수 1 증가
+            player.gold += (q.gold + bonusG); player.records.totalGold += (q.gold + bonusG); gainExp(q.exp + bonusE); 
+            updateStatus(); renderQuests(); saveGame(); // 화면 갱신
+          };
+        }
         if(nList) nList.appendChild(btn);
       });
+
       royalQuests.forEach(q => {
         const btn = document.createElement('button'); btn.className = 'btn btn-task';
-        btn.innerHTML = `${q.name} <br><small>(🎟️ 티켓 +${q.ticket})</small>`;
-        btn.onclick = () => { player.tickets += q.ticket; player.records.royalQuests++; alert(`임무 완수! 티켓 ${q.ticket}장 획득`); updateStatus(); saveGame(); };
+        let count = player.dailyMissions[q.name] || 0;
+
+        if (count >= q.max) {
+          btn.innerHTML = `<s style="color:#ddd;">${q.name}</s> <br><small style="color:#fff;">(오늘 완료! ${count}/${q.max}회)</small>`;
+          btn.disabled = true;
+          btn.style.background = "#95a5a6"; btn.style.borderColor = "#7f8c8d"; btn.style.boxShadow = "none";
+        } else {
+          btn.innerHTML = `${q.name} <br><small>(🎟️ 티켓 +${q.ticket}) <strong style="color:#ffeaa7;">[${count}/${q.max}회]</strong></small>`;
+          btn.onclick = () => { 
+            player.dailyMissions[q.name] = count + 1;
+            player.tickets += q.ticket; player.records.royalQuests++; 
+            alert(`임무 완수! 티켓 ${q.ticket}장 획득`); 
+            updateStatus(); renderQuests(); saveGame(); 
+          };
+        }
         if(rList) rList.appendChild(btn);
       });
     }
@@ -1031,6 +1083,9 @@ const mainSprite = document.getElementById('main-sprite');
         if (player.currentEffect && player.currentEffect !== 'none') {
           mainSprite.classList.add(player.currentEffect); // 선택한 거 붙이기!
         }
+        // 👇 파티클 생성기 작동 시작!
+        if(typeof startPixelParticles === 'function') startPixelParticles(player.currentEffect);
+      
       }
 // 💡 상태창 이펙트 드롭다운 목록 갱신
 const effectSelect = document.getElementById('effect-select');
@@ -1110,7 +1165,12 @@ const effectSelect = document.getElementById('effect-select');
           if (player.currentTheme) changeTheme(player.currentTheme);
           if (player.currentBgm && player.unlockedBgms[player.currentBgm]) {
             document.getElementById('audio-source').src = player.unlockedBgms[player.currentBgm].file;
+          
+
+          // 💡 브라우저에게 "새 노래 들어왔으니 다시 로딩해라!" 라고 알려주는 필수 코드
+          document.getElementById('game-audio').load(); 
           }
+
           return true;
         }
       } catch (e) { console.error("불러오기 실패", e); } return false;
@@ -1284,6 +1344,8 @@ const effectSelect = document.getElementById('effect-select');
       if (player.lastLoginDate !== gameDateStr) {
         player.lastLoginDate = gameDateStr;
         player.attendanceCount = (player.attendanceCount || 0) + 1;
+        player.dailyMissions = {}; 
+        if (typeof renderQuests === 'function') renderQuests(); // 미션 화면 리셋해서 보여주기
         
         // 7일을 넘기면 다시 1일차로 리셋
         if (player.attendanceCount > 7) { player.attendanceCount = 1; }
@@ -1311,7 +1373,66 @@ const effectSelect = document.getElementById('effect-select');
       }
     }
 
-    
+    // ==========================================
+    // ✨ 픽셀 파티클(조각) 애니메이션 엔진
+    // ==========================================
+    let particleTimer = null;
+
+    function startPixelParticles(effect) {
+      const container = document.getElementById('particle-container');
+      if (!container) return;
+      
+      // 기존 파티클 리셋
+      clearInterval(particleTimer);
+      container.innerHTML = '';
+
+      if (!effect || effect === 'none') return;
+
+      // 이펙트별 픽셀 색상, 크기, 생성 속도 세팅
+      let colors = []; let size = 4; let speed = 100;
+      if (effect === 'effect-sparkle') colors = ['#f1c40f', '#ffffff', '#f39c12'];
+      else if (effect === 'effect-fire') colors = ['#e74c3c', '#ff9800', '#ffeb3b'];
+      else if (effect === 'effect-lightning') { colors = ['#00ffff', '#ffffff']; speed = 50; }
+      else if (effect === 'effect-dark') { colors = ['#4a235a', '#17202a', '#6c3483']; size = 6; speed = 150; }
+      else if (effect === 'effect-holy') { colors = ['#fcf3cf', '#ffffff']; size = 5; }
+      else if (effect === 'effect-glitch') { colors = ['#00ffcc', '#ff0055', '#ffffff']; speed = 30; }
+
+      // 파티클 생성기 가동!
+      particleTimer = setInterval(() => {
+        const p = document.createElement('div');
+        // 픽셀 감성을 위해 동그라미가 아닌 '각진 네모상자'로 생성
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.position = 'absolute';
+        
+        // 캐릭터 발밑~몸통 사이(가운데 부근)에서 랜덤으로 등장
+        let startX = 40 + Math.random() * 20; // 가로 위치
+        let startY = 50 + Math.random() * 30; // 세로 위치
+        p.style.left = startX + '%';
+        p.style.top = startY + '%';
+        
+        // CSS 애니메이션 (스르륵 위로 올라가며 투명해지기)
+        let duration = 0.5 + Math.random(); // 0.5초 ~ 1.5초
+        p.style.transition = `all ${duration}s linear`;
+        
+        container.appendChild(p);
+        
+        // 생성 직후 0.01초 뒤에 목표 위치로 이동 명령 (위로 흩날림)
+        setTimeout(() => {
+          p.style.top = (startY - 30 - Math.random() * 20) + '%';
+          p.style.left = (startX - 15 + Math.random() * 30) + '%';
+          p.style.opacity = '0';
+          p.style.transform = 'scale(0.5)';
+        }, 10);
+
+        // 수명이 다한 파티클(div)은 메모리 관리를 위해 삭제!
+        setTimeout(() => {
+          if (p.parentNode) p.parentNode.removeChild(p);
+        }, duration * 1000);
+        
+      }, speed); // 이펙트 속도에 따라 계속 뿜어냄
+    }
 
   </script>
 </body>
