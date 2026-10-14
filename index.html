@@ -1905,7 +1905,7 @@ particleTimer = setInterval(() => {
     // 던전 전용 소모품 목록
     const dungeonItems = [
       { id: 'none', name: '선택 안함', cost: 0 },
-      { id: 'potion', name: '🥤 닭가슴살 쉐이크 (300G) - 체력 30 회복', cost: 300 },
+      { id: 'potion', name: '🥤 닭가슴살 쉐이크 (300G) - 체력 50 회복', cost: 300 },
       { id: 'smoke', name: '💣 연막탄 (500G) - 위험한 전투 1회 회피', cost: 500 },
       { id: 'protein', name: '🍫 단백질 바 (800G) - 다음 전투 스탯 2배', cost: 800 }
     ];
@@ -2289,7 +2289,7 @@ if (dgState.stage === 10) {
 
       // 스탯 계산 (기존과 동일하게 레벨과 스테이지 비례)
       let mHp = Math.floor(Math.random() * 250) + 300 + (player.level * 30) + (dgState.stage * 10); 
-      let mAtk = Math.floor(Math.random() * 100) + 100 + (player.level * 15);
+      let mAtk = Math.floor(Math.random() * 50) + 80 + (player.level * 15);
       
       dgBattleState.enemyMaxHp = mHp;
       dgBattleState.enemyHp = mHp;
