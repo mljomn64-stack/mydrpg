@@ -11,6 +11,32 @@
 
   <style>
     @import url('https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css');
+
+    /* ⚔️ 던전 전투 비주얼 전용 커스텀 스타일 */
+    #dg-battle-player-img {
+      animation: none !important; /* 주인공 캐릭터 모션 없이 가만히 고정! */
+    }
+    
+    #dg-battle-pet-img {
+      position: absolute !important;
+      left: 75% !important; /* 펫 위치를 주인공 오른쪽 옆으로 살짝 떼어놓기 */
+      top: 40% !important;
+      transform: translateY(-50%);
+    }
+
+    /* 🗺️ 던전 선택지(갈림길) 및 이벤트 창 가독성 보조 상자 패치 */
+    #dungeon-explore-area {
+      background: rgba(253, 245, 211, 0.95) !important; /* 배경이 화려해도 글자가 묻히지 않는 레트로 종이 박스 장착! */
+      box-shadow: 0 0 20px rgba(106, 76, 156, 0.3);
+    }
+    
+    #dg-main-content-box, #dg-battle-visual-box {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px dashed var(--line-color);
+      box-sizing: border-box;
+    }
     
     /* 💡 생동감 넘치는 통통 튀는 애니메이션 (찌그러짐+늘어남 효과) */
     @keyframes livelyBounce {
@@ -20,11 +46,11 @@
       70% { transform: translateY(-5px) scale(0.95, 1.05); }
       80% { transform: translateY(0) scale(1.02, 0.98); }
     }
-/* ✨ 1. 영롱한 황금빛 오라 (반짝이) */
-.effect-sparkle { animation: holySparkle 1.5s infinite ease-in-out !important; }
+/* ✨ 1. 은은한 황금빛 오라 (눈부심 대폭 감소!) */
+.effect-sparkle { animation: holySparkle 2s infinite ease-in-out !important; }
     @keyframes holySparkle {
-      0%, 100% { filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 15px #f1c40f) drop-shadow(0 0 30px #f39c12) brightness(1); transform: translateY(0); }
-      50% { filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 35px #f1c40f) drop-shadow(0 0 60px #f39c12) brightness(1.3); transform: translateY(-5px) scale(1.02); }
+      0%, 100% { filter: drop-shadow(0 0 3px #f1c40f) drop-shadow(0 0 8px #f39c12); transform: translateY(0); }
+      50% { filter: drop-shadow(0 0 8px #f1c40f) drop-shadow(0 0 15px #f39c12) brightness(1.05); transform: translateY(-3px) scale(1.01); }
     }
 
     /* 🔥 2. 이글거리는 지옥불 오라 */
@@ -92,8 +118,44 @@
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .shake { animation: shake 0.2s; }
     @keyframes shake { 0% { transform: translateX(0) scale(1.1); filter: brightness(2); } 25% { transform: translateX(10px) scale(1.1); } 50% { transform: translateX(-10px) scale(1.1); } 75% { transform: translateX(10px) scale(1.1); } 100% { transform: translateX(0) scale(1); filter: brightness(1); } }
-    .bottom-nav { display: flex; border-top: 4px dashed var(--line-color); background-color: rgba(255, 255, 255, 0.5); padding: 10px 0; z-index: 10; }
-    .nav-item { flex: 1; text-align: center; font-size: 12px; font-weight: bold; cursor: pointer; }
+/* 📱 하단 탭 메뉴 (2줄로 큼직하게, 무조건 화면 맨 밑에 고정!) */
+.bottom-nav { 
+      position: absolute; /* 게임 화면 기준 무조건 바닥으로! */
+      bottom: 0;
+      left: 0;
+      width: 100%; /* 너비 꽉 채우기 */
+      display: flex; 
+      flex-wrap: wrap; 
+      background-color: rgba(253, 245, 211, 0.95) !important; 
+      border-top: 4px solid var(--line-color); 
+      z-index: 100;
+    }
+    
+    .nav-item { 
+      flex: 1 1 25%; /* 첫 줄 4개, 둘째 줄 3개 자동 정렬 */
+      text-align: center; 
+      font-size: 15px !important; /* 폰트 크기 조절 (너무 크면 글씨 잘림 방지) */
+      font-weight: 900; 
+      cursor: pointer; 
+      padding: 15px 0; /* 터치 영역 넉넉하게 */
+      border-right: 1px dashed rgba(106, 76, 156, 0.3);
+      border-bottom: 1px dashed rgba(106, 76, 156, 0.3);
+      box-sizing: border-box;
+      text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* 👇 메뉴가 2줄로 뚱뚱해졌으니, 위쪽 콘텐츠가 메뉴에 가려지지 않게 여백 확보 */
+    .content-area { 
+      flex-grow: 1; 
+      overflow-y: auto; 
+    }
+
+/* 👇 브라우저 스크롤 짤림 완벽 해결! (내용물 맨 밑에 150px짜리 투명 기둥 세우기) */
+.content-area::after {
+  content: "";
+  display: block;
+  height: 150px; 
+}
     .gacha-result { font-size: 20px; margin: 20px; padding: 20px; border: 4px dashed var(--line-color); background: #fff; animation: pop 0.5s; }
     @keyframes pop { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }
     .mythic { color: #d63031; text-shadow: 1px 1px 0px gold; } .epic { color: #9b59b6; } .rare { color: #3498db; } .normal { color: #7f8c8d; }
@@ -186,18 +248,14 @@ body, .status-box, .top-bar {
       text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2) !important; /* 색상 버튼들은 글자가 묻히지 않게 살짝 어두운 그림자 */
       font-weight: bold;
     }
-    /* 🎵 둥둥 떠 있는 BGM 플레이어 버튼 가독성 해결 */
-    #bgm-player {
-      text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.6) !important; /* 진한 검은색 그림자 */
-      font-weight: bold !important;
-    }
+
+    
   </style>
 </head>
 <body>
 
   <div id="game-container">
     <audio id="game-audio"><source id="audio-source" src="main.mp3" type="audio/mpeg"></audio>
-    <div id="bgm-player" onclick="toggleBGM()">🎵 BGM: OFF (클릭)</div>
 
     <!-- 시작 화면 -->
     <div id="start-screen" class="sprite-area" style="height: 100%; justify-content: center; background: radial-gradient(circle, #fff9db 0%, #e0d8b0 100%);">
@@ -216,9 +274,12 @@ body, .status-box, .top-bar {
 
     <!-- 메인 게임 UI 화면 -->
     <div id="ui-layer" class="hidden" style="display: none; flex-direction: column; height: 100%;">
+
+
       
       <div class="top-bar">
-        <div>Lv. <span id="ui-level">1</span> <br><small style="font-size:10px;">EXP: <span id="ui-exp">0</span>/<span id="ui-max-exp">100</span></small></div>
+        <!-- 💡 'Lv.' 글씨를 타다닥 5번 클릭하면 재화가 복사되는 비밀 버튼! -->
+        <div onclick="cheatTickets()" style="cursor:pointer; user-select:none;">Lv. <span id="ui-level">1</span> <br><small style="font-size:10px;">EXP: <span id="ui-exp">0</span>/<span id="ui-max-exp">100</span></small></div>
         <div id="theme-title" style="font-size: 16px;">🌲 평화로운 숲</div>
         <div style="text-align: right; line-height: 1.4;">
           💰 <span id="ui-gold">0</span> G<br>
@@ -234,6 +295,7 @@ body, .status-box, .top-bar {
           <!-- 👇 파티클 조각들이 생겨날 투명한 도화지 추가! -->
           <div id="particle-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 15;"></div>
           <img id="main-pet-sprite" class="pet-companion-img hidden" src="" alt="펫">
+
         </div>
 
         <div id="battle-scene-area" class="hidden" style="display: flex; justify-content: space-around; align-items: center; padding: 20px 0; min-height: 180px;">
@@ -261,6 +323,46 @@ body, .status-box, .top-bar {
         <div id="normal-action-area">
           <button id="btn-enter-dungeon" class="btn btn-dungeon hidden" style="width: 80%; margin: 0 auto 10px auto; display: block;" onclick="openBossSelect()">⚔️ 보스 던전 입장 (티켓 1장)</button>
           <button id="btn-enter-field" class="btn btn-field" style="width: 80%; margin: 0 auto 20px auto; display: block;" onclick="openFieldSelect()">🗡️ 일반 몬스터 사냥 (선택)</button>
+          <!-- 👇 여기서부터 복사해서 넣어주세요! (특수 던전 관련 UI) -->
+          <button class="btn btn-task" style="width: 80%; margin: 0 auto 20px auto; display: block; background-color: #8e44ad;" onclick="openSpecialDungeon()">🗺️ 미지의 탐험 던전 (티켓 1장)</button>
+
+          <!-- 특수 던전 선택창 -->
+          <div id="special-dungeon-box" class="hidden" style="background: rgba(255,255,255,0.95); padding: 15px; margin: 10px 20px; border-radius: 10px; border: 3px dashed #8e44ad;">
+            <h4 style="margin: 5px; color: #8e44ad;">🗺️ 미지의 탐험 (10 Stage)</h4>
+            <div id="sd-list-container"></div>
+            <button class="btn" style="padding: 5px 15px; margin-top: 10px;" onclick="closeSpecialDungeon()">돌아가기</button>
+          </div>
+
+          <!-- 특수 던전 준비창 (펫 & 소모품 세팅) -->
+          <div id="sd-prep-box" class="hidden" style="background: rgba(255,255,255,0.95); padding: 15px; margin: 10px 20px; border-radius: 10px; border: 3px solid #e67e22; text-align: left; font-size: 13px;">
+            <h4 id="sd-prep-title" style="margin: 0 0 10px 0; color: #e67e22; text-align:center;">던전 이름</h4>
+            <button class="btn" style="width:100%; margin: 0 0 10px 0; font-size:11px; background:#34495e; color:#fff;" onclick="showDungeonRules()">📜 특수 던전 스탯 룰 보기</button>
+            
+<!-- 💡 새로 추가된 던전 전용 실시간 스탯 전광판! -->
+<div style="background: rgba(253, 245, 211, 0.9); border: 2px dashed #e74c3c; border-radius: 8px; padding: 10px; margin-bottom: 15px; text-align: center;">
+  <strong style="color: #e74c3c; font-size: 14px;">🔥 내 던전 전투력 (가챠 제외)</strong>
+  <div style="font-size: 12px; margin-top: 8px; line-height: 1.6;">
+    💖 체력: <span id="prep-hp" style="font-weight:bold; color:#e74c3c; font-size:14px;">100</span><br>
+    ⚔️ 공격: <span id="prep-atk" style="font-weight:bold; color:#2c3e50; font-size:14px;">10</span> &nbsp;|&nbsp; 🛡️ 방어: <span id="prep-def" style="font-weight:bold; color:#2c3e50; font-size:14px;">10</span><br>
+    <small style="color:#27ae60;" id="prep-bonus-text">(감량 보너스: +0%)</small>
+  </div>
+</div>
+
+            <strong>🐾 동행할 펫 (최대 2마리)</strong><br>
+<!-- 👇 onchange 부분을 추가해서 선택을 바꿀 때마다 검사합니다! -->
+선봉장: <select id="sd-pet1" onchange="checkDuplicatePet(1)" style="font-family:'Galmuri9'; width:100%; margin-bottom:5px; padding:2px;"></select>
+서포터: <select id="sd-pet2" onchange="checkDuplicatePet(2)" style="font-family:'Galmuri9'; width:100%; margin-bottom:10px; padding:2px;"></select>
+            
+            <strong>🎒 던전 전용 소모품 (최대 3개)</strong> <small style="color:#555;">(골드로 즉시 구매)</small><br>
+            1. <select id="sd-item1" style="font-family:'Galmuri9'; width:100%; margin-bottom:2px; padding:2px;"></select>
+            2. <select id="sd-item2" style="font-family:'Galmuri9'; width:100%; margin-bottom:2px; padding:2px;"></select>
+            3. <select id="sd-item3" style="font-family:'Galmuri9'; width:100%; margin-bottom:10px; padding:2px;"></select>
+            
+            <div style="text-align:center;">
+                <button class="btn btn-dungeon" style="padding: 10px 20px; font-size:14px; background-color: #27ae60;" onclick="startSpecialDungeon()">🚀 출격! (🎟️ 1장)</button>
+                <button class="btn" style="padding: 5px 15px;" onclick="closeSpecialDungeon()">취소</button>
+              </div>
+            </div>
 
           <div id="boss-select-box" class="hidden" style="background: rgba(255,255,255,0.9); padding: 10px; margin: 10px 20px; border-radius: 10px; border: 2px dashed #e74c3c;">
             <h4 style="margin: 5px; color: #e74c3c;">🎯 토벌할 보스 선택 (8종)</h4>
@@ -287,6 +389,73 @@ body, .status-box, .top-bar {
           
         </div>
       </div>
+
+<!-- 🗺️ 특수 탐험 던전 전용 화면 (안전하게 메인 탭 안으로 안착!) -->
+<div id="dungeon-explore-area" class="hidden" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 150; background: rgba(253, 245, 211, 0.98); padding: 15px; box-sizing: border-box; overflow-y: auto; display: none; flex-direction: column; text-align: left;">
+        
+  <!-- 상단바 (스테이지 & 체력) -->
+  <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px dashed #8e44ad; padding-bottom:10px; margin-bottom:10px; width: 100%; box-sizing: border-box;">
+    <div style="font-weight:900; color:#8e44ad; font-size:16px; text-shadow: 1px 1px 0 #fff;" id="dg-stage-text">Stage 1 / 10</div>
+    <div style="font-size:13px; color:#e74c3c; font-weight:bold;">💖 HP: <span id="dg-hp">100</span> / <span id="dg-max-hp">100</span></div>
+  </div>
+
+  <!-- 내 전투력 표시 박스 -->
+  <div style="font-size:12px; margin-bottom:15px; font-weight:bold; color:#2c3e50; background:#fff; padding:8px; border-radius:5px; border: 2px solid #8e44ad; text-align:center; width: 100%; box-sizing: border-box;">
+    ⚔️ 내 전투력: <span id="dg-atk">10</span> &nbsp;|&nbsp; 🛡️ 방어력: <span id="dg-def">10</span>
+  </div>
+
+  <!-- 🌟 1. 평소에 뜨는 갈림길 / 이벤트 화면 -->
+  <div id="dg-main-content-box" style="width: 100%;">
+    <div id="dg-event-img-box" style="text-align:center; margin-bottom:10px; min-height: 100px;">
+      <img id="dg-event-img" src="" style="width:110px; height:110px; object-fit:contain; animation: livelyBounce 2s infinite;">
+    </div>
+    <div id="dg-event-desc" style="font-size:13px; line-height:1.6; font-weight:bold; color:#333; min-height:60px; text-align:center; margin-bottom:15px; padding: 0 10px; word-break: keep-all;">
+      이벤트 설명이 이곳에 나타납니다...
+    </div>
+  </div>
+
+  <!-- ⚔️ 2. 몬스터/보스전 턴제 전투 화면 (평소엔 숨김) -->
+  <div id="dg-battle-visual-box" class="hidden" style="margin-bottom: 15px; width: 100%;">
+    <div style="display: flex; justify-content: space-around; align-items: center; background: rgba(255,255,255,0.9); border: 2px dashed #e74c3c; border-radius: 10px; padding: 15px 0; position: relative;">
+      <div style="text-align: center; position: relative;">
+        <div style="font-size:11px; font-weight:bold; color:#2ecc71; margin-bottom:3px;">용사</div>
+        <img id="dg-battle-player-img" class="character-img" style="width: 80px; height: 80px; object-fit: contain;" src="" alt="플레이어">
+        <img id="dg-battle-pet-img" class="pet-companion-img hidden" style="width: 40px; height: 40px;" src="" alt="펫">
+      </div>
+      <div style="font-size: 18px; font-weight: bold; color: #e74c3c;">VS</div>
+      <div style="text-align: center;">
+        <div id="dg-battle-enemy-name" style="font-size:11px; font-weight:bold; color:#e74c3c; margin-bottom:3px;">적</div>
+        <img id="dg-battle-enemy-img" style="width: 80px; height: 80px; object-fit: contain; transform: scaleX(-1);" src="" alt="적">
+      </div>
+    </div>
+
+<!-- 내 체력 바 & 적 HP 바 (순서 올바르게 수정) -->
+<div style="margin-top: 10px; display: flex; justify-content: space-around; background: #fff; padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+  <div style="width: 47%; text-align: center;">
+    <p style="margin: 0; font-size: 11px; font-weight: bold; color:#2ecc71;">💖 내 HP</p>
+    <div style="width: 100%; margin: 3px auto; background: #000; border: 2px solid #fff; height: 12px; border-radius: 6px; overflow: hidden;"><div id="dg-player-hp-bar" style="background: #2ecc71; width: 100%; height: 100%; transition: width 0.2s;"></div></div>
+    <p style="margin: 0; font-size: 10px;"><span id="dg-hp">100</span> / <span id="dg-max-hp">100</span></p>
+  </div>
+  <div style="width: 47%; text-align: center;">
+    <p style="margin: 0; font-size: 11px; font-weight: bold; color:#e74c3c;">🔥 적 HP</p>
+    <div style="width: 100%; margin: 3px auto; background: #000; border: 2px solid #fff; height: 12px; border-radius: 6px; overflow: hidden;"><div id="dg-enemy-hp-bar" style="background: #e74c3c; width: 100%; height: 100%;"></div></div>
+    <p style="margin: 0; font-size: 10px;"><span id="dg-enemy-hp-text">100</span> / <span id="dg-enemy-max-hp">100</span></p>
+  </div>
+</div>
+
+    <div id="dg-battle-log" style="font-size: 11px; margin: 10px 0; color: #333; font-weight: bold; background:rgba(255,255,255,0.9); padding:8px; border-radius:5px; text-align: center; border: 1px solid #ccc;">전투가 시작되었습니다!</div>
+  </div>
+
+  <!-- 하단 액션 버튼들 -->
+  <div id="dg-action-buttons" style="display:flex; flex-direction:column; gap:8px; margin-bottom: 20px; width: 100%;"></div>
+
+<!-- 소모품 가방 창 -->
+<div id="dg-item-box" style="margin-top: 10px; padding: 20px 10px; border: 2px dashed #8e44ad; border-radius: 10px; background: rgba(255, 255, 255, 0.6); font-size: 15px; text-align: center; width: 100%; box-sizing: border-box;">
+  <strong style="color:#2c3e50; font-size: 16px;">🎒 인벤토리 소모품 (클릭하여 전투 중 사용!)</strong>
+  <div id="dg-item-list" style="display:flex; gap:15px; justify-content:center; margin-top:15px; flex-wrap: wrap;"></div>
+</div>
+</div>
+
 <!-- 🎯 분리된 미션 탭 -->
 <div id="tab-missions" class="content-area hidden">
   <h2>🎯 일일 및 왕궁 미션</h2>
@@ -298,18 +467,35 @@ body, .status-box, .top-bar {
     <div id="royal-list" style="display: flex; flex-direction: column;"></div>
   </div>
 </div>
-      <div id="tab-gacha" class="content-area hidden">
-        <h2 style="color: var(--line-color);">🔮 왕실 가챠 🔮</h2>
-        <p>1회 뽑기: 🎟️ 티켓 1장</p>
-        <img src="https://img.icons8.com/color/150/treasure-chest.png" class="character-img" style="margin-bottom:20px;"><br>
-        <button class="btn btn-dungeon" style="background-color:var(--accent-pink); color:white;" onclick="rollGacha()">🎟️ 가챠 돌리기!</button>
-        <div id="gacha-result-box"></div>
-        <hr>
-        <h2 style="color: #27ae60;">👃 코쑥 가챠 👃</h2>
-        <p>1회 뽑기: 👃 코쑥 가챠권 1장</p>
-        <button class="btn btn-dungeon" style="background-color:#27ae60; color:white;" onclick="rollKossukGacha()">👃 코쑥 가챠 돌리기!</button>
-        <div id="kossuk-result-box"></div>
-      </div>
+<!-- 🔮 가챠 탭 전체 덮어씌우기 -->
+<div id="tab-gacha" class="content-area hidden" style="text-align: center;">
+  <h2 style="color: var(--line-color); margin-top: 20px;">🔮 왕실 가챠 🔮</h2>
+  <p>1회 뽑기: 🎟️ 티켓 1장</p>
+  
+  <button class="btn" style="font-size: 11px; padding: 5px 10px; margin: 0 auto 10px auto; display: inline-block; border-color:#9b59b6; color:#9b59b6;" onclick="toggleGachaInfo('royal')">📊 왕실 가챠 획득 목록 및 확률</button>
+  <div id="royal-gacha-info" class="hidden" style="font-size: 11px; text-align: left; background: #fff; padding: 10px; border: 2px dashed #9b59b6; border-radius: 5px; margin: 0 20px 15px 20px; max-height: 200px; overflow-y: auto;"></div>
+  
+  <!-- 💡 보물상자 이미지 (정중앙 고정!) -->
+  <img src="https://img.icons8.com/color/150/treasure-chest.png" class="character-img" style="display: block; margin: 0 auto 20px auto;">
+  
+  <button class="btn btn-dungeon" style="width: 80%; display: block; margin: 0 auto; background-color:var(--accent-pink); color:white;" onclick="rollGacha()">🎟️ 가챠 돌리기!</button>
+  <div id="gacha-result-box"></div>
+  
+  <hr style="margin: 30px 0;">
+  
+  <h2 style="color: #27ae60;">👃 코쑥 가챠 👃</h2>
+  <p>1회 뽑기: 👃 코쑥 가챠권 1장</p>
+  
+  <button class="btn" style="font-size: 11px; padding: 5px 10px; margin: 0 auto 10px auto; display: inline-block; border-color:#27ae60; color:#27ae60;" onclick="toggleGachaInfo('kossuk')">📊 코쑥 가챠 획득 목록 및 확률</button>
+  <div id="kossuk-gacha-info" class="hidden" style="font-size: 11px; text-align: left; background: #fff; padding: 10px; border: 2px dashed #27ae60; border-radius: 5px; margin: 0 20px 15px 20px; max-height: 200px; overflow-y: auto;"></div>
+
+  <!-- 💡 코쑥 가챠 전용 커스텀 이미지 (반짝이 이펙트 포함!) -->
+  <!-- 'my_kossuk_box.png' 부분을 준비하신 파일명으로 바꿔주세요! -->
+  <img src="ga_ko.png" class="character-img effect-sparkle" style="display: block; margin: 0 auto 20px auto;" onerror="this.src='https://img.icons8.com/color/150/gift.png'">
+
+  <button class="btn btn-dungeon" style="width: 80%; display: block; margin: 0 auto; background-color:#27ae60; color:white;" onclick="rollKossukGacha()">👃 코쑥 가챠 돌리기!</button>
+  <div id="kossuk-result-box"></div>
+</div>
 
       <div id="tab-shop" class="content-area hidden">
         <h2>🛒 잡화점</h2>
@@ -351,8 +537,12 @@ body, .status-box, .top-bar {
           <strong>🐾 보유 펫 관리 (클릭하여 장착/해제)</strong>
           <div id="inv-pets-list" style="font-size: 12px; margin-top:5px;">보유한 펫이 없습니다.</div>
           <hr>
-          <strong>🎁 획득한 가챠 아이템 도감</strong>
-          <div id="inv-items-list" style="font-size: 12px; margin-top:5px;">없음</div>
+          <!-- 👇 도감 2개로 분리 완료! -->
+          <strong>👑 왕실 가챠 도감</strong>
+          <div id="inv-royal-list" style="font-size: 12px; margin-top:5px;">없음</div>
+          <hr>
+          <strong>👃 코쑥 가챠 도감</strong>
+          <div id="inv-kossuk-list" style="font-size: 12px; margin-top:5px;">없음</div>
         </div>
       </div>
 
@@ -440,6 +630,7 @@ body, .status-box, .top-bar {
         <div class="nav-item" onclick="switchTab('shop')">🛒<br>상점</div>
         <div class="nav-item" onclick="switchTab('inventory')">🎒<br>소지품</div>
         <div class="nav-item" onclick="switchTab('status')">📜<br>설정</div>
+        <div class="nav-item" id="nav-bgm-player" onclick="toggleBGM()" style="color: #4a90e2;">🎵<br>BGM OFF</div>
       </div>
 
     </div>
@@ -499,7 +690,7 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
     ];
 
     const gachaPool = {
-      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "디지바이스", icon: "📱", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" } ],
+      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "디지바이스", icon: "📱", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" }, { name: "🎧 [BGM] 새로운 모험", icon: "👟",  effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic3", bgmFile: "bgm_new.mp3"} ],
       epic: [ { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+5)", stat: "ratk", add: 5 }, { name: "콘서타", icon: "💊", effect: "공격력 상승 (+5)", stat: "atk", add: 5 }, { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+5)", stat: "int", add: 5 }, { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+5)", stat: "spd", add: 5 }, { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+5)", stat: "def", add: 5 }, { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+5)", stat: "int", add: 5 }, { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" } ],
       rare: [ { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +2", stat: "int", add: 2 }, { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 }, { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +2", stat: "int", add: 2 }, { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +2", stat: "def", add: 2 }, { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 }, { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" } ],
       normal: [ { name: "알콜스왑", icon: "🩹", effect: "스피드 +1", stat: "spd", add: 1 }, { name: "대나무 화장지", icon: "🧻", effect: "방어력 +1", stat: "def", add: 1 }, { name: "돌돌이", icon: "🧹", effect: "공격력 +1", stat: "atk", add: 1 }, { name: "먼지 낀 서큘레이터", icon: "🌀", effect: "지력 +1", stat: "int", add: 1 }, { name: "가챠 1회권(다시)", icon: "🎫", effect: "티켓 +1", type: "ticket", amount: 1 } ]
@@ -539,8 +730,18 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
     }
     
     function toggleBGM() {
-      const audio = document.getElementById('game-audio'); const btn = document.getElementById('bgm-player');
-      if (isPlaying) { audio.pause(); btn.innerText = "🎵 BGM: OFF"; } else { audio.play().catch(e => alert('오디오 권한 필요')); btn.innerText = "🎵 BGM: ON"; }
+      const audio = document.getElementById('game-audio'); 
+      const btn = document.getElementById('nav-bgm-player');
+      
+      if (isPlaying) { 
+        audio.pause(); 
+        btn.innerHTML = "🎵<br>BGM OFF"; 
+        btn.style.color = "#4a90e2"; // 꺼졌을 땐 파란색
+      } else { 
+        audio.play().catch(e => alert('오디오 권한 필요')); 
+        btn.innerHTML = "🔊<br>BGM ON"; 
+        btn.style.color = "#e74c3c"; // 켜졌을 땐 튀는 빨간색!
+      }
       isPlaying = !isPlaying;
     }
     
@@ -871,33 +1072,37 @@ function changeBgm(key, autoChange = false) {
       }
       else if (item.mult) { player.stats[item.stat] = Math.floor(player.stats[item.stat] * item.mult); } else if (item.add) { player.stats[item.stat] += item.add; }
 
-      if (!player.inventory[item.name]) { player.inventory[item.name] = { name: item.name, icon: item.icon || "🎁", tierName: tierName, cssClass: cssClass, count: 0, statName: item.stat || null, totalStat: 0 }; }
+      if (!player.inventory[item.name]) { player.inventory[item.name] = { name: item.name, icon: item.icon || "🎁", tierName: tierName, cssClass: cssClass, count: 0, statName: item.stat || null, totalStat: 0, gachaType: 'royal' }; }
       player.inventory[item.name].count += 1; if (item.add) player.inventory[item.name].totalStat += item.add;
 
       document.getElementById('gacha-result-box').innerHTML = `<div class="gacha-result"><div style="font-size:12px; margin-bottom:5px;">${tierName} 등장!</div><strong class="${cssClass}">${item.name}</strong><br><small style="color:#333;">효과: ${displayEffect}</small></div>`;
       updateStatus(); saveGame();
     }
 
-// 🐾 펫 데이터 풀 (스탯 너프)
+// 🐾 펫 데이터 풀 (동료 합류 기본 보너스 상향 패치!)
 const petPool = {
       common: [
-        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "지력(INT) +2", token: 1, image: "pet_pi.png", stats: { int: 2 } },
-        { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "최대 체력 +10", token: 1, image: "pet_omega.png", stats: { hp: 10 } }
+        // 💡 일반 펫: 파티 합류 시 무조건 모든 스탯 +1 기본 제공!
+        { name: "효소 비둘기", icon: "🕊️", tier: "일반", cssClass: "normal", effect: "기본 올스탯+1 & 지력+3", token: 1, image: "pet_pi.png", stats: { atk:1, ratk:1, def:1, spd:1, int: 4 } },
+        { name: "오메가3 슬라임", icon: "💧", tier: "일반", cssClass: "normal", effect: "기본 올스탯+1 & 체력+15", token: 1, image: "pet_omega.png", stats: { atk:1, ratk:1, def:1, spd:1, int:1, hp: 15 } }
       ],
       rare: [
-        { name: "물마시는 해달", icon: "🦦", tier: "레어", cssClass: "rare", effect: "최대 체력 +20", token: 3, image: "pet_su.png", stats: { hp: 20 } },
-        { name: "만보 걷는 다람쥐", icon: "🐿️", tier: "레어", cssClass: "rare", effect: "스피드(SPD) +3", token: 3, image: "pet_daram.png", stats: { spd: 3 } },
-        { name: "공복의 치타", icon: "🐆", tier: "레어", cssClass: "rare", effect: "원거리(RATK) +5", token: 3, image: "pet_chi.png", stats: { ratk: 5 } }
+        // 💡 레어 펫: 올스탯 +1 기본 제공에 주특기 대폭 상향!
+        { name: "물마시는 해달", icon: "🦦", tier: "레어", cssClass: "rare", effect: "기본 올스탯+1 & 체력+20, 스피드+2", token: 3, image: "pet_su.png", stats: { atk:1, ratk:1, def:1, spd:3, int:1, hp: 20 } },
+        { name: "만보 걷는 다람쥐", icon: "🐿️", tier: "레어", cssClass: "rare", effect: "기본 올스탯+1 & 스피드+4", token: 3, image: "pet_daram.png", stats: { atk:1, ratk:1, def:1, spd: 5, int:1 } },
+        { name: "공복의 치타", icon: "🐆", tier: "레어", cssClass: "rare", effect: "기본 올스탯+1 & 원거리+5", token: 3, image: "pet_chi.png", stats: { atk:1, ratk:6, def:1, spd:1, int:1 } }
       ],
       epic: [
-        { name: "코렐라인 인형", icon: "🪡", tier: "에픽", cssClass: "epic", effect: "방어력(DEF) +7", token: 10, image: "pet_coral.png", stats: { def: 7 } },
-        { name: "디지블루 디아블로몬", icon: "😈", tier: "에픽", cssClass: "epic", effect: "공격력(ATK) +7", token: 10, image: "pet_dia.png", stats: { atk: 7 } },
-        { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "지력(INT) +7", token: 10, image: "pet_jack.png", stats: { int: 7 } }
+        // 💡 에픽 펫: 파티 합류 시 무조건 모든 스탯 +2 기본 제공!
+        { name: "코렐라인 인형", icon: "🪡", tier: "에픽", cssClass: "epic", effect: "기본 올스탯+2 & 방어력+8", token: 10, image: "pet_coral.png", stats: { atk:2, ratk:2, def:10, spd:2, int:2 } },
+        { name: "디지블루 디아블로몬", icon: "😈", tier: "에픽", cssClass: "epic", effect: "기본 올스탯+2 & 공격력+8", token: 10, image: "pet_dia.png", stats: { atk:10, ratk:2, def:2, spd:2, int:2 } },
+        { name: "잭오랜턴", icon: "🎃", tier: "에픽", cssClass: "epic", effect: "기본 올스탯+2 & 지력+8", token: 10, image: "pet_jack.png", stats: { atk:2, ratk:2, def:2, spd:2, int:10 } }
       ],
       mythic: [
-        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +3", token: 30, image: "pet_quko01.png", stats: { atk: 3, ratk: 3, def: 3, spd: 3, int: 3 } },
-        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "공격력/원거리 +10", token: 30, image: "pet_quko02.png", stats: { atk: 10, ratk: 10 } },
-        { name: "칠흑의 파괴신 블랙워그레이몬", icon: "🐉", tier: "신화", cssClass: "mythic", effect: "공격력(ATK) +15 대폭발", token: 30, image: "pet_black.png", stats: { atk: 15 } }
+        // 💡 신화 펫: 압도적인 힘!
+        { name: "미니 코알라 & 쿼카", icon: "🐨", tier: "신화", cssClass: "mythic", effect: "모든 스탯 +5 & 체력+30", token: 30, image: "pet_quko01.png", stats: { atk: 5, ratk: 5, def: 5, spd: 5, int: 5, hp: 30 } },
+        { name: "네모 코알라 & 쿼카", icon: "📦", tier: "신화", cssClass: "mythic", effect: "기본 올스탯+3 & 공격/원거리 +15", token: 30, image: "pet_quko02.png", stats: { atk: 18, ratk: 18, def:3, spd:3, int:3 } },
+        { name: "칠흑의 파괴신 블랙워그레이몬", icon: "🐉", tier: "신화", cssClass: "mythic", effect: "기본 올스탯+3 & 공격력 +25 대폭발", token: 30, image: "pet_black.png", stats: { atk: 28, ratk:3, def:3, spd:3, int:3 } }
       ]
     };
 
@@ -997,7 +1202,7 @@ const kossukPool = [
         if (!player.inventory[item.name]) {
           player.inventory[item.name] = { 
             name: item.name, icon: item.icon, tierName: cleanTier, cssClass: item.cssClass, 
-            count: 0, statName: item.stat, totalStat: 0 
+            count: 0, statName: item.stat, totalStat: 0, gachaType: 'kossuk'
           };
         }
         player.inventory[item.name].count += 1;
@@ -1077,17 +1282,41 @@ const bgmModeSelect = document.getElementById('bgm-mode-select');
       document.getElementById('st-atk').innerText = player.stats.atk; document.getElementById('st-ratk').innerText = player.stats.ratk; document.getElementById('st-def').innerText = player.stats.def; document.getElementById('st-spd').innerText = player.stats.spd; document.getElementById('st-int').innerText = player.stats.int;
       document.getElementById('st-royal').innerText = player.records.royalQuests; document.getElementById('st-boss-kill').innerText = player.records.bossKills; document.getElementById('st-total-gold').innerText = player.records.totalGold;
       
-      const invDiv = document.getElementById('st-items'); const invItemsList = document.getElementById('inv-items-list');
-      if (Object.keys(player.inventory).length === 0) {
-        if(invDiv) invDiv.innerHTML = "아직 뽑은 아이템이 없습니다."; if(invItemsList) invItemsList.innerHTML = "아직 뽑은 아이템이 없습니다.";
-      } else {
-        let invHTML = ""; const statKor = { atk: "공격력", ratk: "원거리", def: "방어력", spd: "스피드", int: "지력" };
-        for (let key in player.inventory) {
-          let invItem = player.inventory[key]; let statText = (invItem.statName && invItem.totalStat > 0) ? `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">(+${statKor[invItem.statName]} ${invItem.totalStat})</span>` : "";
-          invHTML += `<div style="margin: 4px 0; padding: 6px; background: rgba(255,255,255,0.8); border-radius: 5px; border: 1px dashed #ccc; font-size: 13px;">${invItem.icon} <span class="${invItem.cssClass}">[${invItem.tierName}] ${invItem.name}</span> <strong style="margin-left: 5px;">x${invItem.count}</strong> ${statText}</div>`;
-        }
-        if(invDiv) invDiv.innerHTML = invHTML; if(invItemsList) invItemsList.innerHTML = invHTML;
+// 💡 도감 2개 분리 및 정렬 출력 로직
+const royalListDiv = document.getElementById('inv-royal-list');
+      const kossukListDiv = document.getElementById('inv-kossuk-list');
+      
+      let royalItems = []; let kossukItems = [];
+      for (let key in player.inventory) {
+         let item = player.inventory[key];
+         // 코쑥 가챠 출신인지 판별 (이전 저장 데이터까지 호환)
+         if (item.gachaType === 'kossuk' || key.includes('돼지코') || key.includes('비염티슈') || key.includes('긴코') || key.includes('휴지')) kossukItems.push(item);
+         else royalItems.push(item);
       }
+      
+      function sortItems(a, b) {
+         const rScore = { "mythic": 1, "epic": 2, "rare": 3, "normal": 4 };
+         let scoreA = rScore[a.cssClass] || 5; let scoreB = rScore[b.cssClass] || 5;
+         if (scoreA !== scoreB) return scoreA - scoreB;
+         return a.name.localeCompare(b.name);
+      }
+      
+      royalItems.sort(sortItems); kossukItems.sort(sortItems);
+      const statKor = { atk: "공격력", ratk: "원거리", def: "방어력", spd: "스피드", int: "지력", all: "올스탯" };
+      
+      function renderItemList(items) {
+          if (items.length === 0) return "아직 뽑은 아이템이 없습니다.";
+          let html = "";
+          items.forEach(invItem => {
+              let statText = (invItem.statName && invItem.totalStat > 0) ? `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">(+${statKor[invItem.statName] || invItem.statName} ${invItem.totalStat})</span>` : "";
+              let cleanTier = invItem.tierName ? invItem.tierName.replace(/[^가-힣]/g,'') : '';
+              html += `<div style="margin: 4px 0; padding: 6px; background: rgba(255,255,255,0.8); border-radius: 5px; border: 1px dashed #ccc; font-size: 13px;">${invItem.icon || ''} <span class="${invItem.cssClass}">[${cleanTier}] ${invItem.name}</span> <strong style="margin-left: 5px;">x${invItem.count}</strong> ${statText}</div>`;
+          });
+          return html;
+      }
+      
+      if(royalListDiv) royalListDiv.innerHTML = renderItemList(royalItems);
+      if(kossukListDiv) kossukListDiv.innerHTML = renderItemList(kossukItems);
 
       const themeSelect = document.getElementById('theme-select');
       if(themeSelect) { themeSelect.innerHTML = ""; for (let key in player.unlockedThemes) { let opt = document.createElement('option'); opt.value = key; opt.innerText = player.unlockedThemes[key].name; if (key === player.currentTheme) opt.selected = true; themeSelect.appendChild(opt); } }
@@ -1137,17 +1366,35 @@ const effectSelect = document.getElementById('effect-select');
       
       const invPetsDiv = document.getElementById('inv-pets-list');
       if (invPetsDiv) {
-        if (!player.pets || Object.keys(player.pets).length === 0) { invPetsDiv.innerHTML = "보유한 펫이 없습니다. 상점에서 펫을 뽑아보세요!"; } 
-        else {
-          let pHTML = "";
+        if (!player.pets || Object.keys(player.pets).length === 0) { 
+          invPetsDiv.innerHTML = "보유한 펫이 없습니다. 상점에서 펫을 뽑아보세요!"; 
+        } else {
+          // 1. 보유한 펫 목록을 순서를 매길 수 있는 배열 형태로 변환
+          let ownedPetsArray = [];
           for (let pName in player.pets) {
-            let p = player.pets[pName]; let isEquipped = player.equippedPet === pName;
-            let btnText = isEquipped ? "장착 해제" : "장착하기"; let btnColor = isEquipped ? "#e74c3c" : "#27ae60";
+            ownedPetsArray.push({ id: pName, ...player.pets[pName] });
+          }
+
+          // 2. 레어도에 따른 점수 부여 및 정렬 (신화가 맨 위로 오고, 같은 등급이면 이름순 정렬)
+          const tierScore = { "신화": 1, "에픽": 2, "레어": 3, "일반": 4 };
+          ownedPetsArray.sort((a, b) => {
+            let scoreA = tierScore[a.tier] || 5;
+            let scoreB = tierScore[b.tier] || 5;
+            if (scoreA !== scoreB) return scoreA - scoreB; // 등급이 다르면 등급순 정렬
+            return a.name.localeCompare(b.name); // 등급이 같으면 이름 가나다순 정렬
+          });
+
+          // 3. 정렬된 순서대로 소지품 화면에 리스트 그려주기
+          let pHTML = "";
+          ownedPetsArray.forEach(p => {
+            let isEquipped = player.equippedPet === p.id;
+            let btnText = isEquipped ? "장착 해제" : "장착하기"; 
+            let btnColor = isEquipped ? "#e74c3c" : "#27ae60";
             pHTML += `<div style="margin: 6px 0; padding: 6px; background: rgba(255,255,255,0.9); border-radius: 5px; border: 1px dashed #ccc; display: flex; justify-content: space-between; align-items: center;">
               <div>${p.icon} <span class="${p.cssClass}">[${p.tier}] ${p.name}</span><br><small style="color:#555;">효과: ${p.effect}</small></div>
-              <button class="btn" style="padding: 4px 8px; margin: 0; background: ${btnColor}; color: white; font-size: 10px;" onclick="toggleEquipPet('${pName}')">${btnText}</button>
+              <button class="btn" style="padding: 4px 8px; margin: 0; background: ${btnColor}; color: white; font-size: 10px;" onclick="toggleEquipPet('${p.id}')">${btnText}</button>
             </div>`;
-          }
+          });
           invPetsDiv.innerHTML = pHTML;
         }
       }
@@ -1478,11 +1725,10 @@ const effectSelect = document.getElementById('effect-select');
 // 💡 맨 처음 시작인 반짝이는 'if' 그대로 유지!
 if (effect === 'effect-sparkle') { 
         shapes = [
-          '<img src="pa_spa01.png" style="width: 15px; image-rendering: pixelated;">',
-          '<img src="pa_spa01.png" style="width: 15px; image-rendering: pixelated;">'
+          '<img src="pa_spa01.png" style="width: 12px; image-rendering: pixelated;">'
         ]; 
-        size = 15; 
-        speed = 120; 
+        size = 12; 
+        speed = 400; /* 0.4초당 1개씩 천천히, 은은하게 생성 */
       }
       // 👇 불꽃 이펙트를 내 이미지로 교체! (엔터 쳐서 여러 줄로 써도 잘 작동합니다)
       else if (effect === 'effect-fire') { 
@@ -1500,9 +1746,16 @@ if (effect === 'effect-sparkle') {
         size = 16; 
         speed = 100; 
       }
-      else if (effect === 'effect-dark') { shapes = ['🦇', '🌑', '💀']; size = 15; speed = 150; }
+      if (effect === 'effect-lightning') { 
+        shapes = [
+          '<img src="pa_th01.png" style="width: 25px; image-rendering: pixelated;">'
+        ]; 
+        size = 12; 
+        speed = 400; /* 0.4초당 1개씩 천천히, 은은하게 생성 */
+      }
+      else if (effect === 'effect-dark') { shapes = ['🦇', '🌑', '💀']; size = 15; speed = 300; }
       else if (effect === 'effect-holy') { shapes = ['👼', '🕊️', '🤍']; size = 16; }
-      else if (effect === 'effect-glitch') { shapes = ['0', '1', '👾', 'ERROR']; size = 12; speed = 30; }
+      else if (effect === 'effect-glitch') { shapes = ['0', '1', '👾', 'ERROR']; size = 12; speed = 200; }
 
 // 파티클 생성기 가동!
 particleTimer = setInterval(() => {
@@ -1520,43 +1773,31 @@ particleTimer = setInterval(() => {
 
         // 🌟 1. 반짝이: 제자리에서 깜빡이기
         if (effect === 'effect-sparkle') {
-        // 💡 캐릭터(가운데)를 가리지 않도록 왼쪽(10~30%) 또는 오른쪽(70~90%)으로 위치를 밀어줍니다!
-        if (Math.random() > 0.5) {
-            startX = 10 + Math.random() * 20; // 왼쪽 구역
-          } else {
-            startX = 70 + Math.random() * 20; // 오른쪽 구역
-          }
-          startY = 20 + Math.random() * 60; // 세로는 위아래로 넓게 퍼지도록 설정
+          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
+          startY = 20 + Math.random() * 60; 
           p.style.left = startX + '%';
           p.style.top = startY + '%';
-          p.style.opacity = '0'; // 처음엔 투명하게
+          p.style.opacity = '0'; 
           p.style.transform = 'scale(0.5)';
           p.style.transition = `all ${duration / 2}s ease-in-out`;
           container.appendChild(p);
 
-          // 나타나면서 커지기
-          setTimeout(() => { p.style.opacity = '1'; p.style.transform = 'scale(1.2)'; }, 10);
-          // 절반 지났을 때 다시 작아지면서 사라지기
+          setTimeout(() => { p.style.opacity = '0.7'; p.style.transform = 'scale(1.1)'; }, 10);
           setTimeout(() => { p.style.opacity = '0'; p.style.transform = 'scale(0.5)'; }, (duration / 2) * 1000);
         }
         
         // 🔥 2. 불꽃: 위로 둥실둥실 올라가며 사라지기
         else if (effect === 'effect-fire') {
-        // 💡 캐릭터(가운데)를 가리지 않도록 왼쪽(10~30%) 또는 오른쪽(70~90%)으로 위치를 밀어줍니다!
-        if (Math.random() > 0.5) {
-            startX = 10 + Math.random() * 20; // 왼쪽 구역
-          } else {
-            startX = 70 + Math.random() * 20; // 오른쪽 구역
-          }
-          startY = 20 + Math.random() * 60; // 세로는 위아래로 넓게 퍼지도록 설정
+          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
+          startY = 20 + Math.random() * 60; 
           p.style.left = startX + '%';
-          p.style.top = (startY + 10) + '%'; // 약간 아랫쪽(발밑)에서 시작
+          p.style.top = (startY + 10) + '%'; 
           p.style.opacity = '1';
           p.style.transition = `all ${duration}s ease-out`;
           container.appendChild(p);
 
           setTimeout(() => {
-            p.style.top = (startY - 30 - Math.random() * 20) + '%'; // 위쪽 방향으로!
+            p.style.top = (startY - 30 - Math.random() * 20) + '%'; 
             p.style.opacity = '0';
             p.style.transform = 'scale(0.5)';
           }, 10);
@@ -1564,30 +1805,71 @@ particleTimer = setInterval(() => {
         
         // ⚡ 3. 번개: 위에서 아래로 떨어지며 지지직 흔들리기!
         else if (effect === 'effect-lightning') {
-        // 💡 캐릭터(가운데)를 가리지 않도록 왼쪽(10~30%) 또는 오른쪽(70~90%)으로 위치를 밀어줍니다!
-        if (Math.random() > 0.5) {
-            startX = 10 + Math.random() * 20; // 왼쪽 구역
-          } else {
-            startX = 70 + Math.random() * 20; // 오른쪽 구역
-          }
-          startY = 20 + Math.random() * 60; // 세로는 위아래로 넓게 퍼지도록 설정
-          startY = 20 + Math.random() * 20; // 머리 위쪽에서 시작
+          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
+          startY = 20 + Math.random() * 20; 
           p.style.left = startX + '%';
           p.style.top = startY + '%';
           p.style.opacity = '1';
           
-          // top(아래로 떨어짐)과 opacity(사라짐)만 부드럽게 주고, 좌우 흔들림은 애니메이션으로 맡김
           p.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`; 
-          p.style.animation = `shake 0.1s infinite alternate`; // 덜덜 떠는 효과!
+          p.style.animation = `shake 0.1s infinite alternate`; 
           container.appendChild(p);
 
           setTimeout(() => {
-            p.style.top = (startY + 40 + Math.random() * 20) + '%'; // 벼락 꽂히듯 아래로!
+            p.style.top = (startY + 40 + Math.random() * 20) + '%'; 
             p.style.opacity = '0';
           }, 10);
         }
+
+        // 👼 4. 성스러운 빛: 팝콘처럼 튀지 않고 제자리에 은은하게 나타났다 스르륵 사라짐
+        else if (effect === 'effect-holy') {
+          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
+          startY = 10 + Math.random() * 70; // 좀 더 넓은 범위에 배치
+          duration = 2 + Math.random() * 1.5; // 은은하게 오래 떠있도록 시간 늘림 (2~3.5초)
+
+          p.style.left = startX + '%';
+          p.style.top = startY + '%';
+          p.style.opacity = '0'; // 처음엔 완전히 투명
+          // 불투명도 조절로 깜빡임 없이 부드럽게 페이드인/아웃
+          p.style.transition = `opacity ${duration / 2}s ease-in-out, top ${duration}s linear`;
+          container.appendChild(p);
+
+          setTimeout(() => { 
+            p.style.opacity = '0.6'; // 스르륵 반투명하게 나타남
+            p.style.top = (startY - 8) + '%'; // 위로 아주 천천히 살짝만 떠오름
+          }, 10);
+
+          setTimeout(() => { 
+            p.style.opacity = '0'; // 유지되다가 스르륵 사라짐
+          }, (duration / 2) * 1000);
+        }
+
+        // 👾 5. 글리치: 흩날리지 않고 캐릭터 근처에 붙어서 색 번짐+지직거림
+        else if (effect === 'effect-glitch') {
+          startX = 30 + Math.random() * 40; // 캐릭터 바로 위/주변에 생성
+          startY = 30 + Math.random() * 40;
+          
+          p.style.left = startX + '%';
+          p.style.top = startY + '%';
+          
+          // 이미 만들어둔 빨강/파랑 색상 번짐 애니메이션 클래스를 조각에도 부여!
+          p.classList.add('effect-glitch');
+          container.appendChild(p);
+
+          // 타이머를 돌려 자잘하게 덜덜덜 떨리는 지직거림(Jitter) 위치 효과 추가
+          let jitter = setInterval(() => {
+            p.style.transform = `translate(${Math.random()*8-4}px, ${Math.random()*8-4}px) skew(${Math.random()*15-7}deg)`;
+            // 간헐적으로 불투명해지며 깜빡거림
+            p.style.opacity = Math.random() > 0.8 ? '0.1' : '0.9'; 
+          }, 80);
+
+          setTimeout(() => {
+            clearInterval(jitter); // 찌그러짐 타이머 종료
+            p.style.opacity = '0';
+          }, duration * 1000);
+        }
         
-        // 🦇 4~6번: 기존처럼 사방으로 흩날리며 돌기
+        // 🦇 6. 어둠 등 나머지 (기존 팝콘 흩날림 유지)
         else {
           p.style.left = startX + '%';
           p.style.top = startY + '%';
@@ -1605,11 +1887,828 @@ particleTimer = setInterval(() => {
         // 수명이 다한 파티클 조각은 깔끔하게 청소
         setTimeout(() => {
           if (p.parentNode) p.parentNode.removeChild(p);
-        }, duration * 1000);
+        }, (duration + 1) * 1000);
         
       }, speed);
       }
 
+      // ==========================================
+    // 🗺️ 특수 탐험 던전 시스템 (1단계: 입장 준비)
+    // ==========================================
+    const specialDungeons = [
+      { id: 'sd1', name: '🌲 숲 속의 수상한 깊은 구덩이', locked: false, lockMsg: '' },
+      { id: 'sd2', name: '🌊 물 속의 기묘한 발광동굴', locked: true, lockMsg: '어두운 기운으로 덮혀져있어 갈 수 없다.' },
+      { id: 'sd3', name: '⛰️ 높은 산 꼭대기의 커다란 둥지', locked: true, lockMsg: '어두운 기운으로 덮혀져있어 갈 수 없다.' }
+    ];
+
+    // 던전 전용 소모품 목록
+    const dungeonItems = [
+      { id: 'none', name: '선택 안함', cost: 0 },
+      { id: 'potion', name: '🥤 닭가슴살 쉐이크 (300G) - 체력 30 회복', cost: 300 },
+      { id: 'smoke', name: '💣 연막탄 (500G) - 위험한 전투 1회 회피', cost: 500 },
+      { id: 'protein', name: '🍫 단백질 바 (800G) - 다음 전투 스탯 2배', cost: 800 }
+    ];
+
+    let selectedDungeonId = null;
+
+    function openSpecialDungeon() {
+      // 다른 창 닫기
+      document.getElementById('boss-select-box').classList.add('hidden');
+      document.getElementById('sd-prep-box').classList.add('hidden');
+      let fieldBox = document.getElementById('dynamic-field-box');
+      if(fieldBox) fieldBox.remove();
+
+      const container = document.getElementById('sd-list-container');
+      container.innerHTML = "";
+      
+      // 3가지 던전 버튼 생성
+      specialDungeons.forEach(d => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-theme';
+        if (d.locked) {
+          btn.style.background = '#7f8c8d'; btn.style.color = '#ccc';
+          btn.innerHTML = `🔒 ??? <br><small style="font-size:10px;">${d.lockMsg}</small>`;
+          btn.onclick = () => alert(d.lockMsg);
+        } else {
+          btn.style.background = '#8e44ad'; btn.style.color = '#fff';
+          btn.innerHTML = `🌟 ${d.name} <br><small>10 스테이지 연속 탐험</small>`;
+          btn.onclick = () => showDungeonPrep(d);
+        }
+        container.appendChild(btn);
+      });
+      document.getElementById('special-dungeon-box').classList.remove('hidden');
+    }
+
+    function closeSpecialDungeon() {
+      document.getElementById('special-dungeon-box').classList.add('hidden');
+      document.getElementById('sd-prep-box').classList.add('hidden');
+    }
+
+    function showDungeonPrep(dungeon) {
+      document.getElementById('special-dungeon-box').classList.add('hidden');
+      document.getElementById('sd-prep-box').classList.remove('hidden');
+      document.getElementById('sd-prep-title').innerText = dungeon.name;
+      selectedDungeonId = dungeon.id;
+
+      // 1. 보유한 펫 목록을 레어도 순(신화->일반)으로 정렬하기
+      let petOptions = `<option value="none">선택 안함</option>`;
+      if (player.pets && Object.keys(player.pets).length > 0) {
+        let ownedPets = [];
+        Object.keys(player.pets).forEach(pName => {
+          let pData = getPetDataByName(pName);
+          if (pData) ownedPets.push(pData);
+        });
+
+        // 레어도 점수 매기기 (신화가 위로 오도록!)
+        const tierScore = { "신화": 1, "에픽": 2, "레어": 3, "일반": 4 };
+        ownedPets.sort((a, b) => (tierScore[a.tier] || 5) - (tierScore[b.tier] || 5));
+
+        // 💡 등급별 파스텔톤 배경 색상 매핑
+        const tierBgColors = {
+          "신화": "#fadbd8", // 연한 붉은빛 (신화)
+          "에픽": "#ebdef0", // 연한 보라빛 (에픽)
+          "레어": "#ebf5fb", // 연한 하늘빛 (레어)
+          "일반": "#e8f8f5"  // 연한 민트빛 (일반)
+        };
+
+        ownedPets.forEach(pet => {
+          let bgCol = tierBgColors[pet.tier] || "#fff";
+          // 옵션 태그에 배경색 스타일을 쏙 심어줍니다!
+          petOptions += `<option value="${pet.name}" style="background-color: ${bgCol};">${pet.icon} [${pet.tier}] ${pet.name}</option>`;
+        });
+      }
+
+      document.getElementById('sd-pet1').innerHTML = petOptions;
+      document.getElementById('sd-pet2').innerHTML = petOptions;
+
+      // 2. 던전 전용 소모품 목록 불러오기
+      let itemOptions = "";
+      dungeonItems.forEach(item => {
+        itemOptions += `<option value="${item.id}">${item.name}</option>`;
+      });
+      document.getElementById('sd-item1').innerHTML = itemOptions;
+      document.getElementById('sd-item2').innerHTML = itemOptions;
+      document.getElementById('sd-item3').innerHTML = itemOptions;
+      updateDungeonPrepStats();
+    }
+
+    // 던전 룰 설명 팝업
+    function showDungeonRules() {
+      alert(`[📜 특수 던전 스탯 적용 룰]\n\n특수 던전은 가챠 아이템 능력이 적용되지 않는 '순수 노력' 던전입니다!\n\n💪 전투력 산출 공식:\n기본 = (내 레벨 x 2) + (지금까지 완료한 총 미션 횟수)\n+ 🌟 (감량한 몸무게 1kg당 전체 능력치 5% 보너스!)\n+ 🐾 (동행하는 펫 2마리의 스탯 합산)\n\n오직 꾸준한 다이어트 기록만이 던전을 돌파할 힘이 됩니다!`);
+    }
+
+// ==========================================
+    // 🗺️ 특수 탐험 던전 시스템 (2단계: 로그라이크 엔진!)
+    // ==========================================
+    let dgState = {
+      stage: 1,
+      hp: 100, maxHp: 100,
+      atk: 0, def: 0,
+      items: [],
+      proteinBuff: false,
+      currentEvent: null
+    };
+
+    function startSpecialDungeon() {
+      if (player.tickets < 1) { alert("티켓이 부족합니다! 왕궁 미션이나 알바로 구해오세요."); return; }
+      
+      const pet1Name = document.getElementById('sd-pet1').value;
+      const pet2Name = document.getElementById('sd-pet2').value;
+      if (pet1Name !== 'none' && pet1Name === pet2Name) { alert("선봉장과 서포터는 서로 다른 펫을 선택해주세요!"); return; }
+
+      const i1 = dungeonItems.find(i => i.id === document.getElementById('sd-item1').value);
+      const i2 = dungeonItems.find(i => i.id === document.getElementById('sd-item2').value);
+      const i3 = dungeonItems.find(i => i.id === document.getElementById('sd-item3').value);
+      const totalCost = i1.cost + i2.cost + i3.cost;
+
+      if (player.gold < totalCost) { alert(`골드가 부족합니다! (소모품 세팅 필요 골드: ${totalCost}G)`); return; }
+      
+      // 결제 및 입장
+      player.gold -= totalCost;
+      player.tickets -= 1;
+      
+      // 💡 [핵심] 순수 노력 스탯 계산하기! (가챠 템 무시)
+      // 1. 레벨과 완료한 미션 횟수 기반
+      let effortScore = player.records.royalQuests + player.records.bossKills; 
+      let baseAtk = (player.level * 2) + effortScore;
+      let baseDef = player.level + Math.floor(effortScore / 2);
+
+      // 2. 펫 스탯 합산
+      let petAtk = 0; let petDef = 0; let petHp = 0;
+      [pet1Name, pet2Name].forEach(pName => {
+        if (pName !== 'none' && player.pets[pName] && player.pets[pName].stats) {
+          let pStat = player.pets[pName].stats;
+          petAtk += (pStat.atk || 0) + (pStat.ratk || 0) + (pStat.int || 0); // 공격계열 다 합침
+          petDef += (pStat.def || 0) + (pStat.spd || 0);
+          petHp += (pStat.hp || 0);
+        }
+      });
+
+      // 3. 다이어트 감량 뻥튀기 보너스! (1kg당 5% 증가)
+      let weightLoss = player.startWeight - player.currentWeight;
+      let multiplier = 1.0;
+      if (weightLoss > 0) multiplier += (weightLoss * 0.05);
+
+      dgState.atk = Math.floor((baseAtk + petAtk) * multiplier) || 10;
+      dgState.def = Math.floor((baseDef + petDef) * multiplier) || 5;
+      dgState.maxHp = player.maxHp + petHp;
+      dgState.hp = dgState.maxHp;
+      dgState.stage = 1;
+      dgState.proteinBuff = false;
+      
+      // 소모품 챙기기
+      dgState.items = [];
+      [i1, i2, i3].forEach(item => { if(item.id !== 'none') dgState.items.push(item); });
+
+      alert(`🚀 [${document.getElementById('sd-prep-title').innerText}] 진입!\n가챠 장비가 비활성화되고, 순수 노력 스탯이 적용됩니다.\n(내 전투력: ${dgState.atk} / 방어력: ${dgState.def})`);
+      
+      // 화면 전환
+      document.getElementById('normal-sprite-area').classList.add('hidden');
+      document.getElementById('normal-action-area').classList.add('hidden');
+      document.getElementById('sd-prep-box').classList.add('hidden');
+      document.getElementById('dungeon-explore-area').classList.remove('hidden');
+      document.getElementById('dungeon-explore-area').style.display = 'flex';
+
+      nextDungeonStage();
+    }
+
+    function updateDungeonUI() {
+      // 상단바와 전투 화면의 내 체력 숫자 모두 업데이트
+      document.querySelectorAll('#dg-hp').forEach(el => el.innerText = dgState.hp);
+      document.querySelectorAll('#dg-max-hp').forEach(el => el.innerText = dgState.maxHp);
+      
+      document.getElementById('dg-atk').innerText = dgState.atk + (dgState.proteinBuff ? " (단백질 2배!)" : "");
+      document.getElementById('dg-def').innerText = dgState.def;
+      
+      // 💡 전투 화면에 내 체력 바(Green bar)가 있다면 실시간으로 줄어들게 반영!
+      const pBar = document.getElementById('dg-player-hp-bar');
+      if (pBar) {
+        let pPercent = Math.max(0, (dgState.hp / dgState.maxHp) * 100);
+        pBar.style.width = pPercent + "%";
+      }
+
+      const itemListDiv = document.getElementById('dg-item-list');
+      itemListDiv.innerHTML = "";
+      if (dgState.items.length === 0) {
+        itemListDiv.innerHTML = "<span style='color:#777;'>가방이 비어있습니다.</span>";
+      } else {
+        dgState.items.forEach((item, idx) => {
+          let icon = item.id === 'potion' ? '🥤' : item.id === 'smoke' ? '💣' : '🍫';
+          let btn = document.createElement('button');
+          btn.className = 'btn';
+// 💡 버튼 크기를 큼직하게 2배 이상 키움!
+btn.style.padding = "10px 18px"; 
+          btn.style.fontSize = "15px"; 
+          btn.style.margin = "0";
+          btn.style.cursor = "pointer";
+          btn.innerHTML = `${icon} ${item.name.split(' ')[0]}`;
+          btn.onclick = () => useDungeonItem(item.id, idx);
+          itemListDiv.appendChild(btn);
+        });
+      }
+    }
+
+    // 소모품 사용 로직
+    function useDungeonItem(itemId, index) {
+      if (itemId === 'potion') {
+        dgState.hp = Math.min(dgState.maxHp, dgState.hp + 30);
+        alert("🥤 닭가슴살 쉐이크를 마셨다! 체력 30 회복!");
+      } 
+      else if (itemId === 'protein') {
+        if(dgState.proteinBuff) return alert("이미 단백질 효과가 적용 중입니다!");
+        dgState.proteinBuff = true;
+        alert("🍫 단백질 바 섭취! 다음 전투에서 공격력이 2배가 됩니다!");
+      } 
+      else if (itemId === 'smoke') {
+        if (!dgState.currentEvent || dgState.currentEvent.type !== 'monster') return alert("💣 연막탄은 몬스터가 눈앞에 있을 때만 쓸 수 있습니다!");
+        alert("💣 연막탄을 터뜨리고 재빠르게 도망쳤습니다!");
+        dgState.items.splice(index, 1);
+        dgState.stage++;
+        return nextDungeonStage();
+      }
+      dgState.items.splice(index, 1);
+      updateDungeonUI();
+    }
+
+    function exitDungeon() {
+      // 💡 던전 팝업창을 완전히 숨깁니다.
+      document.getElementById('dungeon-explore-area').classList.add('hidden');
+      document.getElementById('dungeon-explore-area').style.display = 'none';
+      
+      // 💡 던전에 들어갈 때 숨겼던 내 캐릭터와 버튼들을 다시 나타나게 복구합니다!
+      document.getElementById('normal-sprite-area').classList.remove('hidden');
+      document.getElementById('normal-action-area').classList.remove('hidden');
+      
+      const uiLayer = document.getElementById('ui-layer');
+      if(uiLayer) uiLayer.classList.remove('hidden');
+      
+      updateStatus();
+    }
+
+// ==========================================
+    // 🗺️ 탐험 엔진 2: 갈림길 선택 & 랜덤 이벤트
+    // ==========================================
+    function nextDungeonStage() {
+      if (dgState.hp <= 0) {
+        alert("💀 체력이 모두 소진되어 던전에서 쫓겨났습니다...");
+        return exitDungeon();
+      }
+      // 10스테이지를 넘어가면 클리어!
+      if (dgState.stage > 10) {
+        alert("🎉 10 스테이지 무사 돌파 성공!!\n다이어트 영웅의 귀환입니다!");
+        return exitDungeon();
+      }
+
+      document.getElementById('dg-stage-text').innerText = `Stage ${dgState.stage} / 10`;
+      updateDungeonUI();
+
+      const btnBox = document.getElementById('dg-action-buttons');
+      btnBox.innerHTML = ""; 
+
+// 👑 스테이지 10: 대망의 최종 결전지 도달 연출!
+if (dgState.stage === 10) {
+        document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/castle2.png"; // 성문 또는 결전지 아이콘
+        document.getElementById('dg-event-desc').innerHTML = `
+          <span style="color:#8e44ad; font-size:16px; font-weight:900;">⚡ [Stage 10 : 최종 결전의 방] ⚡</span><br><br>
+          험난한 구덩이의 가장 깊은 곳에 도달했다!<br>
+          스산한 기운 속에서 무언가 거대한 존재가 숨쉬고 있다...<br>
+          운명의 문을 열어보자!
+        `;
+        
+        btnBox.innerHTML = `
+          <button class="btn btn-dungeon" style="background:#8e44ad; padding:18px; font-size:15px;" onclick="generateFinalStage()">🚪 운명의 문을 연다!</button>
+        `;
+        return;
+      }
+
+      // 🗺️ 1~9 스테이지: [갈림길 선택] 화면
+      document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/signpost.png";
+      document.getElementById('dg-event-desc').innerHTML = `<span style="color:#2c3e50; font-size:16px;">🗺️ [스테이지 ${dgState.stage} : 갈림길]</span><br>두 갈래 길이 나타났습니다. 어느 곳으로 갈까요?`;
+      
+      const paths = [
+        "음산한 바람이 부는 어두운 길", "누군가 흘린 빵 부스러기가 있는 길", "맑은 물소리가 희미하게 들리는 길",
+        "수상할 정도로 뻥 뚫린 넓은 흙길", "짐승의 울음소리가 들리는 험난한 길", "은은한 빛이 새어 나오는 바위 틈"
+      ];
+      // 무작위로 2개의 길 뽑기
+      let shuffled = paths.sort(() => 0.5 - Math.random());
+      
+      btnBox.innerHTML = `
+        <button class="btn btn-dungeon" style="background:#34495e; padding:15px; margin-bottom:5px;" onclick="triggerRandomEvent()">👈 ${shuffled[0]}</button>
+        <button class="btn btn-dungeon" style="background:#2c3e50; padding:15px;" onclick="triggerRandomEvent()">👉 ${shuffled[1]}</button>
+      `;
+    }
+
+    // 길을 선택했을 때 발생하는 무작위 이벤트 분배기
+    function triggerRandomEvent() {
+      let rand = Math.random();
+      if (rand < 0.35) generateDungeonMonster();        // 35% 몬스터
+      else if (rand < 0.65) generateDungeonExercise();  // 30% 악마의 현실운동 (타이머+암호)
+      else if (rand < 0.85) generateDungeonNPC();       // 20% 다이어트 요정 NPC
+      else generateDungeonTreasure();                   // 15% 보물상자
+    }
+
+    // ==========================================
+    // 💦 이벤트 1: 현실 운동 (타이머 락 + 암호 입력 꼼수 방지)
+    // ==========================================
+    function generateDungeonExercise() {
+      dgState.currentEvent = { type: 'exercise' };
+      const exercises = [
+        { title: "거대한 바위가 길을 막았다!", ex: "스쿼트 15회", time: 20, quote: "나의 하체는 강철과 같다" },
+        { title: "독기가 가득한 늪지대!", ex: "제자리 걷기 50회", time: 30, quote: "다이어트는 꾸준함이 생명이다" },
+        { title: "무너지는 천장을 버텨라!", ex: "플랭크 엉덩이 들기 15회", time: 30, quote: "코어의 힘이 나를 지킨다" },
+        { title: "가파른 절벽 점프!", ex: "카프레이즈 20회", time: 20, quote: "종아리가 불타오른다" }
+      ];
+      let m = exercises[Math.floor(Math.random() * exercises.length)];
+      
+      document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/mountain.png";
+      document.getElementById('dg-event-desc').innerHTML = `
+        <span style="color:#e67e22; font-size:15px;">⚠️ [돌발 장애물 조우!]</span><br>${m.title}<br><br>
+        💪 <strong>돌파 미션: ${m.ex}</strong><br>
+        <small style="color:#7f8c8d;">(예상 소요 시간: ${m.time}초)</small>
+      `;
+      
+      let btnBox = document.getElementById('dg-action-buttons');
+      btnBox.innerHTML = `<button id="btn-ex-start" class="btn" style="background:#27ae60; color:#fff; padding:15px;" onclick="startExerciseTimer(${m.time}, '${m.quote}')">⏱️ 지금부터 운동 시작!</button>`;
+    }
+
+    // 타이머 락 작동 로직
+    function startExerciseTimer(seconds, quote) {
+      const btn = document.getElementById('btn-ex-start');
+      btn.onclick = null; // 💡 꼼수 방지: 타이머 동안 클릭 완전 차단
+      btn.style.background = "#95a5a6";
+      let timeLeft = seconds;
+
+      let timer = setInterval(() => {
+        timeLeft--;
+        btn.innerText = `⏳ 운동 중... (남은 시간: ${timeLeft}초)`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          btn.innerText = `✅ 완료! (클릭해서 암호 입력)`;
+          btn.style.background = "#2ecc71";
+          btn.onclick = () => verifyExercise(quote); // 타이머 끝나면 양심 암호 시스템 가동!
+        }
+      }, 1000);
+    }
+
+    // 양심 선언 암호 입력 시스템
+    function verifyExercise(quote) {
+      let answer = prompt(`💦 운동 완료를 축하합니다!\n매크로 및 꼼수 방지를 위해 아래 문장을 띄어쓰기까지 100% 똑같이 타이핑하세요.\n\n[ ${quote} ]`);
+      if (answer === quote) {
+        alert("💪 완벽합니다! 무사히 장애물을 돌파했습니다.");
+        dgState.stage++; nextDungeonStage();
+      } else {
+        alert("❌ 암호가 틀렸거나 입력을 포기했습니다!\n억지로 돌파하려다 상처를 입어 체력이 20 깎입니다...");
+        dgState.hp -= 20; 
+        dgState.stage++; nextDungeonStage();
+      }
+    }
+
+    // ==========================================
+    // ⚔️ 이벤트 2: 몬스터 전투
+    // ==========================================
+// ==========================================
+    // ⚔️ [업그레이드] 던전 턴제 전투 시스템 & 소모품 연동
+    // ==========================================
+    let dgBattleState = {
+      enemyHp: 100, enemyMaxHp: 100, enemyAtk: 10, enemyName: ""
+    };
+
+    function generateDungeonMonster() {
+      dgState.currentEvent = { type: 'monster' };
+      
+      // 💡 1. 등장할 일반 몬스터 목록을 만들어 줍니다! (원하는 만큼 계속 추가 가능)
+      const normalMonsterPool = [
+        { name: "다른 세계의 초코쿼카", image: "deo_quakkacho.png" },
+        { name: "다른 세계의 바나나코알라", image: "deo_koalaba.png" },
+
+      ];
+      
+      // 💡 2. 위 목록에서 랜덤으로 한 마리를 뽑습니다!
+      let pickedMonster = normalMonsterPool[Math.floor(Math.random() * normalMonsterPool.length)];
+
+      // 스탯 계산 (기존과 동일하게 레벨과 스테이지 비례)
+      let mHp = Math.floor(Math.random() * 80) + 40 + (player.level * 8) + (dgState.stage * 10); 
+      let mAtk = Math.floor(Math.random() * 15) + 8 + (player.level * 2);
+      
+      dgBattleState.enemyMaxHp = mHp;
+      dgBattleState.enemyHp = mHp;
+      dgBattleState.enemyAtk = mAtk;
+      // 💡 3. 뽑힌 몬스터의 이름에 레벨을 붙여줍니다!
+      dgBattleState.enemyName = `${pickedMonster.name} (Lv.${dgState.stage})`;
+
+      // UI 화면 전환
+      document.getElementById('dg-main-content-box').classList.add('hidden');
+      document.getElementById('dg-battle-visual-box').classList.remove('hidden');
+
+      // 이미지 및 펫 세팅
+      document.getElementById('dg-battle-player-img').src = player.image;
+      // 💡 4. 고정되어 있던 파일명 대신 뽑힌 몬스터의 이미지를 연결합니다!
+      document.getElementById('dg-battle-enemy-img').src = pickedMonster.image;
+      document.getElementById('dg-battle-enemy-name').innerText = dgBattleState.enemyName;
+
+      // ...(이하 펫 세팅 부분 등 기존 코드와 동일)
+
+      // 펫이 있다면 전투 화면에 띄우기
+      const dgPetImg = document.getElementById('dg-battle-pet-img');
+      const pet1Name = document.getElementById('sd-pet1').value;
+      if (pet1Name && pet1Name !== 'none' && player.pets[pet1Name]) {
+        dgPetImg.src = player.pets[pet1Name].image;
+        dgPetImg.classList.remove('hidden');
+      } else {
+        dgPetImg.classList.add('hidden');
+      }
+
+      updateDungeonBattleUI();
+      
+      document.getElementById('dg-battle-log').innerHTML = "야생의 몬스터가 나타났다! 턴을 시작합니다.";
+      
+      let btnBox = document.getElementById('dg-action-buttons');
+      btnBox.innerHTML = `
+        <button class="btn btn-dungeon" style="padding:12px; background:#e74c3c;" onclick="executeDungeonTurn()">⚔️ 공격하기</button>
+      `;
+    }
+
+    function updateDungeonBattleUI() {
+      document.getElementById('dg-enemy-hp-text').innerText = dgBattleState.enemyHp;
+      document.getElementById('dg-enemy-max-hp').innerText = dgBattleState.enemyMaxHp;
+      let percent = Math.max(0, (dgBattleState.enemyHp / dgBattleState.enemyMaxHp) * 100);
+      document.getElementById('dg-enemy-hp-bar').style.width = percent + "%";
+      updateDungeonUI(); // 내 체력 바도 갱신
+    }
+
+// 턴제 공격 한 라운드 진행 (보스 발악 미션 포함!)
+function executeDungeonTurn() {
+      // 👑 [보스전 전용 발악 패턴] 체력이 50% 이하로 떨어지면 빡센 운동 미션 발생!
+      if (dgBattleState.isBoss && dgBattleState.enemyHp <= dgBattleState.enemyMaxHp * 0.5 && !dgBattleState.bossTriggered) {
+        dgBattleState.bossTriggered = true;
+        
+        const hardMissions = [
+          { name: "스쿼트 20회", time: 30, quote: "나의 하체는 불타는 용암이다" },
+          { name: "플랭크 30초 버티기", time: 30, quote: "나의 코어는 무너지지 않는다" },
+          { name: "카프레이즈 40회", time: 30, quote: "종아리 통증은 성장의 증거다" }
+        ];
+        let hm = hardMissions[Math.floor(Math.random() * hardMissions.length)];
+
+        let doIt = confirm(`🔥 [보스 발악 패턴 발동!] 도마뱀이 전력으로 반격하려 합니다!\n\n💪 긴급 미션: [${hm.name}](${hm.time}초)\n실행하시겠습니까? (취소 시 대단한 피해를 입습니다!)`);
+        
+        if (doIt) {
+          // 타이머와 암호 검증을 가볍게 시뮬레이션
+          let ans = prompt(`⏱️ 현실에서 [${hm.name}]을 빠르게 완료하세요!\n매크로 방지 암호를 정확히 입력하세요:\n\n[ ${hm.quote} ]`);
+          if (ans === hm.quote) {
+            alert("💪 미션 대성공! 보스의 기선을 제압하고 추가 강력한 일격을 날립니다!");
+            dgBattleState.enemyHp -= dgState.atk * 3; // 보스에게 거대한 대미지!
+          } else {
+            alert("❌ 암호가 틀렸거나 포기했습니다! 보스의 맹공격 직격탄!");
+            dgState.hp -= 50; // 체력 대량 폭발
+          }
+        } else {
+          alert("회피를 포기하여 보스의 브레스 직격탄을 맞았습니다!");
+          dgState.hp -= 60;
+        }
+        updateDungeonBattleUI();
+        if (dgState.hp <= 0) return endDungeonBattle(false);
+      }
+
+      let myAtk = dgState.proteinBuff ? dgState.atk * 2 : dgState.atk;
+      dgState.proteinBuff = false; // 단백질 바 효과 소모
+
+      // 1. 내 공격
+      dgBattleState.enemyHp -= myAtk;
+      if (dgBattleState.enemyHp < 0) dgBattleState.enemyHp = 0;
+      
+      let log = `⚔️ 내 공격! 적에게 ${myAtk} 데미지!`;
+
+      // 적을 처치했는지 검사
+      if (dgBattleState.enemyHp === 0) {
+        updateDungeonBattleUI();
+        document.getElementById('dg-battle-log').innerHTML = log + `<br>🎉 적을 완전히 쓰러뜨렸습니다!`;
+        
+        setTimeout(() => {
+          if (dgBattleState.isBoss) {
+            let alertMsg = "🔥 [최종 보스 토벌 성공!]\n보상으로 5000 골드와 가챠 티켓 2장을 획득합니다!";
+            player.gold += 5000; player.tickets += 2; player.records.totalGold += 5000;
+
+            // 🎵 BGM 여러 개 중 하나 랜덤 보상! (여기에 원하는 노래를 계속 추가할 수 있어요)
+            const bgmRewardPool = [
+              { key: "bgm_dungeon_boss1", name: "👻푸른 신부의 노래", file: "bgm_Corspe.mp3" },
+              { key: "bgm_dungeon_boss2", name: "🔑호기심이 많은 소녀", file: "bgm_coral.mp3" },
+              { key: "bgm_dungeon_boss3", name: "💕커다란 꿈", file: "bgm_big.mp3" }
+            ];
+            
+            // 목록에서 무작위로 1곡 뽑기
+            let pickedBgm = bgmRewardPool[Math.floor(Math.random() * bgmRewardPool.length)];
+
+            if (!player.unlockedBgms[pickedBgm.key]) {
+              player.unlockedBgms[pickedBgm.key] = { name: pickedBgm.name, file: pickedBgm.file };
+              alertMsg += `\n🎉 특별 보상: 새로운 배경음악 [${pickedBgm.name}] 획득!`;
+            } else {
+              player.gold += 2000; player.records.totalGold += 2000;
+              alertMsg += `\n(이미 [${pickedBgm.name}] 노래를 가지고 있어 2000 골드로 대체 지급되었습니다.)`;
+            }
+
+            alert(alertMsg);
+          }
+          endDungeonBattle(true);
+        }, 1000);
+        return;
+      }
+
+      // 2. 적의 반격
+      let enemyDmg = Math.max(2, dgBattleState.enemyAtk - Math.floor(dgState.def * 0.5));
+      dgState.hp -= enemyDmg;
+      if (dgState.hp < 0) dgState.hp = 0;
+
+      log += `<br>💥 적의 반격! 내게 ${enemyDmg} 데미지!`;
+      document.getElementById('dg-battle-log').innerHTML = log;
+      updateDungeonBattleUI();
+
+      // 내 체력이 0이 되었는지 검사
+      if (dgState.hp <= 0) {
+        setTimeout(() => {
+          endDungeonBattle(false);
+        }, 1000);
+      }
+    }
+
+    function endDungeonBattle(isWin) {
+      // 1. 전투 비주얼 박스는 무조건 숨김
+      document.getElementById('dg-battle-visual-box').classList.add('hidden');
+      // 2. 기본 이벤트/갈림길 콘텐츠 박스는 다시 켬! (이 부분이 빠져서 빈 화면이 떴던 것입니다)
+      document.getElementById('dg-main-content-box').classList.remove('hidden');
+
+      if (isWin) {
+        alert("🎉 전투 승리! 다음 스테이지로 나아갑니다.");
+        dgState.stage++;
+        nextDungeonStage();
+      } else {
+        alert("💀 전투에서 패배하였습니다...");
+        exitDungeon();
+      }
+    }
+
+    // 🎒 던전 안에서 소모품 직접 사용하기 (전투 중에도 가능!)
+    function useDungeonItem(itemId, index) {
+      if (itemId === 'potion') {
+        dgState.hp = Math.min(dgState.maxHp, dgState.hp + 30);
+        alert("🥤 닭가슴살 쉐이크를 마셨다! 체력 30 회복!");
+      } 
+      else if (itemId === 'protein') {
+        if(dgState.proteinBuff) return alert("이미 단백질 효과가 적용 중입니다!");
+        dgState.proteinBuff = true;
+        alert("🍫 단백질 바 섭취! 다음 공격력이 2배가 됩니다!");
+      } 
+      else if (itemId === 'smoke') {
+        // 전투 중일 때만 연막탄으로 도망 가능!
+        let isFighting = !document.getElementById('dg-battle-visual-box').classList.contains('hidden');
+        if (!isFighting) return alert("💣 연막탄은 전투 중에 도망칠 때만 쓸 수 있습니다!");
+        
+        alert("💣 연막탄을 터뜨리고 전투에서 재빠르게 도망쳤습니다!");
+        dgState.items.splice(index, 1);
+        endDungeonBattle(true); // 도망 성공 시 승리 처리(다음 스테이지로)
+        return;
+      }
+      dgState.items.splice(index, 1);
+      updateDungeonUI();
+      if(typeof updateDungeonBattleUI === 'function') updateDungeonBattleUI();
+    }
+
+    // ==========================================
+    // 🧚‍♀️ 이벤트 3: 요정 NPC 조우
+    // ==========================================
+    function generateDungeonNPC() {
+      dgState.currentEvent = { type: 'npc' };
+      document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/fairy.png";
+      document.getElementById('dg-event-desc').innerHTML = `<span style="color:#9b59b6; font-size:15px;">🧚 [다이어트 요정 조우]</span><br>"힘들어 보이네! 현실에서 시원한 물 1컵 마시고 오면 내가 치료해 줄게!"`;
+      
+      let btnBox = document.getElementById('dg-action-buttons');
+      btnBox.innerHTML = `
+        <button class="btn" style="background:#3498db; color:#fff; padding:12px; margin-bottom:5px;" onclick="
+          alert('시원하게 물을 마시고 요정의 마법으로 체력을 30 회복했습니다!');
+          dgState.hp = Math.min(dgState.maxHp, dgState.hp + 30);
+          dgState.stage++; nextDungeonStage();
+        ">💧 진짜 물 마시고 오기 (체력 30 회복)</button>
+        <button class="btn" style="background:#95a5a6; padding:10px;" onclick="dgState.stage++; nextDungeonStage()">무시하고 묵묵히 걸어간다</button>
+      `;
+    }
+
+    // ==========================================
+    // 🎁 이벤트 4: 보물 상자
+    // ==========================================
+    function generateDungeonTreasure() {
+      dgState.currentEvent = { type: 'treasure' };
+      document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/treasure-chest.png";
+      document.getElementById('dg-event-desc').innerHTML = `<span style="color:#f1c40f; font-size:15px;">🎁 [보물 발견]</span><br>낡은 궤짝이 하나 놓여 있습니다.`;
+      
+      let btnBox = document.getElementById('dg-action-buttons');
+      btnBox.innerHTML = `<button class="btn" style="background:#f1c40f; color:#fff; padding:12px;" onclick="
+        let gold = Math.floor(Math.random() * 200) + 100;
+        player.gold += gold; player.records.totalGold += gold;
+        alert('✨ 상자에서 ' + gold + ' 골드를 발견했습니다!');
+        dgState.stage++; nextDungeonStage();
+      ">상자 열어보기</button>`;
+    }
+
+// ==========================================
+    // 👑 스테이지 10: 최종 보스전 및 산전수전 턴제 엔진
+    // ==========================================
+    function generateFinalStage() {
+      dgState.currentEvent = { type: 'final' };
+      let rand = Math.random();
+      let btnBox = document.getElementById('dg-action-buttons');
+      
+      if (rand < 0.35) {
+        // 35% 확률: 땅 속 거미집의 벨담 (최종 보스전!)
+        dgBattleState.enemyMaxHp = 3000;
+        dgBattleState.enemyHp = 3000;
+        dgBattleState.enemyAtk = 120;
+        dgBattleState.enemyName = "🕸 땅 속 거미집의 벨담";
+        dgBattleState.isBoss = true;
+        dgBattleState.bossTriggered = false; // 보스 발악 패턴 체크용
+
+        // 전투 비주얼 켜기
+        document.getElementById('dg-main-content-box').classList.add('hidden');
+        document.getElementById('dg-battle-visual-box').classList.remove('hidden');
+
+        document.getElementById('dg-battle-player-img').src = player.image;
+        document.getElementById('dg-battle-enemy-img').src = "deoboss_bel.png";
+        document.getElementById('dg-battle-enemy-name').innerText = dgBattleState.enemyName;
+
+        const dgPetImg = document.getElementById('dg-battle-pet-img');
+        const pet1Name = document.getElementById('sd-pet1').value;
+        if (pet1Name && pet1Name !== 'none' && player.pets[pet1Name]) {
+          dgPetImg.src = player.pets[pet1Name].image;
+          dgPetImg.classList.remove('hidden');
+        } else {
+          dgPetImg.classList.add('hidden');
+        }
+
+        updateDungeonBattleUI();
+        document.getElementById('dg-battle-log').innerHTML = "구덩이의 주인이 거대한 입을 벌렸다! 최종 결전 시작!";
+        
+        btnBox.innerHTML = `<button class="btn btn-dungeon" style="padding:15px; background:#000;" onclick="executeDungeonTurn()">⚔️ 보스 공격하기</button>`;
+      } 
+      else if (rand < 0.65) {
+        // 30% 확률: 사냥꾼 NPC
+        document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/hunter.png";
+        document.getElementById('dg-event-desc').innerHTML = `<span style="color:#2ecc71; font-size:18px;">🏹 [노련한 탐험가]</span><br>"이 험한 구덩이를 오직 운동만으로 뚫고 오다니, 보상을 주지!"`;
+        btnBox.innerHTML = `<button class="btn" style="background:#2ecc71; color:#fff; padding:15px;" onclick="
+          alert('✨ 탐험가에게 3000 골드와 티켓 2장을 받았습니다!');
+          player.gold += 3000; player.tickets += 2;
+          dgState.stage++; nextDungeonStage();
+        ">감사히 받는다</button>`;
+      } 
+      else if (rand < 0.9) {
+        // 25% 확률: 황금 보물방
+        document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/gold-bars.png";
+        document.getElementById('dg-event-desc').innerHTML = `<span style="color:#f1c40f; font-size:18px;">👑 [황금 도토리 방]</span><br>구덩이 끝에서 엄청난 금화를 발견했습니다!`;
+        btnBox.innerHTML = `<button class="btn" style="background:#f1c40f; color:#fff; padding:15px;" onclick="
+          alert('✨ 대박! 5000 골드와 토큰 20개를 챙겼습니다!');
+          player.gold += 5000; player.leafTokens += 20; player.records.totalGold += 5000;
+          dgState.stage++; nextDungeonStage();
+        ">💰 모두 쓸어담기!</button>`;
+      } 
+      else {
+        // 10% 확률: 꽝
+        document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/ghost.png";
+        document.getElementById('dg-event-desc').innerHTML = `<span style="color:#7f8c8d; font-size:18px;">👻 [텅 빈 구덩이]</span><br>아무것도 없습니다... 누군가 먼저 털어간 것 같네요.`;
+        btnBox.innerHTML = `<button class="btn" style="padding:15px;" onclick="
+          alert('허탈하지만 좋은 운동이었습니다... (위로금 1000 골드 획득)');
+          player.gold += 1000;
+          dgState.stage++; nextDungeonStage();
+        ">탈출하기</button>`;
+      }
+    }
+
+    // 🐾 특수 던전 펫 중복 선택 방지 함수
+    function checkDuplicatePet(changedSlot) {
+      const pet1 = document.getElementById('sd-pet1').value;
+      const pet2 = document.getElementById('sd-pet2').value;
+      
+      // 둘 다 '선택 안함(none)'이 아닌데, 이름이 똑같다면?
+      if (pet1 !== 'none' && pet1 === pet2) {
+        alert("⚠️ 선봉장과 서포터 자리에 똑같은 펫을 2마리 배치할 수 없습니다!");
+        // 방금 욕심부려서 바꾼 쪽의 슬롯을 강제로 비워버림
+        if (changedSlot === 1) document.getElementById('sd-pet1').value = 'none';
+        else document.getElementById('sd-pet2').value = 'none';
+      }
+      
+      // 👇 펫을 바꿀 때 스탯창이 실시간으로 변하는 마법의 코드!
+      if (typeof updateDungeonPrepStats === 'function') {
+        updateDungeonPrepStats();
+      }
+    }
+
+// ==========================================
+    // 🤫 개발자 전용! 비밀 치트키 함수
+    // ==========================================
+    let cheatCount = 0;
+    function cheatTickets() {
+      cheatCount++;
+      if(cheatCount >= 5) {
+        player.tickets += 100; player.kossukTickets += 100;
+        player.leafTokens = (player.leafTokens || 0) + 1000; player.gold += 50000;
+        alert("🚨 [개발자 치트 발동] 🚨\n티켓 100장, 코쑥권 100장, 토큰 1000개, 5만 골드가 충전되었습니다!");
+        updateStatus();
+        cheatCount = 0; // 초기화
+      }
+    }
+
+    // ==========================================
+    // 📊 가챠 확률 및 획득 목록 보여주기 (정렬 포함)
+    // ==========================================
+    function toggleGachaInfo(type) {
+       const infoDiv = document.getElementById(type + '-gacha-info');
+       if (infoDiv.classList.contains('hidden')) {
+           infoDiv.classList.remove('hidden');
+           if (infoDiv.innerHTML === "") infoDiv.innerHTML = generateGachaInfoHTML(type);
+       } else {
+           infoDiv.classList.add('hidden');
+       }
+    }
+    
+    function generateGachaInfoHTML(type) {
+       let html = "";
+       // 1순위: 레어도(신화->일반), 2순위: 이름 가나다순 정렬 마법
+       const sorter = (a, b) => {
+           const rScore = { "mythic": 1, "epic": 2, "rare": 3, "normal": 4 };
+           let scoreA = rScore[a.cssClass] || 5; let scoreB = rScore[b.cssClass] || 5;
+           if (scoreA !== scoreB) return scoreA - scoreB;
+           return a.name.localeCompare(b.name);
+       };
+
+       if (type === 'royal') {
+           html += "<div style='margin-bottom:8px; font-weight:bold; color:#e74c3c;'>[확률] ✨신화 1% / 💜에픽 9% / 💙레어 30% / 🤍일반 60%</div>";
+           let allItems = [];
+           gachaPool.mythic.forEach(i => allItems.push({...i, tierName: "✨신화", cssClass: "mythic"}));
+           gachaPool.epic.forEach(i => allItems.push({...i, tierName: "💜에픽", cssClass: "epic"}));
+           gachaPool.rare.forEach(i => allItems.push({...i, tierName: "💙레어", cssClass: "rare"}));
+           gachaPool.normal.forEach(i => allItems.push({...i, tierName: "🤍일반", cssClass: "normal"}));
+           allItems.sort(sorter);
+           allItems.forEach(i => { html += `<div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed #eee;"><span class="${i.cssClass}">[${i.tierName.replace(/[^가-힣]/g,'')}] ${i.icon || ''} ${i.name}</span><br><span style="color:#555;">${i.effect}</span></div>`; });
+       } else if (type === 'kossuk') {
+           html += "<div style='margin-bottom:8px; font-weight:bold; color:#e74c3c;'>[확률] ✨신화 3% / 💜에픽 15% / 💙레어 32% / 🤍일반 50%</div>";
+           let allItems = [...kossukPool];
+           allItems.sort(sorter);
+           allItems.forEach(i => { html += `<div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed #eee;"><span class="${i.cssClass}">[${i.tier.replace(/[^가-힣]/g,'')}] ${i.icon || ''} ${i.name}</span><br><span style="color:#555;">${i.effect}</span></div>`; });
+       }
+       return html;
+    }
+
+// ==========================================
+    // 📊 특수 던전 준비창 [실시간 스탯 계산기] (완벽 수정 버전!)
+    // ==========================================
+    function updateDungeonPrepStats() {
+      const pet1Select = document.getElementById('sd-pet1');
+      const pet2Select = document.getElementById('sd-pet2');
+      
+      const pet1Name = pet1Select ? pet1Select.value : 'none';
+      const pet2Name = pet2Select ? pet2Select.value : 'none';
+
+      let effortScore = player.records.royalQuests + player.records.bossKills; 
+      let baseAtk = (player.level * 2) + effortScore;
+      let baseDef = player.level + Math.floor(effortScore / 2);
+      
+      let petAtk = 0; let petDef = 0; let petHp = 0;
+      
+      // 💡 [핵심 수정] 펫 이름을 이용해 데이터 풀에서 진짜 스탯을 정확하게 찾아옵니다!
+      [pet1Name, pet2Name].forEach(pName => {
+        if (pName && pName !== 'none') {
+          // getPetDataByName 함수를 호출해서 펫의 진짜 능력치를 가져옴!
+          let petData = getPetDataByName(pName);
+          if (petData && petData.stats) {
+            let pStat = petData.stats;
+            petAtk += (pStat.atk || 0) + (pStat.ratk || 0) + (pStat.int || 0); // 지력, 공격력 합산
+            petDef += (pStat.def || 0) + (pStat.spd || 0);                   // 방어, 스피드 합산
+            petHp += (pStat.hp || 0);                                       // 체력 합산
+          }
+        }
+      });
+
+      let weightLoss = (player.startWeight || 0) - (player.currentWeight || 0);
+      let bonusPercent = 0;
+      let multiplier = 1.0;
+      
+      if (weightLoss > 0) {
+        multiplier += (weightLoss * 0.05);
+        bonusPercent = Math.floor(weightLoss * 5); 
+      }
+
+      let finalAtk = Math.floor((baseAtk + petAtk) * multiplier) || 10;
+      let finalDef = Math.floor((baseDef + petDef) * multiplier) || 5;
+      let finalHp = (player.maxHp || 100) + petHp;
+
+      const prepHp = document.getElementById('prep-hp');
+      const prepAtk = document.getElementById('prep-atk');
+      const prepDef = document.getElementById('prep-def');
+      const prepBonus = document.getElementById('prep-bonus-text');
+
+      if (prepHp) prepHp.innerText = finalHp;
+      if (prepAtk) prepAtk.innerText = finalAtk;
+      if (prepDef) prepDef.innerText = finalDef;
+      if (prepBonus) prepBonus.innerText = `(다이어트 감량 보너스: +${bonusPercent}%)`;
+    }
+
   </script>
+
 </body>
 </html>
