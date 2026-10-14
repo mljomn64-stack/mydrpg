@@ -2450,8 +2450,8 @@ function executeDungeonTurn() {
     // 🎒 던전 안에서 소모품 직접 사용하기 (전투 중에도 가능!)
     function useDungeonItem(itemId, index) {
       if (itemId === 'potion') {
-        dgState.hp = Math.min(dgState.maxHp, dgState.hp + 30);
-        alert("🥤 닭가슴살 쉐이크를 마셨다! 체력 30 회복!");
+        dgState.hp = Math.min(dgState.maxHp, dgState.hp + 50);
+        alert("🥤 닭가슴살 쉐이크를 마셨다! 체력 50 회복!");
       } 
       else if (itemId === 'protein') {
         if(dgState.proteinBuff) return alert("이미 단백질 효과가 적용 중입니다!");
