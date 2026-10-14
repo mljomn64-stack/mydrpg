@@ -2168,16 +2168,16 @@ btn.style.padding = "10px 18px";
 
 // 👑 스테이지 10: 대망의 최종 결전지 도달 연출!
 if (dgState.stage === 10) {
-        document.getElementById('dg-event-img').src = "https://img.icons8.com/color/150/castle2.png"; // 성문 또는 결전지 아이콘
+        document.getElementById('dg-event-img').src = "deo_web.png"; // 성문 또는 결전지 아이콘
         document.getElementById('dg-event-desc').innerHTML = `
           <span style="color:#8e44ad; font-size:16px; font-weight:900;">⚡ [Stage 10 : 최종 결전의 방] ⚡</span><br><br>
           험난한 구덩이의 가장 깊은 곳에 도달했다!<br>
           스산한 기운 속에서 무언가 거대한 존재가 숨쉬고 있다...<br>
-          운명의 문을 열어보자!
+          어쩐지 주변에 거미가 많이 보이는 것 같아!
         `;
         
         btnBox.innerHTML = `
-          <button class="btn btn-dungeon" style="background:#8e44ad; padding:18px; font-size:15px;" onclick="generateFinalStage()">🚪 운명의 문을 연다!</button>
+          <button class="btn btn-dungeon" style="background:#8e44ad; padding:18px; font-size:15px;" onclick="generateFinalStage()"> 거미줄을 향해 걷는다!</button>
         `;
         return;
       }
@@ -2288,8 +2288,8 @@ if (dgState.stage === 10) {
       let pickedMonster = normalMonsterPool[Math.floor(Math.random() * normalMonsterPool.length)];
 
       // 스탯 계산 (기존과 동일하게 레벨과 스테이지 비례)
-      let mHp = Math.floor(Math.random() * 80) + 40 + (player.level * 8) + (dgState.stage * 10); 
-      let mAtk = Math.floor(Math.random() * 15) + 8 + (player.level * 2);
+      let mHp = Math.floor(Math.random() * 150) + 100 + (player.level * 15) + (dgState.stage * 10); 
+      let mAtk = Math.floor(Math.random() * 30) + 15 + (player.level * 5);
       
       dgBattleState.enemyMaxHp = mHp;
       dgBattleState.enemyHp = mHp;
@@ -2519,8 +2519,8 @@ function executeDungeonTurn() {
       
       if (rand < 0.35) {
         // 35% 확률: 땅 속 거미집의 벨담 (최종 보스전!)
-        dgBattleState.enemyMaxHp = 3000;
-        dgBattleState.enemyHp = 3000;
+        dgBattleState.enemyMaxHp = 5000;
+        dgBattleState.enemyHp = 5000;
         dgBattleState.enemyAtk = 120;
         dgBattleState.enemyName = "🕸 땅 속 거미집의 벨담";
         dgBattleState.isBoss = true;
