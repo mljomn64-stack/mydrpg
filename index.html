@@ -2288,8 +2288,8 @@ if (dgState.stage === 10) {
       let pickedMonster = normalMonsterPool[Math.floor(Math.random() * normalMonsterPool.length)];
 
       // 스탯 계산 (기존과 동일하게 레벨과 스테이지 비례)
-      let mHp = Math.floor(Math.random() * 250) + 300 + (player.level * 30) + (dgState.stage * 10); 
-      let mAtk = Math.floor(Math.random() * 50) + 80 + (player.level * 15);
+      let mHp = Math.floor(Math.random() * 30) + 100 + (player.level * 10) + (dgState.stage * 10); 
+      let mAtk = Math.floor(Math.random() * 10) + 30 + (player.level * 3);
       
       dgBattleState.enemyMaxHp = mHp;
       dgBattleState.enemyHp = mHp;
@@ -2519,9 +2519,9 @@ function executeDungeonTurn() {
       
       if (rand < 0.35) {
         // 35% 확률: 땅 속 거미집의 벨담 (최종 보스전!)
-        dgBattleState.enemyMaxHp = 6000;
-        dgBattleState.enemyHp = 6000;
-        dgBattleState.enemyAtk = 300;
+        dgBattleState.enemyMaxHp = 4000;
+        dgBattleState.enemyHp = 4000;
+        dgBattleState.enemyAtk = 100;
         dgBattleState.enemyName = "🕸 땅 속 거미집의 벨담";
         dgBattleState.isBoss = true;
         dgBattleState.bossTriggered = false; // 보스 발악 패턴 체크용
