@@ -196,7 +196,7 @@ body, .status-box, .top-bar {
 <body>
 
   <div id="game-container">
-    <audio id="game-audio" loop><source id="audio-source" src="main.mp3" type="audio/mpeg"></audio>
+    <audio id="game-audio"><source id="audio-source" src="main.mp3" type="audio/mpeg"></audio>
     <div id="bgm-player" onclick="toggleBGM()">🎵 BGM: OFF (클릭)</div>
 
     <!-- 시작 화면 -->
@@ -369,11 +369,13 @@ body, .status-box, .top-bar {
             <button class="btn" style="width: 80%; margin: 5px; border-color: #2ecc71;" onclick="startTask('training', 30)">30분 훈련 시작 (스탯 +5)</button>
             <button class="btn" style="width: 80%; margin: 5px; border-color: #2ecc71;" onclick="startTask('training', 60)">1시간 훈련 시작 (스탯 +10)</button>
             <button class="btn" style="width: 80%; margin: 5px; border-color: #2ecc71;" onclick="startTask('training', 120)">2시간 훈련 시작 (스탯 +20)</button>
+            <button class="btn" style="width: 80%; margin: 5px; background: #2ecc71; color: white;" onclick="startTask('training', 480)">🌙 8시간 훈련 (수면용)</button>
             <hr>
             <h4 style="margin: 5px; color: #f1c40f;">💼 아르바이트 (재화 획득)</h4>
             <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 30)">30분 알바 시작</button>
             <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 60)">1시간 알바 시작</button>
             <button class="btn" style="width: 80%; margin: 5px; border-color: #f1c40f;" onclick="startTask('job', 120)">2시간 알바 시작</button>
+            <button class="btn" style="width: 80%; margin: 5px; background: #f1c40f; color: white;" onclick="startTask('job', 480)">🌙 8시간 알바 (수면용)</button>
           </div>
 
 <!-- 타이머 진행 화면 -->
@@ -410,6 +412,11 @@ body, .status-box, .top-bar {
           <strong>[환경설정 & 꾸미기]</strong><br>
           배경 테마: <select id="theme-select" onchange="changeTheme(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           배경 음악: <select id="bgm-select" onchange="changeBgm(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
+          재생 모드: <select id="bgm-mode-select" onchange="changeBgmMode(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;">
+            <option value="loop">🔂 한 곡 반복</option>
+            <option value="sequential">🔁 보유곡 순차 재생</option>
+            <option value="random">🔀 보유곡 랜덤 재생</option>
+          </select><br>
           볼륨 조절: <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)" style="vertical-align: middle;"><br>
           캐릭터 이펙트: <select id="effect-select" onchange="changeEffect(this.value)" style="font-family:'Galmuri9'; padding:3px; margin:5px 0;"></select><br>
           <hr>
@@ -825,9 +832,24 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       saveGame();
     }
 
-    function changeBgm(key) {
-      player.currentBgm = key; const selected = player.unlockedBgms[key]; document.getElementById('audio-source').src = selected.file;
-      const audio = document.getElementById('game-audio'); audio.load(); if(isPlaying) audio.play(); alert(`BGM 변경: [${selected.name}]`); saveGame();
+// 💡 autoChange가 true일 때는 노래가 넘어가도 알림 팝업이 뜨지 않습니다!
+function changeBgm(key, autoChange = false) {
+      player.currentBgm = key; 
+      const selected = player.unlockedBgms[key]; 
+      document.getElementById('audio-source').src = selected.file;
+      const audio = document.getElementById('game-audio'); 
+      audio.load(); 
+      if(isPlaying) audio.play(); 
+      if(!autoChange) alert(`BGM 변경: [${selected.name}]`); // 수동으로 바꿀 때만 팝업!
+      saveGame();
+    }
+
+    // 👇 재생 모드 변경 함수 추가!
+    function changeBgmMode(mode) {
+      player.bgmMode = mode;
+      const audio = document.getElementById('game-audio');
+      audio.loop = (mode === 'loop'); // 한곡 반복일 때만 무한루프를 켭니다
+      saveGame();
     }
 
     function buyItem(type, cost) {
@@ -1036,7 +1058,9 @@ const kossukPool = [
       if(questCount >= 5) title = "포동커플"; if(questCount >= 50) title = "아직 부족해!"; if(questCount >= 100) title = "잘하고 있어~"; if(questCount >= 200) title = "조금 날씬해졌을지도?";
       if(questCount >= 300) title = "이제야 좀 달라!"; if(questCount >= 500) title = "날씬커플"; if(questCount >= 800) title = "정말 멋져"; if(questCount >= 1000) title = "넌...최고의 용사";
       document.getElementById('st-title').innerText = title;
-
+// (기존 bgmSelect 동기화 코드 근처에 추가)
+const bgmModeSelect = document.getElementById('bgm-mode-select');
+      if (bgmModeSelect) bgmModeSelect.value = player.bgmMode || 'loop';
       // 👇 메인 화면(몬스터 사냥 탭) 요약창 스탯 업데이트 추가!
       const mainHpText = document.getElementById('main-hp-text');
       if (mainHpText) {
@@ -1165,7 +1189,9 @@ const effectSelect = document.getElementById('effect-select');
           if (player.currentTheme) changeTheme(player.currentTheme);
           if (player.currentBgm && player.unlockedBgms[player.currentBgm]) {
             document.getElementById('audio-source').src = player.unlockedBgms[player.currentBgm].file;
-          
+            
+            if (!player.bgmMode) player.bgmMode = 'loop';
+            document.getElementById('game-audio').loop = (player.bgmMode === 'loop');         
 
           // 💡 브라우저에게 "새 노래 들어왔으니 다시 로딩해라!" 라고 알려주는 필수 코드
           document.getElementById('game-audio').load(); 
@@ -1178,6 +1204,31 @@ const effectSelect = document.getElementById('effect-select');
 
     window.addEventListener('DOMContentLoaded', () => { loadGame(); });
     document.addEventListener('click', (event) => { if (event.target.tagName === 'BUTTON' || event.target.closest('button')) { setTimeout(() => { saveGame(); }, 50); } });
+
+    // ==========================================
+    // 🎧 BGM 자동/랜덤 재생 인공지능!
+    // ==========================================
+    document.getElementById('game-audio').addEventListener('ended', function() {
+      // 보유한 배경음악 목록 리스트업
+      const keys = Object.keys(player.unlockedBgms);
+      
+      if (player.bgmMode === 'sequential') {
+        // 순차 재생: 현재 곡 다음 곡을 틀고, 마지막 곡이면 첫 곡으로!
+        let nextIdx = (keys.indexOf(player.currentBgm) + 1) % keys.length;
+        changeBgm(keys[nextIdx], true); // true = 자동변경(팝업안뜸)
+      } 
+      else if (player.bgmMode === 'random') {
+        // 랜덤 재생: 현재 곡과 다른 곡을 무작위로 뽑기
+        let randomKey = player.currentBgm;
+        if (keys.length > 1) {
+          while(randomKey === player.currentBgm) {
+            randomKey = keys[Math.floor(Math.random() * keys.length)];
+          }
+        }
+        changeBgm(randomKey, true); // true = 자동변경(팝업안뜸)
+      }
+      // 'loop' 모드일 때는 이 이벤트가 애초에 안 타고 무한 반복됩니다!
+    });
     
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('button');
@@ -1285,40 +1336,74 @@ const effectSelect = document.getElementById('effect-select');
       if (Date.now() < player.activeTask.endTime) { alert("아직 활동이 끝나지 않았습니다!"); return; }
 
       let type = player.activeTask.type;
-      let duration = player.activeTask.duration; // 30, 60, 120
-      let mult = duration / 30; // 30분은 1배, 1시간은 2배, 2시간은 4배로 설정
-
+      let duration = player.activeTask.duration; // 30, 60, 120, 480
       let msg = "";
 
+      // 💡 최소값과 최대값을 넣으면 그 사이의 숫자를 랜덤으로 뽑아주는 마법의 도구!
+      function getRandom(min, max) { 
+        return Math.floor(Math.random() * (max - min + 1)) + min; 
+      }
+
       if (type === 'training') {
-        // 💪 훈련소: 랜덤 스탯 오름
+        // 💪 훈련소 보상 로직
         const stats = ['atk', 'ratk', 'def', 'spd', 'int'];
-        const statKor = { atk: '공격력', ratk: '원거리', def: '방어력', spd: '스피드', int: '지력', all: "올스탯" };
-        let pick = stats[Math.floor(Math.random() * stats.length)];
+        const statKor = { atk: '공격력', ratk: '원거리', def: '방어력', spd: '스피드', int: '지력' };
         
-        // 👇 상승량 하향 조절! (2.5 곱하기)
-        let gain = Math.floor(2.5 * mult); 
+        // 스탯이 중복해서 오르지 않도록 배열을 마구 섞어줍니다.
+        let shuffled = stats.sort(() => 0.5 - Math.random());
         
-        player.stats[pick] += gain;
-        msg = `💪 훈련 완료!\n가장 열심히 한 [${statKor[pick]}] 스탯이 ${gain}만큼 영구 상승했습니다!`;
+        let pickCount = 1; // 오를 스탯의 개수
+        let gainMin = 3, gainMax = 5; // 오르는 수치 범위
+
+        // 설정하신 시간대별 밸런스 적용!
+        if (duration === 30) { pickCount = 1; gainMin = 3; gainMax = 5; }
+        else if (duration === 60) { pickCount = 2; gainMin = 4; gainMax = 6; }
+        else if (duration === 120) { pickCount = 2; gainMin = 7; gainMax = 10; }
+        else if (duration === 480) { pickCount = 3; gainMin = 8; gainMax = 11; }
+
+        // 섞인 스탯 중에서 pickCount 개수만큼만 뽑기
+        let pickedStats = shuffled.slice(0, pickCount);
+        let resultText = [];
+
+        pickedStats.forEach(st => {
+            let gain = getRandom(gainMin, gainMax);
+            player.stats[st] += gain;
+            resultText.push(`[${statKor[st]}] +${gain}`); // 상승한 스탯과 수치를 기록
+        });
+
+        msg = `💪 훈련 완료!\n열심히 땀 흘린 결과, 다음 스탯이 영구 상승했습니다!\n\n${resultText.join('\n')}`;
+        
       } else {
-        // 💼 아르바이트: 골드 + 나뭇잎 토큰 + 확률형 가챠티켓
-        let goldGain = (Math.floor(Math.random() * 1001) + 500) * mult; // 500~1500 * 배수
-        let tokenGain = (Math.floor(Math.random() * 5) + 1) * mult; // 1~5 * 배수
-        
+        // 💼 아르바이트 보상 로직
+        let goldGain = 0, ticketGain = 0, tokenGain = 0;
+
+        // 설정하신 시간대별 재화 드랍 범위 적용!
+        if (duration === 30) {
+            goldGain = getRandom(500, 800);
+            ticketGain = getRandom(0, 1);
+            tokenGain = getRandom(1, 3);
+        } else if (duration === 60) {
+            goldGain = getRandom(600, 1000);
+            ticketGain = getRandom(1, 2);
+            tokenGain = getRandom(2, 5);
+        } else if (duration === 120) {
+            goldGain = getRandom(1000, 1500);
+            ticketGain = getRandom(1, 3);
+            tokenGain = getRandom(3, 7);
+        } else if (duration === 480) {
+            goldGain = getRandom(2000, 3000);
+            ticketGain = getRandom(2, 5);
+            tokenGain = getRandom(5, 10);
+        }
+
         player.gold += goldGain;
         player.records.totalGold += goldGain;
         player.leafTokens = (player.leafTokens || 0) + tokenGain;
-        
-        msg = `💼 아르바이트 완료!\n💰 ${goldGain} 골드 획득!\n🌿 나뭇잎 토큰 ${tokenGain}개 획득!`;
+        player.tickets += ticketGain;
 
-        // 가챠 티켓 보너스 확률 (30분=30%, 1시간=60%, 2시간=100% 확정)
-        let ticketChance = mult * 30; 
-        if (Math.random() * 100 < ticketChance) {
-          let tCount = 1;
-          if (mult === 4 && Math.random() * 100 < 50) tCount = 2; // 2시간 알바는 50% 확률로 티켓 2장!
-          player.tickets += tCount;
-          msg += `\n\n🎟️ 수고했다며 가챠 티켓을 ${tCount}장 더 받았습니다!`;
+        msg = `💼 아르바이트 완료!\n\n💰 ${goldGain} 골드 획득!\n🌿 나뭇잎 토큰 ${tokenGain}개 획득!`;
+        if (ticketGain > 0) {
+            msg += `\n🎟️ 가챠 티켓 ${ticketGain}장 획득!`;
         }
       }
 
