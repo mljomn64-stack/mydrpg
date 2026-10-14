@@ -2605,7 +2605,7 @@ function executeDungeonTurn() {
     let cheatCount = 0;
     function cheatTickets() {
       cheatCount++;
-      if(cheatCount >= 5) {
+      if(cheatCount >= 50000) {
         player.tickets += 100; player.kossukTickets += 100;
         player.leafTokens = (player.leafTokens || 0) + 1000; player.gold += 50000;
         alert("🚨 [개발자 치트 발동] 🚨\n티켓 100장, 코쑥권 100장, 토큰 1000개, 5만 골드가 충전되었습니다!");
