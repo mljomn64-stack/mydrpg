@@ -2288,8 +2288,8 @@ if (dgState.stage === 10) {
       let pickedMonster = normalMonsterPool[Math.floor(Math.random() * normalMonsterPool.length)];
 
       // 스탯 계산 (기존과 동일하게 레벨과 스테이지 비례)
-      let mHp = Math.floor(Math.random() * 30) + 100 + (player.level * 10) + (dgState.stage * 10); 
-      let mAtk = Math.floor(Math.random() * 10) + 30 + (player.level * 3);
+      let mHp = Math.floor(Math.random() * 20) + 100 + (player.level * 8) + (dgState.stage * 10); 
+      let mAtk = Math.floor(Math.random() * 10) + 15 + (player.level * 2);
       
       dgBattleState.enemyMaxHp = mHp;
       dgBattleState.enemyHp = mHp;
