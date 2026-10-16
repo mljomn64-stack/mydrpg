@@ -46,21 +46,21 @@
       70% { transform: translateY(-5px) scale(0.95, 1.05); }
       80% { transform: translateY(0) scale(1.02, 0.98); }
     }
-/* ✨ 1. 은은한 황금빛 오라 (눈부심 대폭 감소!) */
-.effect-sparkle { animation: holySparkle 2s infinite ease-in-out !important; }
-    @keyframes holySparkle {
-      0%, 100% { filter: drop-shadow(0 0 3px #f1c40f) drop-shadow(0 0 8px #f39c12); transform: translateY(0); }
-      50% { filter: drop-shadow(0 0 8px #f1c40f) drop-shadow(0 0 15px #f39c12) brightness(1.05); transform: translateY(-3px) scale(1.01); }
+/* ✨ 1. 은은한 반짝이 오라 (눈부심 감소, 부드러운 박동) */
+.effect-sparkle { animation: softGlow 2.5s infinite alternate ease-in-out !important; }
+@keyframes softGlow {
+      0% { filter: drop-shadow(0 0 3px rgba(255,235,59,0.3)) brightness(1); } /* 👈 중간에 있던 세미콜론(;) 삭제 */
+      100% { filter: drop-shadow(0 0 12px rgba(255,235,59,0.8)) brightness(1.05); }
     }
 
-    /* 🔥 2. 이글거리는 지옥불 오라 */
-    .effect-fire { animation: hellFire 0.5s infinite alternate cubic-bezier(0.4, 0, 0.2, 1) !important; }
-    @keyframes hellFire {
-      0% { filter: drop-shadow(0 5px 10px #ffeb3b) drop-shadow(0 -10px 20px #ff9800) drop-shadow(0 -20px 30px #f44336) brightness(1.1); transform: scale(1); }
-      100% { filter: drop-shadow(0 5px 20px #ffeb3b) drop-shadow(0 -15px 35px #ff5722) drop-shadow(0 -35px 60px #b71c1c) brightness(1.4); transform: scale(1.05); }
+    /* 🔥 2. 열정적인 불꽃 (캐릭터가 아지랑이처럼 살짝 위아래로 움직임) */
+    .effect-fire { animation: fireHeat 1.5s infinite alternate ease-in-out !important; }
+    @keyframes fireHeat {
+      0% { filter: drop-shadow(0 5px 5px rgba(255,87,34,0.4)); transform: translateY(0) scaleY(1); }
+      100% { filter: drop-shadow(0 -2px 15px rgba(255,0,0,0.7)) brightness(1.05); transform: translateY(-2px) scaleY(1.02); }
     }
 
-    /* ⚡ 3. 짜릿한 번개 (불규칙하게 번쩍임!) */
+    /* ⚡ 3. 짜릿한 번개 (기존 유지) */
     .effect-lightning { animation: lightningStrike 1.5s infinite !important; }
     @keyframes lightningStrike {
       0%, 90%, 100% { filter: drop-shadow(0 0 2px #00e5ff); transform: translateX(0); }
@@ -70,27 +70,28 @@
       98% { filter: drop-shadow(0 0 2px #00e5ff); transform: translateX(0) scale(1); }
     }
 
-    /* 🌑 4. 칠흑의 어둠 오라 (검보라색의 묵직한 파동) */
-    .effect-dark { animation: darkAura 2s infinite alternate ease-in-out !important; }
-    @keyframes darkAura {
-      0% { filter: drop-shadow(0 0 10px #4a235a) drop-shadow(0 0 20px #17202a) brightness(0.7); transform: scale(1); }
-      100% { filter: drop-shadow(0 -10px 25px #6c3483) drop-shadow(0 -20px 50px #000) brightness(0.4); transform: scale(1.08); }
+    /* 🌑 4. 칠흑의 어둠 (시야를 가리지 않게 축소) */
+    .effect-dark { animation: darkEnergy 3s infinite alternate ease-in-out !important; }
+    @keyframes darkEnergy {
+      0% { filter: drop-shadow(0 0 5px rgba(74,35,90,0.5)); transform: translateY(0); }
+      100% { filter: drop-shadow(0 -3px 15px rgba(23,32,42,0.8)) brightness(0.9); transform: translateY(-2px); }
     }
 
-    /* 👼 5. 성스러운 빛 (천사처럼 은은하게 떠오르는 빛) */
-    .effect-holy { animation: holyAura 3s infinite ease-in-out !important; }
-    @keyframes holyAura {
-      0%, 100% { filter: drop-shadow(0 0 15px #fcf3cf) drop-shadow(0 0 30px #fff) brightness(1.1); transform: translateY(0); }
-      50% { filter: drop-shadow(0 -15px 30px #f9e79f) drop-shadow(0 -30px 60px #fff) brightness(1.5); transform: translateY(-8px); }
+    /* 👼 5. 성스러운 빛 (부드럽게 퍼지는 후광) */
+    .effect-holy { animation: holyRays 3s infinite alternate ease-in-out !important; }
+    @keyframes holyRays {
+      0% { filter: drop-shadow(0 0 10px rgba(255,255,255,0.6)) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+      100% { filter: drop-shadow(0 0 20px rgba(255,255,255,1)) drop-shadow(0 0 40px rgba(255,215,0,0.6)) brightness(1.1); }
     }
 
-    /* 👾 6. 시스템 에러 글리치 (화면이 깨지는 듯한 버그 효과!) */
-    .effect-glitch { animation: glitchSkew 2.5s infinite linear !important; }
+/* 👾 6. 시스템 에러 글리치 (캐릭터 이미지가 가로로 찢어지며 깨지는 버그 효과!) */
+.effect-glitch { animation: glitchSkew 3s infinite linear alternate !important; }
     @keyframes glitchSkew {
-      0%, 18%, 22%, 38%, 42%, 100% { filter: drop-shadow(0 0 0 transparent); transform: skew(0deg) translate(0); }
-      20% { filter: drop-shadow(-4px 0 0 rgba(255,0,0,0.8)) drop-shadow(4px 0 0 rgba(0,255,255,0.8)); transform: skew(3deg) translate(-2px, 1px); }
-      40% { filter: drop-shadow(-4px 0 0 rgba(255,0,255,0.8)) drop-shadow(4px 0 0 rgba(0,255,0,0.8)); transform: skew(-4deg) translate(3px, -2px); }
-      41% { filter: drop-shadow(4px 0 0 rgba(255,0,0,0.8)) drop-shadow(-4px 0 0 rgba(0,255,255,0.8)); transform: skew(5deg) translate(-1px, 2px); }
+      0%, 18%, 22%, 38%, 42%, 100% { filter: drop-shadow(0 0 0 transparent); transform: skew(0deg) translate(0); clip-path: none; }
+      20% { filter: drop-shadow(-3px 0 0 rgba(255,0,85,0.8)) drop-shadow(3px 0 0 rgba(0,255,204,0.8)); transform: translate(-3px, 1px); clip-path: inset(20% 0 50% 0); }
+      21% { filter: drop-shadow(3px 0 0 rgba(255,0,85,0.8)) drop-shadow(-3px 0 0 rgba(0,255,204,0.8)); transform: translate(3px, -2px); clip-path: inset(60% 0 10% 0); }
+      40% { filter: drop-shadow(-2px 0 0 rgba(255,0,85,0.8)) drop-shadow(2px 0 0 rgba(0,255,204,0.8)); transform: skew(-5deg) translate(2px, 0); clip-path: inset(80% 0 5% 0); }
+      41% { transform: skew(0deg) translate(0); clip-path: none; }
     }
     @keyframes hellFire {
       0% { filter: drop-shadow(0 5px 10px #ffeb3b) drop-shadow(0 -10px 20px #ff9800) drop-shadow(0 -20px 30px #f44336) brightness(1.1); transform: scale(1); }
@@ -330,6 +331,20 @@ body, .status-box, .top-bar {
           <div id="special-dungeon-box" class="hidden" style="background: rgba(255,255,255,0.95); padding: 15px; margin: 10px 20px; border-radius: 10px; border: 3px dashed #8e44ad;">
             <h4 style="margin: 5px; color: #8e44ad;">🗺️ 미지의 탐험 (10 Stage)</h4>
             <div id="sd-list-container"></div>
+
+            <!-- 👇 여기에 새로운 보상 확률 버튼과 박스를 추가합니다! 👇 -->
+            <button class="btn" style="font-size: 11px; padding: 5px 10px; margin: 10px auto 0 auto; display: inline-block; border-color:#8e44ad; color:#8e44ad;" onclick="toggleDungeonRewardInfo()">📊 던전 보상 및 확률 보기</button>
+            <div id="dungeon-reward-info" class="hidden" style="font-size: 11px; text-align: left; background: #fff; padding: 10px; border: 2px dashed #8e44ad; border-radius: 5px; margin: 10px 0; max-height: 200px; overflow-y: auto;">
+               <div style='margin-bottom:8px; font-weight:bold; color:#e74c3c;'>[Stage 10 도달 시 확률]</div>
+               <div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed #eee;"><span style="color:#e74c3c; font-weight:bold;">🔥 최종 보스 토벌 (35%)</span><br><span style="color:#555;">보상: 5,000G + 티켓 2장 + <strong style="color:#9b59b6;">특수 BGM 1종 랜덤</strong></span></div>
+               <div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed #eee;"><span style="color:#2ecc71; font-weight:bold;">🏹 노련한 탐험가 조우 (30%)</span><br><span style="color:#555;">보상: 3,000G + 티켓 2장</span></div>
+               <div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed #eee;"><span style="color:#f1c40f; font-weight:bold;">👑 황금 도토리 방 (25%)</span><br><span style="color:#555;">보상: 5,000G + 🌿 나뭇잎 토큰 20개</span></div>
+               <div style="margin-bottom:6px; padding-bottom:6px; border-bottom:1px dashed #eee;"><span style="color:#7f8c8d; font-weight:bold;">👻 텅 빈 구덩이 (10%)</span><br><span style="color:#555;">보상: 1,000G (위로금)</span></div>
+               <div style='margin-top:10px; margin-bottom:8px; font-weight:bold; color:#3498db;'>[일반 탐험 (1~9 Stage) 조우 확률]</div>
+               <div style="color:#555; line-height: 1.6;">⚔️ 몬스터 전투: 35%<br>💦 돌발 운동 미션: 30%<br>🧚 다이어트 요정 (체력회복): 20%<br>🎁 보물 상자 (100~300G): 15%</div>
+            </div>
+            <!-- 👆 여기까지 👆 -->
+
             <button class="btn" style="padding: 5px 15px; margin-top: 10px;" onclick="closeSpecialDungeon()">돌아가기</button>
           </div>
 
@@ -515,6 +530,18 @@ body, .status-box, .top-bar {
           <button class="btn" style="width: 90%; background:#fff; color:#f1c40f; border-color:#f1c40f;" onclick="buyWithToken('effect_holy', 300, '👼 성스러운 빛의 오라')">👼 성스러운 빛의 오라 (🌿 300개)</button>
           <button class="btn" style="width: 90%; background:#333; color:#00ffcc; border-color:#ff0055;" onclick="buyWithToken('effect_glitch', 500, '👾 시스템 에러 글리치')">👾 시스템 에러 글리치 (🌿 500개)</button>
         </div>
+        <!-- 💡 새로 추가된 [보물 교환소] 영역 시작 -->
+        <hr>
+        <div style="background: rgba(142, 68, 173, 0.1); padding: 15px 10px; border: 2px dashed #8e44ad; border-radius: 10px; margin-bottom: 15px;">
+          <h3 style="margin: 0 0 5px 0; color: #8e44ad;">💎 신비한 보물 교환소</h3>
+          <p style="font-size:12px; margin:0 0 15px 0; color:#555;">보유한 <strong style="color:#e74c3c;">🎫 보물 교환권: <span id="shop-vouchers">0</span>개</strong></p>
+          
+          <!-- 3xn 배열을 위한 그리드 컨테이너 -->
+          <div id="voucher-shop-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <!-- 이곳에 자바스크립트가 교환소 아이템 버튼들을 자동으로 생성해서 채워 넣습니다! -->
+          </div>
+        </div>
+        <!-- 💡 보물 교환소 영역 끝 -->
         <h4 style="margin: 5px;">배경 테마 구매</h4>
         <button class="btn btn-theme" style="background:#ff9ff3; color:#fff;" onclick="buyTheme('theme_cherry', '🌸 흩날리는 벚꽃', 'sakura_00.png', 5000, true)">🌸 흩날리는 벚꽃 (5000 G)</button>
         <button class="btn btn-theme" style="background:#48dbfb; color:#fff;" onclick="buyTheme('theme_sea', '🌊 푸른 바다', 'ocean_00.png', 8000, true)">🌊 푸른 바다 (8000 G)</button>
@@ -624,13 +651,13 @@ body, .status-box, .top-bar {
 
       <div class="bottom-nav">
         <div class="nav-item" onclick="switchTab('main')">🏠<br>메인</div>
-        <div class="nav-item" onclick="switchTab('missions')">🎯<br>미션</div> <!-- 👈 추가됨 -->
         <div class="nav-item" onclick="switchTab('activity')">⏳<br>활동</div>
-        <div class="nav-item" onclick="switchTab('gacha')">🔮<br>가챠</div>
+        <div class="nav-item" onclick="switchTab('missions')">🎯<br>미션</div>
         <div class="nav-item" onclick="switchTab('shop')">🛒<br>상점</div>
+        <div class="nav-item" id="nav-bgm-player" onclick="toggleBGM()" style="color: #4a90e2;">🎵<br>BGM</div>
         <div class="nav-item" onclick="switchTab('inventory')">🎒<br>소지품</div>
+        <div class="nav-item" onclick="switchTab('gacha')">🔮<br>가챠</div>
         <div class="nav-item" onclick="switchTab('status')">📜<br>설정</div>
-        <div class="nav-item" id="nav-bgm-player" onclick="toggleBGM()" style="color: #4a90e2;">🎵<br>BGM OFF</div>
       </div>
 
     </div>
@@ -652,8 +679,8 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
       { name: "데블 초코콘", hp: 1000, atk: 30, reward: 450, penalty: 300, image: "monster_cho.png" },
       // 👇 후반 몬스터 대폭 상향!
       { name: "사천탕수육 임프", hp: 3000, atk: 80, reward: 800, penalty: 1000, image: "monster_sa.png" },
-      { name: "심야의 후라이드 치킨", hp: 5000, atk: 120, reward: 1000, penalty: 1500, image: "https://img.icons8.com/color/150/chicken.png" },
-      { name: "흑당 버블티 골렘", hp: 9000, atk: 180, reward: 2000, penalty: 2000, image: "https://img.icons8.com/color/150/bubble-tea.png" }
+      { name: "심야의 후라이드 치킨", hp: 5000, atk: 120, reward: 1000, penalty: 1500, image: "mon_chi.png" },
+      { name: "흑당 버블티 골렘", hp: 9000, atk: 180, reward: 2000, penalty: 2000, image: "mon_bla.png" }
     ];
 
     const bossList = [
@@ -690,11 +717,153 @@ let player = { name: "", job: "", image: "", level: 1, exp: 0, maxExp: 100, gold
     ];
 
     const gachaPool = {
-      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }, { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }, { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 상승 (+10)", stat: "def", add: 10 }, { name: "디지바이스", icon: "📱", effect: "지력 상승 (+10)", stat: "int", add: 10 }, { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }, { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }, { name: "🎧 [BGM] 붉은 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" }, { name: "🎧 [BGM] 새로운 모험", icon: "👟",  effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic3", bgmFile: "bgm_new.mp3"} ],
-      epic: [ { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+5)", stat: "ratk", add: 5 }, { name: "콘서타", icon: "💊", effect: "공격력 상승 (+5)", stat: "atk", add: 5 }, { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+5)", stat: "int", add: 5 }, { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+5)", stat: "spd", add: 5 }, { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+5)", stat: "def", add: 5 }, { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+5)", stat: "int", add: 5 }, { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" } ],
-      rare: [ { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +2", stat: "int", add: 2 }, { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 }, { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +2", stat: "int", add: 2 }, { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +2", stat: "def", add: 2 }, { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 }, { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" } ],
-      normal: [ { name: "알콜스왑", icon: "🩹", effect: "스피드 +1", stat: "spd", add: 1 }, { name: "대나무 화장지", icon: "🧻", effect: "방어력 +1", stat: "def", add: 1 }, { name: "돌돌이", icon: "🧹", effect: "공격력 +1", stat: "atk", add: 1 }, { name: "먼지 낀 서큘레이터", icon: "🌀", effect: "지력 +1", stat: "int", add: 1 }, { name: "가챠 1회권(다시)", icon: "🎫", effect: "티켓 +1", type: "ticket", amount: 1 } ]
+      mythic: [ { name: "베르제브몬의 베히모스", icon: "🏍️", effect: "스피드 상승 (+10)", stat: "spd", add: 10 }
+      , { name: "임프몬의 장난감 총", icon: "🔫", effect: "원거리 상승 (+10)", stat: "ratk", add: 10 }
+      , { name: "치이카와의 곰인형", icon: "🧸", effect: "방어력 상승 (+10)", stat: "def", add: 10 }
+      , { name: "디지바이스", icon: "📱", effect: "지력 상승 (+10)", stat: "int", add: 10 }
+      , { name: "네더라이트 칼", icon: "🗡️", effect: "공격력 상승 (+10)", stat: "atk", add: 10 }
+      , { name: "🎧 [BGM] Butter Fly", icon: "🦋", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic1", bgmFile: "dig_butterfly.mp3" }
+      , { name: "🎧 [BGM] 붉은 충격 ~ 타겟", icon: "🎯", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic2", bgmFile: "dig_redtarget.mp3" }
+      , { name: "🎧 [BGM] 새로운 모험", icon: "👟",  effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_mythic3", bgmFile: "bgm_new.mp3"} ],
+
+      epic: [ { name: "태일이의 고글", icon: "🥽", effect: "원거리 상승 (+5)", stat: "ratk", add: 5 }
+      , { name: "콘서타", icon: "💊", effect: "공격력 상승 (+5)", stat: "atk", add: 5 }
+      , { name: "매튜의 하모니카", icon: "🎵", effect: "지력 상승 (+5)", stat: "int", add: 5 }
+      , { name: "페니와이즈의 종이배", icon: "⛵", effect: "스피드 상승 (+5)", stat: "spd", add: 5 }
+      , { name: "애나벨의 잠옷", icon: "👗", effect: "방어력 상승 (+5)", stat: "def", add: 5 }
+      , { name: "기숙사 배정모자", icon: "🧙‍♂️", effect: "지력 상승 (+5)", stat: "int", add: 5 }
+      , { name: "🎧 [BGM] 새벽의 캠프", icon: "🎧", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_epic1", bgmFile: "night03.mp3" } ],
+
+      rare: [ { name: "수어사이드 스쿼드 코믹스", icon: "📖", effect: "지력 +2", stat: "int", add: 2 }
+      , { name: "가챠 2회 티켓", icon: "🎟️", effect: "티켓 +2", type: "ticket", amount: 2 }
+      , { name: "디지몬 포스터", icon: "🖼️", effect: "지력 +2", stat: "int", add: 2 }
+      , { name: "벚꽃향 바디스크럽", icon: "🌸", effect: "방어력 +2", stat: "def", add: 2 }
+      , { name: "1000 골드 보따리", icon: "💰", effect: "1000G", type: "gold", amount: 1000 }
+      , { name: "🎸 [BGM] 경쾌한 발걸음", icon: "🎸", effect: "새로운 배경음악 획득!", type: "bgm", bgmKey: "bgm_rare1", bgmFile: "cute01.mp3" } ],
+    
+      normal: [ { name: "알콜스왑", icon: "🩹", effect: "스피드 +1", stat: "spd", add: 1 }
+      , { name: "대나무 화장지", icon: "🧻", effect: "방어력 +1", stat: "def", add: 1 }
+      , { name: "돌돌이", icon: "🧹", effect: "공격력 +1", stat: "atk", add: 1 }
+      , { name: "먼지 낀 서큘레이터", icon: "🌀", effect: "지력 +1", stat: "int", add: 1 }
+      , { name: "가챠 1회권(다시)", icon: "🎫", effect: "티켓 +1", type: "ticket", amount: 1 } ]
     };
+
+    // 💎 보물 교환소 전용 아이템 목록 (나중에 여기서 항목을 추가/수정하시면 됩니다!)
+    const voucherShopItems = [
+      // 💡 항목 추가 방법: { name: "보여질 이름", icon: "임시 이모티콘", cost: 가격, type: "아이템 종류(bgm/stat)", key: "고유ID 또는 스탯종류", value: "능력치 등 구체적 값", desc: "아이템 상세 설명", source: "원래 얻을 수 있는 곳" }
+      { name: "베르제브몬의 베히모스", icon: "🏍️", cost: 10, type: "stat", key: "spd", value: 10, desc: "스피드가 10 상승하는 마계의 바이크.", source: "왕실 가챠 (신화)" },
+      { name: "임프몬의 장난감 총", icon: "🔫", cost: 10, type: "stat", key: "ratk", value: 10, desc: "원거리 공격력이 10 상승하는 장난감 총.", source: "왕실 가챠 (신화)" },
+      { name: "치이카와의 곰인형", icon: "🧸", cost: 10, type: "stat", key: "def", value: 10, desc: "방어력이 10 상승하는 포근한 인형.", source: "왕실 가챠 (신화)" },
+      { name: "디지바이스", icon: "📱", cost: 10, type: "stat", key: "int", value: 10, desc: "지력이 10 상승하는 신비한 기기.", source: "왕실 가챠 (신화)" },
+      { name: "네더라이트 칼", icon: "🗡️", cost: 10, type: "stat", key: "atk", value: 10, desc: "공격력이 10 상승하는 칠흑의 검.", source: "왕실 가챠 (신화)" },
+      { name: "새로운 모험 (BGM)", icon: "🎧", cost: 10, type: "bgm", key: "bgm_mythic3", value: "bgm_new.mp3", desc: "설레는 모험을 시작할 때 어울리는 배경음악.", source: "왕실 가챠 (신화)" },
+      { name: "붉은 충격 ~ 타겟 (BGM)", icon: "🎧", cost: 10, type: "bgm", key: "bgm_mythic2", value: "dig_redtarget.mp3", desc: "뜨거운 전투의 의지를 불태우는 배경음악.", source: "왕실 가챠 (신화)" },
+      { name: "Butter Fly (BGM)", icon: "🎧", cost: 10, type: "bgm", key: "bgm_mythic1", value: "dig_butterfly.mp3", desc: "영원한 명곡, 디지몬 어드벤처의 배경음악.", source: "왕실 가챠 (신화)" },
+      // 👇 아래 3개는 가격 20개 (특수 던전 보스 보상)
+      { name: "푸른 신부의 노래 (BGM)", icon: "👻", cost: 20, type: "bgm", key: "bgm_dungeon_boss1", value: "bgm_Corspe.mp3", desc: "지하 깊은 곳에서 들려오는 서늘하고 슬픈 멜로디.", source: "특수 던전 (스테이지 10 최종 보스)" },
+      { name: "호기심이 많은 소녀 (BGM)", icon: "🔑", cost: 20, type: "bgm", key: "bgm_dungeon_boss2", value: "bgm_coral.mp3", desc: "비밀의 문을 열 때 흘러나오는 기묘한 멜로디.", source: "특수 던전 (스테이지 10 최종 보스)" },
+      { name: "커다란 꿈 (BGM)", icon: "💕", cost: 20, type: "bgm", key: "bgm_dungeon_boss3", value: "bgm_big.mp3", desc: "꿈과 희망이 가득 찬 웅장한 멜로디.", source: "특수 던전 (스테이지 10 최종 보스)" },
+      { name: "안█ERROR녕 내 사▒랑 (BGM)", icon: "💔", cost: 20, type: "bgm", key: "bgm_goodbye.mp3", value: "bgm_goodbye.mp3", desc: "지금▒ 몇 시0100▒지█ERROR&0010", source: "█▒ 교█환소" },
+      { name: "지상 최대의 쇼 (BGM)", icon: "🤸‍♂️", cost: 20, type: "bgm", key: "bgm_great01.mp3", value: "bgm_great01.mp3", desc: "위대한 쇼에 어서오세요", source: "보물 교환소" },
+      { name: "누군가의 심장 (BGM)", icon: "💥", cost: 20, type: "bgm", key: "bgm_samu", value: "bgm_samu.mp3", desc: "누군가에게 도움을 요청하는 소리.", source: "보물 교환소" }
+    ];
+
+// 💎 보물 교환소 화면에 렌더링하는 함수 (게임 시작 및 구매 직후 실행)
+function renderVoucherShop() {
+      const grid = document.getElementById('voucher-shop-grid');
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      voucherShopItems.forEach((item, index) => {
+        const itemBox = document.createElement('div');
+        
+        // 💡 BGM이면서 이미 보유 중인지 체크!
+        const isAlreadyOwnedBgm = (item.type === 'bgm' && player.unlockedBgms && player.unlockedBgms[item.key]);
+
+        if (isAlreadyOwnedBgm) {
+          // 🔒 이미 보유한 BGM: 회색 처리, 마우스 오버 효과 제거, 클릭 불가능
+          itemBox.style.cssText = "background: #f5f5f5; border: 2px solid #ccc; border-radius: 8px; padding: 10px 5px; text-align: center; color: #999; box-shadow: none; opacity: 0.6; cursor: not-allowed;";
+          
+          itemBox.innerHTML = `
+            <div style="font-size: 24px; margin-bottom: 5px; filter: grayscale(100%);">${item.icon}</div>
+            <div style="font-size: 11px; font-weight: bold; line-height: 1.2; height: 26px; overflow: hidden; text-decoration: line-through;">${item.name}</div>
+            <div style="font-size: 11px; color: #7f8c8d; margin-top: 5px; font-weight: bold;">✔️ 보유 중</div>
+          `;
+          // 클릭 시 팝업을 띄워 보유 중임을 다시 한번 알려줌
+          itemBox.onclick = () => alert("이미 보유하고 있는 배경음악입니다!");
+
+        } else {
+          // 🛒 구매 가능한 아이템: 정상적인 디자인 및 호버(Hover) 효과, 클릭 시 구매 진행
+          itemBox.style.cssText = "background: #fff; border: 2px solid #8e44ad; border-radius: 8px; padding: 10px 5px; text-align: center; cursor: pointer; box-shadow: 2px 2px 0px rgba(142,68,173,0.3); transition: transform 0.1s;";
+          
+          itemBox.onmousedown = () => itemBox.style.transform = "scale(0.95)";
+          itemBox.onmouseup = () => itemBox.style.transform = "scale(1)";
+          itemBox.onmouseleave = () => itemBox.style.transform = "scale(1)";
+          itemBox.onclick = () => confirmVoucherPurchase(index);
+
+          itemBox.innerHTML = `
+            <div style="font-size: 24px; margin-bottom: 5px;">${item.icon}</div>
+            <div style="font-size: 11px; font-weight: bold; color: #333; line-height: 1.2; height: 26px; overflow: hidden;">${item.name}</div>
+            <div style="font-size: 10px; color: #e74c3c; margin-top: 5px; font-weight: bold;">🎫 ${item.cost}개</div>
+          `;
+        }
+        
+        grid.appendChild(itemBox);
+      });
+    }
+
+    // 💎 아이템을 클릭했을 때 구매를 확인하고 결제하는 함수
+    function confirmVoucherPurchase(index) {
+      const item = voucherShopItems[index];
+      
+      // 1. 확인창 메시지 구성
+      let confirmMsg = `[ ${item.name} ]\n\n`;
+      confirmMsg += `📖 설명: ${item.desc}\n`;
+      confirmMsg += `🗺️ 획득처: ${item.source}\n\n`;
+      confirmMsg += `💳 가격: 보물 교환권 ${item.cost}개\n`;
+      confirmMsg += `\n정말로 교환하시겠습니까?`;
+
+      // 2. 유저에게 묻기
+      if (confirm(confirmMsg)) {
+        
+        // 3. 교환권이 부족한지 검사
+        if ((player.vouchers || 0) < item.cost) {
+          alert(`보물 교환권이 부족합니다!\n(현재 보유: ${player.vouchers || 0}개 / 필요: ${item.cost}개)`);
+          return;
+        }
+
+        // 4. 아이템 종류(BGM인지 스탯 장비인지)에 따라 지급 처리
+        if (item.type === 'bgm') {
+          // 이미 가지고 있는 BGM인지 확인
+          if (player.unlockedBgms[item.key]) {
+            alert("이미 보유하고 있는 배경음악입니다!");
+            return;
+          }
+          // BGM 추가
+          player.unlockedBgms[item.key] = { name: item.name.replace(" (BGM)", ""), file: item.value };
+        } 
+        else if (item.type === 'stat') {
+          // 스탯 바로 올려주기
+          player.stats[item.key] += item.value;
+          
+          // 인벤토리(도감)에도 추가 (가챠에서 뽑은 것처럼 표시)
+          if (!player.inventory[item.name]) { 
+            player.inventory[item.name] = { 
+              name: item.name, icon: item.icon, tierName: "교환", cssClass: "epic", count: 0, statName: item.key, totalStat: 0, gachaType: 'royal' 
+            }; 
+          }
+          player.inventory[item.name].count += 1;
+          player.inventory[item.name].totalStat += item.value;
+        }
+
+        // 5. 결제(교환권 차감) 및 저장
+        player.vouchers -= item.cost;
+        alert(`🎉 [${item.name}] 교환 성공!`);
+        updateStatus(); // 화면 갱신 (교환권 개수 등)
+        renderVoucherShop(); // 👈 이 줄을 추가하세요! (UI 바로 갱신해서 방금 산 BGM 회색으로 만들기)
+        saveGame();
+      }
+    }
 
     function tryStartGame(charName, jobName, imgUrl) {
       const weightInput = document.getElementById('input-start-weight').value;
@@ -1174,9 +1343,10 @@ const petPool = {
 const kossukPool = [
       { name: "🐽 쿼카의 돼지코", icon: "🐽", tier: "✨신화", cssClass: "mythic", effect: "모든 스탯 +5 대박!", stat: "all", add: 5, chance: 3 },
       { name: "🖤 코알라의 하트코", icon: "🖤", tier: "✨신화", cssClass: "mythic", effect: "지능 +30 대박!", stat: "int", add: 5, chance: 3 },
-      { name: "🤧 부드러운 비염티슈", icon: "🤧", tier: "💜에픽", cssClass: "epic", effect: "공격력 +8", stat: "atk", add: 8, chance: 15 },
+      { name: "🤧 부드러운 비염티슈", icon: "🤧", tier: "💜에픽", cssClass: "epic", effect: "공격력 +8", stat: "atk", add: 8, chance: 10 }, // 👈 확률 15->10으로 조정
+      { name: "🎫 보물 교환권", icon: "🎫", tier: "💜에픽", cssClass: "epic", effect: "특별 상점에서 아이템과 교환", type: "voucher", add: 1, chance: 5 }, // 👈 보물 교환권 추가!
       { name: "👃 코알라의 긴코", icon: "🦏", tier: "💙레어", cssClass: "rare", effect: "방어력 +5", stat: "def", add: 5, chance: 32 },
-      { name: "🧻 먼지나는 휴지", icon: "🧻", tier: "🤍일반", cssClass: "normal", effect: "1,000 골드 획득 (꽝...)", type: "gold", add: 1000, chance: 50 }
+      { name: "🧻 먼지나는 휴지", icon: "🧻", tier: "🤍일반", cssClass: "normal", effect: "1,000 골드 획득 (꽝...)", type: "gold", add: 1000, chance: 47 } // 👈 확률 50->47로 조정
     ];
 
     function rollKossukGacha() {
@@ -1195,11 +1365,18 @@ const kossukPool = [
         player.gold += item.add; player.records.totalGold += item.add;
       } else if (item.stat === 'all') {
         player.stats.atk += item.add; player.stats.ratk += item.add; player.stats.def += item.add; player.stats.spd += item.add; player.stats.int += item.add;
-      } else if (item.stat) { player.stats[item.stat] += item.add; }
+      } else if (item.stat) { 
+        player.stats[item.stat] += item.add; 
+      } else if (item.type === 'voucher') {
+        // 💡 보물 교환권 획득 로직 추가
+        if (player.vouchers === undefined) player.vouchers = 0; // 변수가 없으면 만듦
+        player.vouchers += item.add;
+        msg = `보물 교환권 ${player.vouchers}개 보유 중!`;
+      }
 
-      // 👇 새로 추가된 부분: 코쑥 가챠 결과도 도감(인벤토리)에 저장하기!
-      if (item.type !== 'gold') { // 꽝(골드)은 소지품에 안 넣습니다
-        let cleanTier = item.tier.replace(/[^가-힣]/g, ''); // "✨신화"에서 "신화" 글자만 쏙 빼기
+      // 👇 도감(인벤토리) 저장 로직 부분 (꽝이나 재화는 제외)
+      if (item.type !== 'gold' && item.type !== 'voucher') { 
+        let cleanTier = item.tier.replace(/[^가-힣]/g, ''); 
         if (!player.inventory[item.name]) {
           player.inventory[item.name] = { 
             name: item.name, icon: item.icon, tierName: cleanTier, cssClass: item.cssClass, 
@@ -1255,7 +1432,9 @@ const kossukPool = [
       document.getElementById('ui-gold').innerText = player.gold; document.getElementById('ui-tickets').innerText = player.tickets; document.getElementById('ui-kossuk-tickets').innerText = player.kossukTickets || 0;
       document.getElementById('st-name').innerText = player.name; document.getElementById('st-class').innerText = player.job; document.getElementById('st-start-weight').innerText = player.startWeight; document.getElementById('st-curr-weight').innerText = player.currentWeight;
       
-      const shopLeafTokens = document.getElementById('shop-leaf-tokens'); if(shopLeafTokens) shopLeafTokens.innerText = player.leafTokens || 0;      
+      const shopLeafTokens = document.getElementById('shop-leaf-tokens'); if(shopLeafTokens) shopLeafTokens.innerText = player.leafTokens || 0;    
+      const shopVouchers = document.getElementById('shop-vouchers');
+      if (shopVouchers) shopVouchers.innerText = player.vouchers || 0;  
       let loss = player.startWeight - player.currentWeight; document.getElementById('st-loss-weight').innerText = loss.toFixed(1) + " kg";
       const buffLabel = document.getElementById('st-weight-buff');
       if (loss >= 5.0) { buffLabel.style.color = "#2ecc71"; buffLabel.innerText = "✨ 전투력 +30% 버프!"; } else if (loss >= 3.0) { buffLabel.style.color = "#3498db"; buffLabel.innerText = "💪 정상 전투력"; } else { buffLabel.style.color = "#e74c3c"; buffLabel.innerText = "💤 전투력 -30% 디버프 중"; }
@@ -1443,6 +1622,11 @@ const effectSelect = document.getElementById('effect-select');
 
           // 💡 브라우저에게 "새 노래 들어왔으니 다시 로딩해라!" 라고 알려주는 필수 코드
           document.getElementById('game-audio').load(); 
+          if (typeof renderQuests === 'function') renderQuests(); 
+          if (typeof updateStatus === 'function') updateStatus(); 
+          if (typeof updateTaskUI === 'function') updateTaskUI();
+          checkAttendance(); 
+          renderVoucherShop(); // 👈 이 줄을 추가하세요! (보물 교환소 그리기)
           }
 
           return true;
@@ -1719,179 +1903,150 @@ const effectSelect = document.getElementById('effect-select');
       container.innerHTML = '';
       if (!effect || effect === 'none') return;
 
-      // 💡 여기서 파티클 모양을 자유롭게 바꿀 수 있습니다!
-      // 이모지 대신 직접 그린 이미지를 넣으려면 '<img src="내파일.png" width="15">' 처럼 적어주면 됩니다.
-      let shapes = []; let size = 14; let speed = 100;
-      
-// 💡 맨 처음 시작인 반짝이는 'if' 그대로 유지!
-if (effect === 'effect-sparkle') { 
-        shapes = [
-          '<img src="pa_spa01.png" style="width: 12px; image-rendering: pixelated;">'
-        ]; 
-        size = 12; 
-        speed = 400; /* 0.4초당 1개씩 천천히, 은은하게 생성 */
+      // 👼 4. 성스러운 빛: 천사 링 (위로 훌쩍 올린 버전 유지)
+      if (effect === 'effect-holy') {
+        const halo = document.createElement('div');
+        halo.style.position = 'absolute';
+        halo.style.width = '45px';
+        halo.style.height = '12px';
+        halo.style.border = '3px solid rgba(255, 235, 100, 0.9)';
+        halo.style.borderRadius = '50%';
+        halo.style.left = '42%';
+        halo.style.top = '33%'; 
+        halo.style.transform = 'translateX(-50%)';
+        halo.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.8), inset 0 0 5px rgba(255, 215, 0, 0.8)';
+        halo.style.animation = 'float 2s infinite ease-in-out'; 
+        container.appendChild(halo);
+        return; 
       }
-      // 👇 불꽃 이펙트를 내 이미지로 교체! (엔터 쳐서 여러 줄로 써도 잘 작동합니다)
-      else if (effect === 'effect-fire') { 
-        shapes = [
-          '<img src="pa_fire01.png" style="width: 16px; image-rendering: pixelated;">', 
-          '<img src="pa_fire02.png" style="width: 16px; image-rendering: pixelated;">'
-        ]; 
-        size = 16; 
-        speed = 150; 
-      }      else if (effect === 'effect-fire') { 
-        shapes = [
-          '<img src="pa_th01.png" style="width: 16px; image-rendering: pixelated;">', 
-          '<img src="pa_th02.png" style="width: 16px; image-rendering: pixelated;">'
-        ]; 
-        size = 16; 
-        speed = 100; 
-      }
-      if (effect === 'effect-lightning') { 
-        shapes = [
-          '<img src="pa_th01.png" style="width: 25px; image-rendering: pixelated;">'
-        ]; 
-        size = 12; 
-        speed = 400; /* 0.4초당 1개씩 천천히, 은은하게 생성 */
-      }
-      else if (effect === 'effect-dark') { shapes = ['🦇', '🌑', '💀']; size = 15; speed = 300; }
-      else if (effect === 'effect-holy') { shapes = ['👼', '🕊️', '🤍']; size = 16; }
-      else if (effect === 'effect-glitch') { shapes = ['0', '1', '👾', 'ERROR']; size = 12; speed = 200; }
 
-// 파티클 생성기 가동!
-particleTimer = setInterval(() => {
+      let speed = 100;
+      if (effect === 'effect-sparkle') speed = 600; 
+      else if (effect === 'effect-fire') speed = 250;
+      else if (effect === 'effect-dark') speed = 400; 
+      // 💡 글리치 조각이 튀어나오는 속도를 400으로 늦춰서 조각 개수는 줄임!
+      else if (effect === 'effect-glitch') speed = 400; 
+      
+      particleTimer = setInterval(() => {
         const p = document.createElement('div');
-        p.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
         p.style.position = 'absolute';
-        p.style.fontSize = size + 'px';
-        p.style.color = '#fff';
-        p.style.fontWeight = 'bold';
         p.style.pointerEvents = 'none';
         
-        let startX = 40 + Math.random() * 20;
-        let startY = 50 + Math.random() * 30;
-        let duration = 0.5 + Math.random(); // 0.5초 ~ 1.5초
+        let startX = 50; let startY = 50;
+        let duration = 1 + Math.random();
 
-        // 🌟 1. 반짝이: 제자리에서 깜빡이기
+        // ✨ 1. 반짝이
         if (effect === 'effect-sparkle') {
-          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
-          startY = 20 + Math.random() * 60; 
+          startX = 40 + Math.random() * 20; 
+          startY = 30 + Math.random() * 40;
+          p.innerHTML = '<img src="pa_spa01.png" style="width: 12px; image-rendering: pixelated;">';
           p.style.left = startX + '%';
           p.style.top = startY + '%';
-          p.style.opacity = '0'; 
+          p.style.opacity = '0';
           p.style.transform = 'scale(0.5)';
           p.style.transition = `all ${duration / 2}s ease-in-out`;
           container.appendChild(p);
 
-          setTimeout(() => { p.style.opacity = '0.7'; p.style.transform = 'scale(1.1)'; }, 10);
+          setTimeout(() => { p.style.opacity = '0.8'; p.style.transform = 'scale(1)'; }, 10);
           setTimeout(() => { p.style.opacity = '0'; p.style.transform = 'scale(0.5)'; }, (duration / 2) * 1000);
         }
         
-        // 🔥 2. 불꽃: 위로 둥실둥실 올라가며 사라지기
+        // 🔥 2. 불꽃
         else if (effect === 'effect-fire') {
-          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
-          startY = 20 + Math.random() * 60; 
+          startX = 45 + Math.random() * 10; 
+          startY = 70 + Math.random() * 10; 
+          let fireImg = Math.random() > 0.5 ? 'pa_fire01.png' : 'pa_fire02.png';
+          p.innerHTML = `<img src="${fireImg}" style="width: 14px; image-rendering: pixelated;">`;
           p.style.left = startX + '%';
-          p.style.top = (startY + 10) + '%'; 
-          p.style.opacity = '1';
+          p.style.top = startY + '%';
+          p.style.opacity = '0.8';
           p.style.transition = `all ${duration}s ease-out`;
           container.appendChild(p);
 
           setTimeout(() => {
-            p.style.top = (startY - 30 - Math.random() * 20) + '%'; 
+            p.style.top = (startY - 20 - Math.random() * 10) + '%'; 
             p.style.opacity = '0';
             p.style.transform = 'scale(0.5)';
           }, 10);
         }
         
-        // ⚡ 3. 번개: 위에서 아래로 떨어지며 지지직 흔들리기!
+        // 🌑 4. 어둠 오라
+        else if (effect === 'effect-dark') {
+          startX = 35 + Math.random() * 30; 
+          startY = 40 + Math.random() * 40;
+          p.style.width = (20 + Math.random() * 30) + 'px'; 
+          p.style.height = p.style.width;
+          p.style.background = 'radial-gradient(circle, rgba(50,20,70,0.6) 0%, transparent 70%)';
+          p.style.borderRadius = '50%';
+          p.style.filter = 'blur(6px)'; 
+          p.style.left = startX + '%';
+          p.style.top = startY + '%';
+          p.style.opacity = '0';
+          p.style.zIndex = '-1'; 
+          p.style.transition = `all ${duration}s ease-in-out`;
+          container.appendChild(p);
+
+          setTimeout(() => {
+            p.style.opacity = '0.7';
+            p.style.top = (startY - 15) + '%'; 
+            p.style.transform = 'scale(1.5)';
+          }, 10);
+          setTimeout(() => { p.style.opacity = '0'; }, (duration / 2) * 1000);
+        }
+
+        // ⚡ 3. 번개
         else if (effect === 'effect-lightning') {
-          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
+          startX = 40 + Math.random() * 20;
           startY = 20 + Math.random() * 20; 
+          let thImg = Math.random() > 0.5 ? 'pa_th01.png' : 'pa_th02.png';
+          p.innerHTML = `<img src="${thImg}" style="width: 14px; image-rendering: pixelated;">`;
           p.style.left = startX + '%';
           p.style.top = startY + '%';
           p.style.opacity = '1';
-          
           p.style.transition = `top ${duration}s ease-in, opacity ${duration}s ease-in`; 
           p.style.animation = `shake 0.1s infinite alternate`; 
           container.appendChild(p);
 
           setTimeout(() => {
-            p.style.top = (startY + 40 + Math.random() * 20) + '%'; 
+            p.style.top = (startY + 30 + Math.random() * 10) + '%'; 
             p.style.opacity = '0';
           }, 10);
         }
 
-        // 👼 4. 성스러운 빛: 팝콘처럼 튀지 않고 제자리에 은은하게 나타났다 스르륵 사라짐
-        else if (effect === 'effect-holy') {
-          if (Math.random() > 0.5) startX = 10 + Math.random() * 20; else startX = 70 + Math.random() * 20;
-          startY = 10 + Math.random() * 70; // 좀 더 넓은 범위에 배치
-          duration = 2 + Math.random() * 1.5; // 은은하게 오래 떠있도록 시간 늘림 (2~3.5초)
-
-          p.style.left = startX + '%';
-          p.style.top = startY + '%';
-          p.style.opacity = '0'; // 처음엔 완전히 투명
-          // 불투명도 조절로 깜빡임 없이 부드럽게 페이드인/아웃
-          p.style.transition = `opacity ${duration / 2}s ease-in-out, top ${duration}s linear`;
-          container.appendChild(p);
-
-          setTimeout(() => { 
-            p.style.opacity = '0.6'; // 스르륵 반투명하게 나타남
-            p.style.top = (startY - 8) + '%'; // 위로 아주 천천히 살짝만 떠오름
-          }, 10);
-
-          setTimeout(() => { 
-            p.style.opacity = '0'; // 유지되다가 스르륵 사라짐
-          }, (duration / 2) * 1000);
-        }
-
-        // 👾 5. 글리치: 흩날리지 않고 캐릭터 근처에 붙어서 색 번짐+지직거림
+        // 👾 5. 글리치: 스폰 위치는 양옆으로 피하고, 안의 애니메이션은 화끈하게 복구!
         else if (effect === 'effect-glitch') {
-          startX = 30 + Math.random() * 40; // 캐릭터 바로 위/주변에 생성
-          startY = 30 + Math.random() * 40;
+          // 💡 얼굴을 가리지 않게 양옆(5~25% 또는 75~95%)으로만 스폰 위치 고정
+          if (Math.random() > 0.5) startX = 5 + Math.random() * 20;
+          else startX = 75 + Math.random() * 20;
+          startY = 20 + Math.random() * 60; 
           
           p.style.left = startX + '%';
           p.style.top = startY + '%';
-          
-          // 이미 만들어둔 빨강/파랑 색상 번짐 애니메이션 클래스를 조각에도 부여!
-          p.classList.add('effect-glitch');
+          p.style.fontSize = (10 + Math.random() * 6) + 'px';
+          p.style.color = '#fff';
+          p.style.fontWeight = 'bold';
           container.appendChild(p);
 
-          // 타이머를 돌려 자잘하게 덜덜덜 떨리는 지직거림(Jitter) 위치 효과 추가
+          // 💡 글리치 문자, 깜빡임, 형광색 번쩍임, 찌그러짐 미친듯이 발작하는 애니메이션 100% 복구!
+          const glitchChars = ['0', '1', 'ERROR', '█', '▒', '§', '¥', '#', '@', '?!'];
           let jitter = setInterval(() => {
-            p.style.transform = `translate(${Math.random()*8-4}px, ${Math.random()*8-4}px) skew(${Math.random()*15-7}deg)`;
-            // 간헐적으로 불투명해지며 깜빡거림
-            p.style.opacity = Math.random() > 0.8 ? '0.1' : '0.9'; 
-          }, 80);
+            p.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px) scale(${Math.random()*1.5 + 0.5}, ${Math.random()*1.5 + 0.5}) skew(${Math.random()*30-15}deg)`;
+            p.style.opacity = Math.random() > 0.6 ? '0.1' : '0.9'; 
+            if (Math.random() > 0.4) p.innerHTML = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            p.style.color = Math.random() > 0.85 ? '#ff0055' : (Math.random() > 0.85 ? '#00ffcc' : '#fff');
+          }, 50);
 
-          setTimeout(() => {
-            clearInterval(jitter); // 찌그러짐 타이머 종료
-            p.style.opacity = '0';
-          }, duration * 1000);
-        }
-        
-        // 🦇 6. 어둠 등 나머지 (기존 팝콘 흩날림 유지)
-        else {
-          p.style.left = startX + '%';
-          p.style.top = startY + '%';
-          p.style.transition = `all ${duration}s ease-out`;
-          container.appendChild(p);
-          
-          setTimeout(() => {
-            p.style.top = (startY - 30 - Math.random() * 30) + '%';
-            p.style.left = (startX - 20 + Math.random() * 40) + '%';
-            p.style.opacity = '0';
-            p.style.transform = `scale(0.5) rotate(${Math.random() * 360}deg)`;
-          }, 10);
+          // 수명이 다하면 타이머를 끄고 사라짐
+          setTimeout(() => { clearInterval(jitter); p.style.opacity = '0'; }, duration * 1000);
         }
 
-        // 수명이 다한 파티클 조각은 깔끔하게 청소
+        // 청소
         setTimeout(() => {
           if (p.parentNode) p.parentNode.removeChild(p);
         }, (duration + 1) * 1000);
         
       }, speed);
-      }
+    }
 
       // ==========================================
     // 🗺️ 특수 탐험 던전 시스템 (1단계: 입장 준비)
@@ -2627,6 +2782,15 @@ function executeDungeonTurn() {
        }
     }
     
+// 특수 던전 보상창 껐다 켜기
+function toggleDungeonRewardInfo() {
+       const infoDiv = document.getElementById('dungeon-reward-info');
+       if (infoDiv) {
+           if (infoDiv.classList.contains('hidden')) infoDiv.classList.remove('hidden');
+           else infoDiv.classList.add('hidden');
+       }
+    }
+
     function generateGachaInfoHTML(type) {
        let html = "";
        // 1순위: 레어도(신화->일반), 2순위: 이름 가나다순 정렬 마법
